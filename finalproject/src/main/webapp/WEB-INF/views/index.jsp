@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-                @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+		 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
           margin: 0;
@@ -580,6 +580,36 @@
           font-size: 0.85rem;
           color: var(--color-text-secondary);
           font-weight: 500;
+        }
+
+        /* More Button */
+        .more-button-container {
+          display: flex;
+          justify-content: center;
+          margin-top: 4rem;
+        }
+
+        .more-btn {
+          padding: 1rem 3rem;
+          background: transparent;
+          color: var(--color-charcoal);
+          border: 2px solid var(--color-sage);
+          border-radius: var(--border-radius-sm);
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 1rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .more-btn:hover {
+          background: var(--color-sage);
+          color: var(--color-warm-white);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
         }
 
         /* Newsletter */
@@ -1210,6 +1240,11 @@
                 </div>
               </div>
             </div>
+          <div class="more-button-container">
+            <button class="more-btn">
+              더보기 📚
+            </button>
+          </div>
           </div>
         </section>
 

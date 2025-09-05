@@ -6,7 +6,8 @@ CREATE TABLE members(
     member_addr VARCHAR2(150) NOT NULL, -- 주소
     member_email VARCHAR2(150) UNIQUE,  -- 이메일
     member_phone VARCHAR2(100) UNIQUE,   -- 핸드폰
-    member_status NUMBER                 -- 1이면 관리자 0이면 일반회원
+    member_status NUMBER,                -- 1이면 관리자 0이면 일반회원
+    member_nickname VARCHAR2(20)
 );
 
 CREATE TABLE newbook(
@@ -65,7 +66,8 @@ CREATE TABLE messages (
     chatroom_num NUMBER NOT NULL,                                            -- 메시지가 속한 채팅방 번호
     sender_member_num NUMBER NOT NULL,                                       -- 메시지 보낸 사람 회원 번호
     message_content VARCHAR2(1000) NOT NULL,                                 -- 메시지 내용 (필수 입력)
-    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP                              -- 메시지 전송 시간
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                             -- 메시지 전송 시간
+    memssage_img VARCHAR2(200)
 );
 
 

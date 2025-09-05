@@ -6,64 +6,126 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-                * {
+         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
 
+        :root {
+          --color-sage: #9CAF9E;
+          --color-cream: #F8F6F0;
+          --color-charcoal: #2D3436;
+          --color-warm-white: #FEFDFB;
+          --color-terracotta: #D4A574;
+          --color-deep-blue: #364958;
+          --color-accent-gold: #D4A574;
+          --color-muted-green: #8FA685;
+          --color-soft-beige: #E8E3D8;
+          --color-text-primary: #2D3436;
+          --color-text-secondary: #636E72;
+          --color-text-muted: #74B9FF;
+          
+          --font-serif: 'Crimson Text', Georgia, serif;
+          --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          
+          --shadow-soft: 0 4px 20px rgba(45, 52, 54, 0.06);
+          --shadow-medium: 0 8px 30px rgba(45, 52, 54, 0.08);
+          --shadow-strong: 0 15px 50px rgba(45, 52, 54, 0.12);
+          
+          --border-radius-sm: 8px;
+          --border-radius-md: 12px;
+          --border-radius-lg: 16px;
+        }
+
         body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #fafafa;
+          font-family: var(--font-sans);
+          line-height: 1.7;
+          color: var(--color-text-primary);
+          background: linear-gradient(135deg, var(--color-warm-white) 0%, var(--color-cream) 100%);
+          letter-spacing: -0.01em;
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 1280px;
           margin: 0 auto;
-          padding: 0 20px;
+          padding: 0 2rem;
         }
 
         /* Header */
         .header {
-          background: #fff;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          background: rgba(254, 253, 251, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(156, 175, 158, 0.15);
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 1000;
+          transition: all 0.3s ease;
         }
 
         .header-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1rem 0;
+          padding: 1.5rem 0;
         }
 
         .logo {
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: #2c3e50;
+          font-family: var(--font-serif);
+          font-size: 2rem;
+          font-weight: 600;
+          color: var(--color-charcoal);
           text-decoration: none;
+          letter-spacing: -0.02em;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .logo::before {
+          content: '📖';
+          font-size: 1.5rem;
         }
 
         .nav-menu {
           display: flex;
           list-style: none;
-          gap: 2rem;
+          gap: 3rem;
+          align-items: center;
         }
 
         .nav-menu a {
           text-decoration: none;
-          color: #666;
-          font-weight: 500;
-          transition: color 0.3s ease;
+          color: var(--color-text-secondary);
+          font-weight: 400;
+          font-size: 0.95rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          position: relative;
+          padding: 0.5rem 0;
+        }
+
+        .nav-menu a::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--color-sage);
+          transition: width 0.3s ease;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-          color: #2c3e50;
+          color: var(--color-charcoal);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+          width: 100%;
         }
 
         .user-actions {
@@ -73,114 +135,148 @@
         }
 
         .btn {
-          padding: 0.6rem 1.2rem;
-          border: none;
-          border-radius: 6px;
+          padding: 0.75rem 1.5rem;
+          border: 2px solid transparent;
+          border-radius: var(--border-radius-sm);
           cursor: pointer;
           font-weight: 500;
+          font-size: 0.9rem;
+          letter-spacing: -0.01em;
           transition: all 0.3s ease;
           text-decoration: none;
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
         }
 
         .btn-primary {
-          background: #2c3e50;
-          color: white;
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          box-shadow: var(--shadow-soft);
         }
 
         .btn-primary:hover {
-          background: #34495e;
+          background: var(--color-deep-blue);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-medium);
         }
 
         .btn-outline {
           background: transparent;
-          color: #2c3e50;
-          border: 2px solid #2c3e50;
+          color: var(--color-charcoal);
+          border-color: rgba(45, 52, 54, 0.2);
         }
 
         .btn-outline:hover {
-          background: #2c3e50;
-          color: white;
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          border-color: var(--color-charcoal);
+          transform: translateY(-1px);
         }
 
         /* Breadcrumb */
         .breadcrumb {
-          background: white;
-          padding: 1rem 0;
-          border-bottom: 1px solid #e9ecef;
+          background: var(--color-warm-white);
+          padding: 1.5rem 0;
+          border-bottom: 1px solid rgba(156, 175, 158, 0.15);
         }
 
         .breadcrumb-nav {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          font-size: 0.9rem;
-          color: #666;
+          gap: 0.75rem;
+          font-size: 0.95rem;
+          color: var(--color-text-secondary);
         }
 
         .breadcrumb-nav a {
-          color: #667eea;
+          color: var(--color-sage);
           text-decoration: none;
           transition: color 0.3s ease;
+          font-weight: 500;
         }
 
         .breadcrumb-nav a:hover {
-          color: #5a6fd8;
+          color: var(--color-muted-green);
         }
 
         .breadcrumb-separator {
-          color: #999;
+          color: var(--color-text-secondary);
+          opacity: 0.6;
         }
 
         /* Main Content */
         .main-content {
-          background: #fafafa;
-          padding: 3rem 0;
+          background: linear-gradient(135deg, var(--color-warm-white) 0%, var(--color-cream) 100%);
+          padding: 4rem 0;
         }
 
         .create-container {
-          max-width: 800px;
+          max-width: 900px;
           margin: 0 auto;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+          background: var(--color-warm-white);
+          border-radius: var(--border-radius-lg);
+          box-shadow: var(--shadow-strong);
           overflow: hidden;
+          border: 1px solid rgba(156, 175, 158, 0.1);
         }
 
         .create-header {
-          background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-          color: white;
-          padding: 2rem;
+          background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-muted-green) 100%);
+          color: var(--color-warm-white);
+          padding: 3rem;
           text-align: center;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .create-header::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
+          opacity: 0.4;
         }
 
         .create-title {
-          font-size: 2rem;
+          font-family: var(--font-serif);
+          font-size: 2.5rem;
           font-weight: 600;
-          margin-bottom: 0.5rem;
+          margin-bottom: 1rem;
+          letter-spacing: -0.02em;
+          position: relative;
+          z-index: 2;
         }
 
         .create-subtitle {
-          font-size: 1rem;
+          font-size: 1.2rem;
           opacity: 0.9;
+          font-weight: 300;
+          position: relative;
+          z-index: 2;
         }
 
         .create-form {
-          padding: 2.5rem;
+          padding: 3rem;
         }
 
         .form-section {
-          margin-bottom: 2.5rem;
+          margin-bottom: 3rem;
         }
 
         .section-title {
-          font-size: 1.3rem;
+          font-family: var(--font-serif);
+          font-size: 1.5rem;
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 1.5rem;
+          color: var(--color-charcoal);
+          margin-bottom: 2rem;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
+          letter-spacing: -0.01em;
         }
 
         .form-grid {
@@ -200,13 +296,15 @@
         .form-label {
           display: block;
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 0.5rem;
+          color: var(--color-charcoal);
+          margin-bottom: 0.75rem;
           font-size: 0.95rem;
+          font-family: var(--font-sans);
+          letter-spacing: -0.01em;
         }
 
         .required {
-          color: #e74c3c;
+          color: var(--color-terracotta);
           margin-left: 0.3rem;
         }
 
@@ -214,20 +312,22 @@
         .form-textarea,
         .form-select {
           width: 100%;
-          padding: 0.8rem 1rem;
-          border: 2px solid #e9ecef;
-          border-radius: 8px;
+          padding: 1rem 1.25rem;
+          border: 2px solid rgba(156, 175, 158, 0.2);
+          border-radius: var(--border-radius-md);
           font-size: 1rem;
           transition: all 0.3s ease;
-          background: white;
+          background: var(--color-warm-white);
           outline: none;
+          color: var(--color-text-primary);
+          font-family: var(--font-sans);
         }
 
         .form-input:focus,
         .form-textarea:focus,
         .form-select:focus {
-          border-color: #27ae60;
-          box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.1);
+          border-color: var(--color-sage);
+          box-shadow: 0 0 0 3px rgba(156, 175, 158, 0.1);
         }
 
         .form-textarea {
@@ -252,41 +352,64 @@
 
         .form-help {
           font-size: 0.85rem;
-          color: #666;
-          margin-top: 0.5rem;
+          color: var(--color-text-secondary);
+          margin-top: 0.75rem;
+          font-style: italic;
         }
 
         /* Image Upload */
         .image-upload-area {
-          border: 2px dashed #d1d5db;
-          border-radius: 8px;
-          padding: 2rem;
+          border: 2px dashed rgba(156, 175, 158, 0.4);
+          border-radius: var(--border-radius-md);
+          padding: 3rem;
           text-align: center;
-          background: #f9fafb;
+          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
           transition: all 0.3s ease;
           cursor: pointer;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .image-upload-area::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.02'%3E%3Cpath d='M20 20c0 11-9 20-20 20s-20-9-20-20 9-20 20-20 20 9 20 20zm-10-10v20m-10-10h20'/%3E%3C/g%3E%3C/svg%3E") repeat;
+          opacity: 0.3;
         }
 
         .image-upload-area:hover {
-          border-color: #27ae60;
-          background: #f0f9ff;
+          border-color: var(--color-sage);
+          background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-soft-beige) 100%);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
         }
 
         .image-upload-icon {
-          font-size: 3rem;
-          color: #9ca3af;
-          margin-bottom: 1rem;
+          font-size: 3.5rem;
+          color: var(--color-sage);
+          margin-bottom: 1.5rem;
+          position: relative;
+          z-index: 2;
         }
 
         .image-upload-text {
-          font-size: 1rem;
-          color: #374151;
-          margin-bottom: 0.5rem;
+          font-size: 1.1rem;
+          color: var(--color-charcoal);
+          margin-bottom: 0.75rem;
+          font-weight: 500;
+          position: relative;
+          z-index: 2;
         }
 
         .image-upload-hint {
-          font-size: 0.85rem;
-          color: #6b7280;
+          font-size: 0.9rem;
+          color: var(--color-text-secondary);
+          position: relative;
+          z-index: 2;
         }
 
         .image-input {
@@ -296,7 +419,8 @@
         /* Exchange Method Pills */
         .exchange-methods {
           display: flex;
-          gap: 1rem;
+          gap: 1.5rem;
+          flex-wrap: wrap;
         }
 
         .method-option {
@@ -306,31 +430,38 @@
         .method-label {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.8rem 1.5rem;
-          border: 2px solid #e9ecef;
-          border-radius: 25px;
+          gap: 0.75rem;
+          padding: 1rem 2rem;
+          border: 2px solid rgba(156, 175, 158, 0.2);
+          border-radius: 30px;
           cursor: pointer;
           transition: all 0.3s ease;
           font-weight: 500;
-          background: white;
+          background: var(--color-warm-white);
+          color: var(--color-text-primary);
+          font-size: 0.95rem;
+          box-shadow: var(--shadow-soft);
         }
 
         .method-option:checked + .method-label {
-          border-color: #27ae60;
-          background: #27ae60;
-          color: white;
+          border-color: var(--color-sage);
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
         }
 
         .method-label:hover {
-          border-color: #27ae60;
+          border-color: var(--color-sage);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-medium);
         }
 
         /* Condition Pills */
         .condition-options {
           display: flex;
           flex-wrap: wrap;
-          gap: 0.8rem;
+          gap: 1rem;
         }
 
         .condition-option {
@@ -340,84 +471,102 @@
         .condition-label {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          padding: 0.6rem 1.2rem;
-          border: 2px solid #e9ecef;
-          border-radius: 20px;
+          gap: 0.75rem;
+          padding: 0.8rem 1.5rem;
+          border: 2px solid rgba(156, 175, 158, 0.2);
+          border-radius: 25px;
           cursor: pointer;
           transition: all 0.3s ease;
           font-weight: 500;
-          background: white;
+          background: var(--color-warm-white);
           font-size: 0.9rem;
+          color: var(--color-text-primary);
+          box-shadow: var(--shadow-soft);
         }
 
         .condition-option:checked + .condition-label {
-          border-color: #3498db;
-          background: #3498db;
-          color: white;
+          border-color: var(--color-terracotta);
+          background: linear-gradient(135deg, var(--color-terracotta), var(--color-accent-gold));
+          color: var(--color-warm-white);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
         }
 
         .condition-label:hover {
-          border-color: #3498db;
+          border-color: var(--color-terracotta);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-medium);
         }
 
         /* Action Buttons */
         .form-actions {
           display: flex;
-          gap: 1rem;
+          gap: 1.5rem;
           justify-content: flex-end;
-          padding-top: 2rem;
-          border-top: 2px solid #f1f3f4;
-          margin-top: 2rem;
+          padding-top: 2.5rem;
+          border-top: 2px solid rgba(156, 175, 158, 0.2);
+          margin-top: 3rem;
         }
 
         .btn-large {
-          padding: 1rem 2rem;
+          padding: 1.25rem 2.5rem;
           font-size: 1.1rem;
           font-weight: 600;
-          border-radius: 8px;
+          border-radius: var(--border-radius-lg);
           cursor: pointer;
           transition: all 0.3s ease;
           border: none;
-          min-width: 140px;
+          min-width: 160px;
+          font-family: var(--font-sans);
+          letter-spacing: -0.01em;
         }
 
         .btn-cancel {
-          background: #6c757d;
-          color: white;
+          background: var(--color-text-secondary);
+          color: var(--color-warm-white);
+          border: 2px solid var(--color-text-secondary);
         }
 
         .btn-cancel:hover {
-          background: #5a6268;
+          background: var(--color-charcoal);
+          border-color: var(--color-charcoal);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
         }
 
         .btn-save {
-          background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-          color: white;
+          background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-muted-green) 100%);
+          color: var(--color-warm-white);
+          box-shadow: var(--shadow-soft);
         }
 
         .btn-save:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+          background: linear-gradient(135deg, var(--color-muted-green) 0%, var(--color-deep-blue) 100%);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-strong);
         }
 
         /* Footer */
         .footer {
-          background: #1a252f;
-          color: white;
-          padding: 3rem 0 2rem;
+          background: linear-gradient(135deg, #1A1F2E 0%, var(--color-charcoal) 100%);
+          color: var(--color-warm-white);
+          padding: 4rem 0 2rem;
         }
 
         .footer-content {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
-          margin-bottom: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 3rem;
+          margin-bottom: 3rem;
         }
 
         .footer-section h3 {
-          margin-bottom: 1rem;
-          color: white;
+          margin-bottom: 1.5rem;
+          color: var(--color-warm-white);
+          font-family: var(--font-serif);
+          font-weight: 600;
+          font-size: 1.2rem;
+          letter-spacing: -0.01em;
         }
 
         .footer-section ul {
@@ -425,19 +574,28 @@
         }
 
         .footer-section ul li {
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.75rem;
         }
 
         .footer-section ul li a {
-          color: #bbb;
+          color: rgba(254, 253, 251, 0.7);
           text-decoration: none;
+          transition: all 0.3s ease;
+          font-size: 0.95rem;
+          font-weight: 400;
+        }
+
+        .footer-section ul li a:hover {
+          color: var(--color-warm-white);
+          transform: translateX(5px);
         }
 
         .footer-bottom {
-          border-top: 1px solid #333;
+          border-top: 1px solid rgba(254, 253, 251, 0.1);
           padding-top: 2rem;
           text-align: center;
-          color: #bbb;
+          color: rgba(254, 253, 251, 0.6);
+          font-size: 0.9rem;
         }
 
         /* Responsive */
@@ -456,7 +614,15 @@
           }
 
           .create-form {
-            padding: 1.5rem;
+            padding: 2rem;
+          }
+
+          .create-header {
+            padding: 2rem;
+          }
+
+          .create-title {
+            font-size: 2rem;
           }
 
           .form-actions {
@@ -474,15 +640,25 @@
           .condition-options {
             justify-content: center;
           }
+
+          .image-upload-area {
+            padding: 2rem;
+          }
+
+          .method-label,
+          .condition-label {
+            justify-content: center;
+          }
         }
     </style>
 </head>
 <body>
-      <div>
+   <div>
+        {/* Header */}
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="/App.tsx" class="logo">📚 BookStore</a>
+              <a href="/App.tsx" class="logo">BookStore</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="/App.tsx">홈</a></li>
@@ -520,7 +696,7 @@
             <div class="create-container">
               <div class="create-header">
                 <h1 class="create-title">📚 책 교환 글 등록</h1>
-                <p class="create-subtitle">다른 독서 애호가들과 책을 교환해보세요</p>
+                <p class="create-subtitle">소중한 책에게 새로운 독자와의 만남을 선사해보세요</p>
               </div>
 
               <form class="create-form">
@@ -563,7 +739,7 @@
                       <input 
                         type="date" 
                         id="publication-date" 
-                        name="tradebook_publication_date" 
+                        name="publication-date" 
                         class="form-input"
                       />
                     </div>
@@ -573,27 +749,27 @@
                         책 상태<span class="required">*</span>
                       </label>
                       <div class="condition-options">
-                        <input type="radio" id="condition-new" name="tradebook_status" value="새책" class="condition-option" required>
+                        <input type="radio" id="condition-new" name="book-condition" value="new" class="condition-option" required>
                         <label for="condition-new" class="condition-label">
                           ✨ 새 책
                         </label>
-                        
-                        <input type="radio" id="condition-excellent" name="tradebook_status" value="매우좋음" class="condition-option">
+
+                        <input type="radio" id="condition-excellent" name="book-condition" value="excellent" class="condition-option">
                         <label for="condition-excellent" class="condition-label">
-                          👍 매우좋음
+                          👍 매우 좋음
                         </label>
 
-                        <input type="radio" id="condition-good" name="tradebook_status" value="좋음" class="condition-option">
+                        <input type="radio" id="condition-good" name="book-condition" value="good" class="condition-option">
                         <label for="condition-good" class="condition-label">
                           😊 좋음
                         </label>
 
-                        <input type="radio" id="condition-fair" name="tradebook_status" value="보통" class="condition-option">
+                        <input type="radio" id="condition-fair" name="book-condition" value="fair" class="condition-option">
                         <label for="condition-fair" class="condition-label">
                           🤔 보통
                         </label>
 
-                        <input type="radio" id="condition-poor" name="tradebook_status" value="낡음" class="condition-option">
+                        <input type="radio" id="condition-poor" name="book-condition" value="poor" class="condition-option">
                         <label for="condition-poor" class="condition-label">
                           😅 낡음
                         </label>
@@ -649,12 +825,12 @@
                         교환 방식<span class="required">*</span>
                       </label>
                       <div class="exchange-methods">
-                        <input type="radio" id="direct-exchange" name="tradebook_method" value="직거래" class="method-option" required>
+                        <input type="radio" id="direct-exchange" name="exchange-method" value="direct" class="method-option" required>
                         <label for="direct-exchange" class="method-label">
                           🤝 직거래
                         </label>
 
-                        <input type="radio" id="delivery-exchange" name="tradebook_method" value="택배거래" class="method-option">
+                        <input type="radio" id="delivery-exchange" name="exchange-method" value="delivery" class="method-option">
                         <label for="delivery-exchange" class="method-label">
                           📦 택배거래
                         </label>
@@ -761,7 +937,7 @@
               </div>
             </div>
             <div class="footer-bottom">
-              <p>&copy; 2024 BookStore. All rights reserved.</p>
+              <p>&copy; 2024 북스토어. 모든 문학적 여정을 함께합니다. | 사업자등록번호: 123-45-67890</p>
             </div>
           </div>
         </footer>

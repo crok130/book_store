@@ -347,7 +347,7 @@
           width: 100%;
           min-height: 50px;
           max-height: 120px;
-          padding: 0.75rem 3rem 0.75rem 1rem;
+          padding: 0.75rem 3.5rem 0.75rem 1rem;
           border: 2px solid rgba(156, 175, 158, 0.2);
           border-radius: var(--border-radius-lg);
           font-size: 0.95rem;
@@ -373,33 +373,40 @@
           right: 0.75rem;
           top: 50%;
           transform: translateY(-50%);
-          background: none;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
           border: none;
-          color: var(--color-text-secondary);
+          color: var(--color-warm-white);
           cursor: pointer;
-          padding: 0.25rem;
+          padding: 0.5rem;
           border-radius: var(--border-radius-sm);
           transition: all 0.3s ease;
+          font-size: 1rem;
+          box-shadow: var(--shadow-soft);
+          z-index: 10;
         }
 
         .attach-btn:hover {
-          color: var(--color-charcoal);
-          background: rgba(156, 175, 158, 0.1);
+          background: linear-gradient(135deg, var(--color-muted-green), var(--color-deep-blue));
+          transform: translateY(-50%) scale(1.05);
+          box-shadow: var(--shadow-medium);
         }
 
         .send-btn {
-          padding: 0.75rem 1.5rem;
+          padding: 0.8rem 2rem;
           background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
           color: var(--color-warm-white);
           border: none;
           border-radius: var(--border-radius-lg);
           cursor: pointer;
           font-weight: 600;
-          font-size: 0.9rem;
+          font-size: 0.95rem;
           transition: all 0.3s ease;
           display: flex;
           align-items: center;
+          justify-content: center;
           gap: 0.5rem;
+          min-height: 50px;
+          align-self: flex-end;
         }
 
         .send-btn:hover {
@@ -477,7 +484,7 @@
 
 </head>
 <body>
-	    <div class="chat-container">
+     <div class="chat-container">
         <a href="/components/BookExchangePage.tsx" class="back-btn">
           ← 교환 목록으로
         </a>
@@ -724,7 +731,7 @@
                   placeholder="메시지를 입력하세요..."
                   rows="1"
                 ></textarea>
-                <button class="attach-btn" title="파일 첨부">📎</button>
+                <button class="attach-btn" title="사진 첨부">📷</button>
               </div>
               <button class="send-btn">
                 전송 ✈️

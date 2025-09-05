@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<style>
-                * {
+        * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
@@ -417,7 +417,7 @@
 	</style>
 </head>
 <body>
-      <div>
+     <div>
         {/* Header */}
         <header class="header">
           <div class="container">
@@ -427,11 +427,15 @@
                 <span class="admin-badge">ADMIN</span>
               </a>
               <nav>
-
+                <ul class="nav-menu">
+                  <li><a href="#">관리자 소개</a></li>
+                  <li><a href="#">기능 안내</a></li>
+                  <li><a href="#">지원센터</a></li>
+                </ul>
               </nav>
               <div class="user-actions">
-                <a href="/components/AdminLoginPage.tsx" class="btn btn-outline-admin">로그인</a>
-                <a href="/components/AdminRegisterPage.tsx" class="btn btn-admin">관리자 등록</a>
+                <a href="/components/AdminLoginPage.tsx" class="btn btn-outline-admin">관리자 로그인</a>
+                <a href="/components/AdminRegisterPage.tsx" class="btn btn-admin">관리자 회원가입</a>
               </div>
             </div>
           </div>
@@ -443,12 +447,8 @@
             <h1 class="hero-title">BookStore 관리자</h1>
             <p class="hero-subtitle">
               효율적인 도서 관리와 고객 서비스를 위한 관리자 전용 플랫폼입니다. 
-              모든 기능을 한 곳에서 편리하게 관리하세요.
+              다양한 관리 기능들을 살펴보고 체험해보세요.
             </p>
-            <div class="hero-actions">
-              <a href="/components/AdminDashboard.tsx" class="btn-hero btn-hero-primary">대시보드 시작하기</a>
-              <a href="#" class="btn-hero btn-hero-secondary">기능 둘러보기</a>
-            </div>
           </div>
         </section>
 
@@ -490,42 +490,28 @@
                 <div class="action-icon">📖</div>
                 <h3 class="action-title">새 도서 등록</h3>
                 <p class="action-description">새로운 도서를 시스템에 추가하고 관리하세요.</p>
-                <a href="/components/AddBookPage.tsx" class="action-link">도서 등록하기 →</a>
+                <a href="/components/AdminLoginPage.tsx" class="action-link">로그인하여 이용하기 →</a>
               </div>
 
               <div class="action-card">
                 <div class="action-icon">📊</div>
                 <h3 class="action-title">매출 분석</h3>
                 <p class="action-description">매출 현황과 통계를 실시간으로 확인하세요.</p>
-                <a href="#" class="action-link">분석 보기 →</a>
+                <a href="/components/AdminLoginPage.tsx" class="action-link">로그인하여 이용하기 →</a>
               </div>
 
               <div class="action-card">
                 <div class="action-icon">🛒</div>
                 <h3 class="action-title">주문 관리</h3>
                 <p class="action-description">고객 주문을 확인하고 배송 상태를 관리하세요.</p>
-                <a href="#" class="action-link">주문 관리 →</a>
+                <a href="/components/AdminLoginPage.tsx" class="action-link">로그인하여 이용하기 →</a>
               </div>
 
               <div class="action-card">
                 <div class="action-icon">👤</div>
                 <h3 class="action-title">회원 관리</h3>
                 <p class="action-description">회원 정보를 조회하고 관리하세요.</p>
-                <a href="#" class="action-link">회원 관리 →</a>
-              </div>
-
-              <div class="action-card">
-                <div class="action-icon">🏷️</div>
-                <h3 class="action-title">할인 이벤트</h3>
-                <p class="action-description">특가 이벤트와 쿠폰을 생성하고 관리하세요.</p>
-                <a href="#" class="action-link">이벤트 관리 →</a>
-              </div>
-
-              <div class="action-card">
-                <div class="action-icon">⚙️</div>
-                <h3 class="action-title">시스템 설정</h3>
-                <p class="action-description">사이트 설정과 관리자 권한을 관리하세요.</p>
-                <a href="#" class="action-link">설정 관리 →</a>
+                <a href="/components/AdminLoginPage.tsx" class="action-link">로그인하여 이용하기 →</a>
               </div>
             </div>
           </div>
@@ -557,13 +543,6 @@
                   <div class="activity-time">23분 전</div>
                 </div>
               </div>
-              <div class="activity-item">
-                <div class="activity-icon">💰</div>
-                <div class="activity-content">
-                  <div class="activity-text">오늘 매출이 목표의 120%를 달성했습니다.</div>
-                  <div class="activity-time">1시간 전</div>
-                </div>
-              </div>
             </div>
           </div>
         </section>
@@ -573,30 +552,30 @@
           <div class="container">
             <div class="footer-content">
               <div class="footer-section">
-                <h3>관리자 도구</h3>
+                <h3>관리자 안내</h3>
                 <ul>
-                  <li><a href="#">대시보드</a></li>
-                  <li><a href="#">도서 관리</a></li>
-                  <li><a href="#">회원 관리</a></li>
-                  <li><a href="#">주문 관리</a></li>
-                </ul>
-              </div>
-              <div class="footer-section">
-                <h3>설정</h3>
-                <ul>
-                  <li><a href="#">시스템 설정</a></li>
-                  <li><a href="#">권한 관리</a></li>
-                  <li><a href="#">백업 관리</a></li>
-                  <li><a href="#">로그 관리</a></li>
+                  <li><a href="#">관리자 가이드</a></li>
+                  <li><a href="#">시스템 요구사항</a></li>
+                  <li><a href="#">보안 정책</a></li>
+                  <li><a href="#">업데이트 내역</a></li>
                 </ul>
               </div>
               <div class="footer-section">
                 <h3>지원</h3>
                 <ul>
-                  <li><a href="#">관리자 가이드</a></li>
-                  <li><a href="#">API 문서</a></li>
                   <li><a href="#">기술 지원</a></li>
-                  <li><a href="#">업데이트 노트</a></li>
+                  <li><a href="#">FAQ</a></li>
+                  <li><a href="#">문의하기</a></li>
+                  <li><a href="#">교육 자료</a></li>
+                </ul>
+              </div>
+              <div class="footer-section">
+                <h3>시스템 정보</h3>
+                <ul>
+                  <li><a href="#">서버 상태</a></li>
+                  <li><a href="#">API 문서</a></li>
+                  <li><a href="#">데이터베이스 현황</a></li>
+                  <li><a href="#">백업 현황</a></li>
                 </ul>
               </div>
               <div class="footer-section">

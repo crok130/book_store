@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-                @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
           margin: 0;
@@ -176,6 +176,42 @@
           border-color: var(--color-sage);
           background: var(--color-warm-white);
           box-shadow: 0 0 0 3px rgba(156, 175, 158, 0.1);
+        }
+
+        .form-input-with-button {
+          display: flex;
+          gap: 0.75rem;
+          align-items: stretch;
+        }
+
+        .form-input-with-button .form-input {
+          flex: 1;
+        }
+
+        .verify-btn, .search-btn {
+          padding: 0.75rem 1.25rem;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          border: none;
+          border-radius: var(--border-radius-md);
+          cursor: pointer;
+          font-weight: 600;
+          font-size: 0.9rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          white-space: nowrap;
+          font-family: var(--font-sans);
+          flex-shrink: 0;
+        }
+
+        .verify-btn:hover, .search-btn:hover {
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-soft);
+          background: linear-gradient(135deg, #8BB89B, #7DA079);
+        }
+
+        .verify-btn:active, .search-btn:active {
+          transform: translateY(0);
         }
 
         .form-select {
@@ -378,6 +414,15 @@
             flex-direction: column;
             gap: 0;
           }
+
+          .form-input-with-button {
+            flex-direction: column;
+            gap: 0.5rem;
+          }
+
+          .verify-btn, .search-btn {
+            width: 100%;
+          }
           
           .back-to-home {
             top: 1rem;
@@ -389,7 +434,7 @@
     </style>
 </head>
 <body>
-       <div class="register-container">
+    <div class="register-container">
         <a href="/App.tsx" class="back-to-home">← 홈으로</a>
         
         <div class="register-card">
@@ -411,21 +456,35 @@
                 />
               </div>
               <div class="form-group">
-                <label class="form-label">성별</label>
-                <select class="form-select">
-                  <option value="">선택안함</option>
-                  <option value="male">남성</option>
-                  <option value="female">여성</option>
-                </select>
+                <label class="form-label">닉네임 <span class="required">*</span></label>
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="닉네임을 입력하세요"
+                  required
+                />
               </div>
             </div>
 
             <div class="form-group">
               <label class="form-label">이메일 <span class="required">*</span></label>
+              <div class="form-input-with-button">
+                <input
+                  type="email"
+                  class="form-input"
+                  placeholder="이메일을 입력하세요"
+                  required
+                />
+                <button type="button" class="verify-btn">인증번호 발송</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">이메일 인증번호 <span class="required">*</span></label>
               <input
-                type="email"
+                type="text"
                 class="form-input"
-                placeholder="이메일을 입력하세요"
+                placeholder="인증번호를 입력하세요"
                 required
               />
             </div>
@@ -465,6 +524,28 @@
               <input
                 type="date"
                 class="form-input"
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">주소</label>
+              <div class="form-input-with-button">
+                <input
+                  type="text"
+                  class="form-input"
+                  placeholder="주소를 검색하세요"
+                  readonly
+                />
+                <button type="button" class="search-btn">주소찾기</button>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">상세주소</label>
+              <input
+                type="text"
+                class="form-input"
+                placeholder="상세주소를 입력하세요"
               />
             </div>
 

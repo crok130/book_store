@@ -7,46 +7,87 @@
 <title>Insert title here</title>
 </head>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
 
+        :root {
+          --color-sage: #9CAF9E;
+          --color-cream: #F8F6F0;
+          --color-charcoal: #2D3436;
+          --color-warm-white: #FEFDFB;
+          --color-terracotta: #D4A574;
+          --color-deep-blue: #364958;
+          --color-accent-gold: #D4A574;
+          --color-muted-green: #8FA685;
+          --color-soft-beige: #E8E3D8;
+          --color-text-primary: #2D3436;
+          --color-text-secondary: #636E72;
+          --color-text-muted: #74B9FF;
+          
+          --font-serif: 'Crimson Text', Georgia, serif;
+          --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          
+          --shadow-soft: 0 4px 20px rgba(45, 52, 54, 0.06);
+          --shadow-medium: 0 8px 30px rgba(45, 52, 54, 0.08);
+          --shadow-strong: 0 15px 50px rgba(45, 52, 54, 0.12);
+          
+          --border-radius-sm: 8px;
+          --border-radius-md: 12px;
+          --border-radius-lg: 16px;
+        }
+
         body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #fafafa;
+          font-family: var(--font-sans);
+          line-height: 1.7;
+          color: var(--color-text-primary);
+          background: linear-gradient(135deg, var(--color-warm-white) 0%, var(--color-cream) 100%);
+          letter-spacing: -0.01em;
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 1280px;
           margin: 0 auto;
-          padding: 0 20px;
+          padding: 0 2rem;
         }
 
         /* Header */
         .header {
-          background: #fff;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          background: rgba(254, 253, 251, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(156, 175, 158, 0.15);
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 1000;
+          transition: all 0.3s ease;
         }
 
         .header-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1rem 0;
+          padding: 1.5rem 0;
         }
 
         .logo {
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: #2c3e50;
+          font-family: var(--font-serif);
+          font-size: 2rem;
+          font-weight: 600;
+          color: var(--color-charcoal);
           text-decoration: none;
+          letter-spacing: -0.02em;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .logo::before {
+          content: '📖';
+          font-size: 1.5rem;
         }
 
         .nav-menu {
@@ -610,8 +651,8 @@
         }
     </style>
 <body>
-    <div>
-  
+       <div>
+        {/* Header */}
         <header class="header">
           <div class="container">
             <div class="header-content">
@@ -633,7 +674,7 @@
           </div>
         </header>
 
-
+        {/* Breadcrumb */}
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
@@ -646,7 +687,7 @@
           </div>
         </section>
 
-      
+        {/* Product Detail */}
         <section class="product-detail">
           <div class="container">
             <div class="product-content">
@@ -719,7 +760,7 @@
           </div>
         </section>
 
-      
+        {/* Product Description */}
         <section class="product-description">
           <div class="container">
             <h2 class="description-title">책 소개</h2>
@@ -778,6 +819,7 @@
           </div>
         </section>
 
+        {/* Reviews Section */}
         <section class="reviews-section">
           <div class="container">
             <div class="reviews-header">
@@ -832,7 +874,7 @@
           </div>
         </section>
 
-        
+        {/* Footer */}
         <footer class="footer">
           <div class="container">
             <div class="footer-content">

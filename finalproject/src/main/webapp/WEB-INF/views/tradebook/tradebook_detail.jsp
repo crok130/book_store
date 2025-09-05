@@ -6,64 +6,126 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
 
+        :root {
+          --color-sage: #9CAF9E;
+          --color-cream: #F8F6F0;
+          --color-charcoal: #2D3436;
+          --color-warm-white: #FEFDFB;
+          --color-terracotta: #D4A574;
+          --color-deep-blue: #364958;
+          --color-accent-gold: #D4A574;
+          --color-muted-green: #8FA685;
+          --color-soft-beige: #E8E3D8;
+          --color-text-primary: #2D3436;
+          --color-text-secondary: #636E72;
+          --color-text-muted: #74B9FF;
+          
+          --font-serif: 'Crimson Text', Georgia, serif;
+          --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+          
+          --shadow-soft: 0 4px 20px rgba(45, 52, 54, 0.06);
+          --shadow-medium: 0 8px 30px rgba(45, 52, 54, 0.08);
+          --shadow-strong: 0 15px 50px rgba(45, 52, 54, 0.12);
+          
+          --border-radius-sm: 8px;
+          --border-radius-md: 12px;
+          --border-radius-lg: 16px;
+        }
+
         body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #fafafa;
+          font-family: var(--font-sans);
+          line-height: 1.7;
+          color: var(--color-text-primary);
+          background: linear-gradient(135deg, var(--color-warm-white) 0%, var(--color-cream) 100%);
+          letter-spacing: -0.01em;
         }
 
         .container {
-          max-width: 1200px;
+          max-width: 1280px;
           margin: 0 auto;
-          padding: 0 20px;
+          padding: 0 2rem;
         }
 
         /* Header */
         .header {
-          background: #fff;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          background: rgba(254, 253, 251, 0.95);
+          backdrop-filter: blur(20px);
+          border-bottom: 1px solid rgba(156, 175, 158, 0.15);
           position: sticky;
           top: 0;
-          z-index: 100;
+          z-index: 1000;
+          transition: all 0.3s ease;
         }
 
         .header-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
-          padding: 1rem 0;
+          padding: 1.5rem 0;
         }
 
         .logo {
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: #2c3e50;
+          font-family: var(--font-serif);
+          font-size: 2rem;
+          font-weight: 600;
+          color: var(--color-charcoal);
           text-decoration: none;
+          letter-spacing: -0.02em;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+        }
+
+        .logo::before {
+          content: '📖';
+          font-size: 1.5rem;
         }
 
         .nav-menu {
           display: flex;
           list-style: none;
-          gap: 2rem;
+          gap: 3rem;
+          align-items: center;
         }
 
         .nav-menu a {
           text-decoration: none;
-          color: #666;
-          font-weight: 500;
-          transition: color 0.3s ease;
+          color: var(--color-text-secondary);
+          font-weight: 400;
+          font-size: 0.95rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          position: relative;
+          padding: 0.5rem 0;
+        }
+
+        .nav-menu a::after {
+          content: '';
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 0;
+          height: 2px;
+          background: var(--color-sage);
+          transition: width 0.3s ease;
         }
 
         .nav-menu a:hover,
         .nav-menu a.active {
-          color: #2c3e50;
+          color: var(--color-charcoal);
+        }
+
+        .nav-menu a:hover::after,
+        .nav-menu a.active::after {
+          width: 100%;
         }
 
         .user-actions {
@@ -73,76 +135,86 @@
         }
 
         .btn {
-          padding: 0.6rem 1.2rem;
-          border: none;
-          border-radius: 6px;
+          padding: 0.75rem 1.5rem;
+          border: 2px solid transparent;
+          border-radius: var(--border-radius-sm);
           cursor: pointer;
           font-weight: 500;
+          font-size: 0.9rem;
+          letter-spacing: -0.01em;
           transition: all 0.3s ease;
           text-decoration: none;
-          display: inline-block;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
         }
 
         .btn-primary {
-          background: #2c3e50;
-          color: white;
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          box-shadow: var(--shadow-soft);
         }
 
         .btn-primary:hover {
-          background: #34495e;
+          background: var(--color-deep-blue);
+          transform: translateY(-1px);
+          box-shadow: var(--shadow-medium);
         }
 
         .btn-outline {
           background: transparent;
-          color: #2c3e50;
-          border: 2px solid #2c3e50;
+          color: var(--color-charcoal);
+          border-color: rgba(45, 52, 54, 0.2);
         }
 
         .btn-outline:hover {
-          background: #2c3e50;
-          color: white;
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          border-color: var(--color-charcoal);
+          transform: translateY(-1px);
         }
 
         /* Breadcrumb */
         .breadcrumb {
-          background: white;
-          padding: 1rem 0;
-          border-bottom: 1px solid #e9ecef;
+          background: var(--color-warm-white);
+          padding: 1.5rem 0;
+          border-bottom: 1px solid rgba(156, 175, 158, 0.1);
         }
 
         .breadcrumb-nav {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
           font-size: 0.9rem;
-          color: #666;
+          color: var(--color-text-secondary);
         }
 
         .breadcrumb-nav a {
-          color: #667eea;
+          color: var(--color-sage);
           text-decoration: none;
+          font-weight: 500;
           transition: color 0.3s ease;
         }
 
         .breadcrumb-nav a:hover {
-          color: #5a6fd8;
+          color: var(--color-muted-green);
         }
 
         .breadcrumb-separator {
-          color: #999;
+          color: var(--color-text-muted);
         }
 
-        /* Main Content */
+        /* Main Detail Section */
         .detail-container {
-          background: white;
-          padding: 2rem 0;
+          background: var(--color-warm-white);
+          padding: 4rem 0;
         }
 
         .detail-content {
           display: grid;
           grid-template-columns: 1fr 1fr;
-          gap: 3rem;
-          margin-bottom: 3rem;
+          gap: 4rem;
+          margin-bottom: 4rem;
         }
 
         /* Book Image Section */
@@ -153,117 +225,137 @@
         }
 
         .book-image {
-          max-width: 350px;
+          max-width: 400px;
           width: 100%;
           height: auto;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+          border-radius: var(--border-radius-lg);
+          box-shadow: var(--shadow-strong);
+          transition: transform 0.4s ease;
+        }
+
+        .book-image:hover {
+          transform: scale(1.05);
         }
 
         /* Book Info Section */
         .book-info-section {
-          padding: 1rem 0;
+          padding: 2rem 0;
         }
 
         .exchange-status {
-          background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
-          color: white;
-          padding: 0.4rem 1rem;
-          border-radius: 20px;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          padding: 0.5rem 1.25rem;
+          border-radius: 25px;
           font-size: 0.8rem;
           font-weight: 600;
           display: inline-block;
-          margin-bottom: 1rem;
+          margin-bottom: 1.5rem;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
         }
 
         .book-title {
-          font-size: 2.2rem;
-          font-weight: 700;
-          color: #2c3e50;
-          margin-bottom: 0.5rem;
-          line-height: 1.3;
+          font-family: var(--font-serif);
+          font-size: 3rem;
+          font-weight: 600;
+          color: var(--color-charcoal);
+          margin-bottom: 1rem;
+          line-height: 1.2;
+          letter-spacing: -0.02em;
         }
 
         .book-author {
-          font-size: 1.1rem;
-          color: #666;
-          margin-bottom: 1rem;
+          font-size: 1.2rem;
+          color: var(--color-text-secondary);
+          margin-bottom: 2rem;
+          font-weight: 300;
         }
 
         .book-condition {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
-          margin-bottom: 1.5rem;
+          gap: 1rem;
+          margin-bottom: 2rem;
         }
 
         .condition-badge {
-          background: #3498db;
-          color: white;
-          padding: 0.3rem 0.8rem;
-          border-radius: 15px;
+          background: linear-gradient(135deg, var(--color-terracotta), #C19660);
+          color: var(--color-warm-white);
+          padding: 0.4rem 1rem;
+          border-radius: 20px;
           font-size: 0.8rem;
           font-weight: 600;
+          letter-spacing: 0.5px;
         }
 
         .condition-text {
-          color: #666;
-          font-size: 0.9rem;
+          color: var(--color-text-secondary);
+          font-size: 1rem;
+          font-style: italic;
         }
 
         .book-description {
-          background: #f8f9fa;
-          padding: 1.5rem;
-          border-radius: 10px;
+          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
+          padding: 2rem;
+          border-radius: var(--border-radius-lg);
           margin-bottom: 2rem;
+          border: 1px solid rgba(156, 175, 158, 0.1);
         }
 
         .description-title {
-          font-size: 1.1rem;
+          font-family: var(--font-serif);
+          font-size: 1.3rem;
           font-weight: 600;
-          color: #2c3e50;
+          color: var(--color-charcoal);
           margin-bottom: 1rem;
+          letter-spacing: -0.01em;
         }
 
         .description-text {
-          color: #666;
-          line-height: 1.6;
+          color: var(--color-text-secondary);
+          line-height: 1.7;
+          font-size: 1rem;
         }
 
-        /* Owner Info */
+        /* Owner Section */
         .owner-section {
-          background: #f8f9fa;
-          padding: 1.5rem;
-          border-radius: 10px;
+          background: var(--color-warm-white);
+          border: 2px solid rgba(156, 175, 158, 0.15);
+          padding: 2rem;
+          border-radius: var(--border-radius-lg);
           margin-bottom: 2rem;
+          box-shadow: var(--shadow-soft);
         }
 
         .owner-title {
-          font-size: 1.1rem;
+          font-family: var(--font-serif);
+          font-size: 1.3rem;
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 1rem;
+          color: var(--color-charcoal);
+          margin-bottom: 1.5rem;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
+          letter-spacing: -0.01em;
         }
 
         .owner-info {
           display: flex;
           align-items: center;
-          gap: 1rem;
+          gap: 1.5rem;
         }
 
         .owner-avatar {
-          width: 60px;
-          height: 60px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          width: 70px;
+          height: 70px;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          color: white;
-          font-size: 1.5rem;
+          color: var(--color-warm-white);
+          font-size: 1.8rem;
           font-weight: 600;
         }
 
@@ -273,161 +365,187 @@
 
         .owner-name {
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 0.3rem;
+          color: var(--color-charcoal);
+          font-size: 1.1rem;
+          margin-bottom: 0.5rem;
         }
 
         .owner-location {
-          color: #666;
-          font-size: 0.9rem;
-          margin-bottom: 0.3rem;
+          color: var(--color-text-secondary);
+          font-size: 1rem;
+          margin-bottom: 0.5rem;
         }
 
         .owner-rating {
           display: flex;
           align-items: center;
-          gap: 0.3rem;
-          font-size: 0.8rem;
+          gap: 0.5rem;
+          font-size: 0.9rem;
         }
 
         .stars {
-          color: #f39c12;
-        }
-
-        /* Exchange Conditions */
-        .exchange-conditions {
-          background: white;
-          border: 2px solid #e9ecef;
-          border-radius: 10px;
-          padding: 1.5rem;
-          margin-bottom: 2rem;
-        }
-
-        .conditions-title {
+          color: var(--color-accent-gold);
           font-size: 1.1rem;
-          font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 1rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .condition-item {
-          display: flex;
-          align-items: center;
-          gap: 0.8rem;
-          margin-bottom: 0.8rem;
-          padding: 0.8rem;
-          background: #f8f9fa;
-          border-radius: 8px;
-        }
-
-        .condition-icon {
-          width: 35px;
-          height: 35px;
-          background: #667eea;
-          color: white;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.9rem;
-        }
-
-        .condition-content {
-          flex: 1;
-        }
-
-        .condition-label {
-          font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 0.2rem;
-        }
-
-        .condition-value {
-          color: #666;
-          font-size: 0.9rem;
         }
 
         /* Action Buttons */
         .action-buttons {
           display: flex;
-          gap: 1rem;
-          margin-bottom: 2rem;
+          gap: 1.5rem;
+          margin-bottom: 3rem;
         }
 
         .btn-large {
           flex: 1;
-          padding: 1rem 2rem;
-          font-size: 1.1rem;
+          padding: 1.5rem 2rem;
+          font-size: 1.2rem;
           font-weight: 600;
-          border-radius: 8px;
+          border-radius: var(--border-radius-md);
           cursor: pointer;
           transition: all 0.3s ease;
           border: none;
           display: flex;
           align-items: center;
           justify-content: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
+          text-decoration: none;
+          letter-spacing: -0.01em;
         }
 
         .btn-exchange {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
         }
 
         .btn-exchange:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-strong);
         }
 
         .btn-chat {
-          background: #27ae60;
-          color: white;
+          background: linear-gradient(135deg, var(--color-terracotta), #C19660);
+          color: var(--color-warm-white);
         }
 
         .btn-chat:hover {
-          background: #2ecc71;
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(39, 174, 96, 0.4);
+          background: linear-gradient(135deg, #C19660, #A8825A);
+          transform: translateY(-3px);
+          box-shadow: var(--shadow-strong);
         }
 
-        /* Book Details */
+        /* Exchange Conditions */
+        .exchange-conditions {
+          background: var(--color-warm-white);
+          border: 2px solid rgba(156, 175, 158, 0.15);
+          border-radius: var(--border-radius-lg);
+          padding: 2.5rem;
+          margin-bottom: 3rem;
+          box-shadow: var(--shadow-soft);
+        }
+
+        .conditions-title {
+          font-family: var(--font-serif);
+          font-size: 1.8rem;
+          font-weight: 600;
+          color: var(--color-charcoal);
+          margin-bottom: 2rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+          letter-spacing: -0.01em;
+        }
+
+        .condition-item {
+          display: flex;
+          align-items: flex-start;
+          gap: 1.5rem;
+          margin-bottom: 2rem;
+          padding: 1.5rem;
+          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
+          border-radius: var(--border-radius-md);
+          transition: transform 0.3s ease;
+        }
+
+        .condition-item:hover {
+          transform: translateX(5px);
+        }
+
+        .condition-icon {
+          width: 50px;
+          height: 50px;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 1.2rem;
+          flex-shrink: 0;
+        }
+
+        .condition-content {
+          flex: 1;
+          padding-top: 0.3rem;
+        }
+
+        .condition-label {
+          font-weight: 600;
+          color: var(--color-charcoal);
+          margin-bottom: 0.5rem;
+          font-size: 1.1rem;
+        }
+
+        .condition-value {
+          color: var(--color-text-secondary);
+          font-size: 1rem;
+          line-height: 1.6;
+        }
+
+        /* Book Details Section */
         .book-details-section {
-          background: white;
-          padding: 2rem 0;
-          border-top: 1px solid #e9ecef;
+          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
+          padding: 4rem 0;
         }
 
         .details-title {
-          font-size: 1.8rem;
+          font-family: var(--font-serif);
+          font-size: 2.5rem;
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 2rem;
+          color: var(--color-charcoal);
+          margin-bottom: 3rem;
           text-align: center;
+          letter-spacing: -0.02em;
         }
 
         .details-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-          gap: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 3rem;
         }
 
         .detail-card {
-          background: #f8f9fa;
-          padding: 1.5rem;
-          border-radius: 10px;
+          background: var(--color-warm-white);
+          padding: 2.5rem;
+          border-radius: var(--border-radius-lg);
+          box-shadow: var(--shadow-soft);
+          border: 1px solid rgba(156, 175, 158, 0.1);
+          transition: transform 0.3s ease;
+        }
+
+        .detail-card:hover {
+          transform: translateY(-8px);
         }
 
         .detail-card-title {
-          font-size: 1.1rem;
+          font-family: var(--font-serif);
+          font-size: 1.4rem;
           font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 1rem;
+          color: var(--color-charcoal);
+          margin-bottom: 1.5rem;
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.75rem;
+          letter-spacing: -0.01em;
         }
 
         .specs-table {
@@ -435,22 +553,26 @@
         }
 
         .specs-table tr {
-          border-bottom: 1px solid #e9ecef;
+          border-bottom: 1px solid rgba(156, 175, 158, 0.1);
+        }
+
+        .specs-table tr:last-child {
+          border-bottom: none;
         }
 
         .specs-table td {
-          padding: 0.8rem 0;
+          padding: 1rem 0;
           vertical-align: top;
         }
 
         .specs-table td:first-child {
           font-weight: 600;
-          color: #2c3e50;
-          width: 100px;
+          color: var(--color-charcoal);
+          width: 120px;
         }
 
         .specs-table td:last-child {
-          color: #666;
+          color: var(--color-text-secondary);
         }
 
         .exchange-history {
@@ -461,23 +583,29 @@
         .history-item {
           display: flex;
           align-items: center;
-          gap: 0.8rem;
-          margin-bottom: 0.8rem;
-          padding: 0.8rem;
-          background: white;
-          border-radius: 8px;
+          gap: 1.5rem;
+          margin-bottom: 1.5rem;
+          padding: 1.5rem;
+          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
+          border-radius: var(--border-radius-md);
+          transition: transform 0.3s ease;
+        }
+
+        .history-item:hover {
+          transform: translateX(5px);
         }
 
         .history-icon {
-          width: 35px;
-          height: 35px;
-          background: #27ae60;
-          color: white;
+          width: 45px;
+          height: 45px;
+          background: linear-gradient(135deg, var(--color-terracotta), #C19660);
+          color: var(--color-warm-white);
           border-radius: 50%;
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 0.8rem;
+          font-size: 1rem;
+          flex-shrink: 0;
         }
 
         .history-content {
@@ -486,32 +614,37 @@
 
         .history-text {
           font-weight: 500;
-          color: #2c3e50;
-          margin-bottom: 0.2rem;
+          color: var(--color-charcoal);
+          margin-bottom: 0.3rem;
+          font-size: 1rem;
         }
 
         .history-date {
-          font-size: 0.8rem;
-          color: #666;
+          font-size: 0.9rem;
+          color: var(--color-text-secondary);
         }
 
         /* Footer */
         .footer {
-          background: #1a252f;
-          color: white;
-          padding: 3rem 0 2rem;
+          background: linear-gradient(135deg, #1A1F2E 0%, var(--color-charcoal) 100%);
+          color: var(--color-warm-white);
+          padding: 4rem 0 2rem;
         }
 
         .footer-content {
           display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
-          margin-bottom: 2rem;
+          grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+          gap: 3rem;
+          margin-bottom: 3rem;
         }
 
         .footer-section h3 {
-          margin-bottom: 1rem;
-          color: white;
+          margin-bottom: 1.5rem;
+          color: var(--color-warm-white);
+          font-family: var(--font-serif);
+          font-weight: 600;
+          font-size: 1.2rem;
+          letter-spacing: -0.01em;
         }
 
         .footer-section ul {
@@ -519,19 +652,28 @@
         }
 
         .footer-section ul li {
-          margin-bottom: 0.5rem;
+          margin-bottom: 0.75rem;
         }
 
         .footer-section ul li a {
-          color: #bbb;
+          color: rgba(254, 253, 251, 0.7);
           text-decoration: none;
+          transition: all 0.3s ease;
+          font-size: 0.95rem;
+          font-weight: 400;
+        }
+
+        .footer-section ul li a:hover {
+          color: var(--color-warm-white);
+          transform: translateX(5px);
         }
 
         .footer-bottom {
-          border-top: 1px solid #333;
+          border-top: 1px solid rgba(254, 253, 251, 0.1);
           padding-top: 2rem;
           text-align: center;
-          color: #bbb;
+          color: rgba(254, 253, 251, 0.6);
+          font-size: 0.9rem;
         }
 
         /* Responsive */
@@ -547,11 +689,11 @@
 
           .detail-content {
             grid-template-columns: 1fr;
-            gap: 2rem;
+            gap: 3rem;
           }
 
           .book-title {
-            font-size: 1.8rem;
+            font-size: 2rem;
           }
 
           .action-buttons {
@@ -561,10 +703,17 @@
           .owner-info {
             flex-direction: column;
             text-align: center;
+            gap: 1rem;
           }
 
           .details-grid {
             grid-template-columns: 1fr;
+          }
+
+          .condition-item {
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
           }
         }
     </style>
@@ -575,20 +724,20 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="/App.tsx" class="logo">📚 BookStore</a>
+              <a href="#" class="logo">BookStore</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="/App.tsx">홈</a></li>
+                  <li><a href="#">홈</a></li>
                   <li><a href="#">베스트셀러</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="/components/BookExchangePage.tsx" class="active">책 교환</a></li>
+                  <li><a href="#" class="active">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
-                <a href="/components/LoginPage.tsx" class="btn btn-outline">로그인</a>
-                <a href="/components/RegisterPage.tsx" class="btn btn-primary">회원가입</a>
+                <a href="#" class="btn btn-outline">로그인</a>
+                <a href="#" class="btn btn-primary">회원가입</a>
               </div>
             </div>
           </div>
@@ -598,10 +747,10 @@
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
-              <a href="/App.tsx">홈</a>
-              <span class="breadcrumb-separator">></span>
+              <a href="#">홈</a>
+              <span class="breadcrumb-separator">›</span>
               <a href="/components/BookExchangePage.tsx">책 교환</a>
-              <span class="breadcrumb-separator">></span>
+              <span class="breadcrumb-separator">›</span>
               <span>달러구트 꿈 백화점</span>
             </nav>
           </div>
@@ -613,7 +762,7 @@
             <div class="detail-content">
               <div class="book-image-section">
                 <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=350&h=500&fit=crop"
+                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop"
                   alt="달러구트 꿈 백화점"
                   class="book-image"
                 />
@@ -627,13 +776,15 @@
 
                 <div class="book-condition">
                   <div class="condition-badge">상태 좋음</div>
+                  <span class="condition-text">거의 새 책 수준, 밑줄이나 필기 없음</span>
                 </div>
 
                 <div class="book-description">
                   <h3 class="description-title">📖 교환자 한마디</h3>
                   <p class="description-text">
                     정말 재미있게 읽었던 책입니다! 상상력이 풍부하고 따뜻한 이야기라 
-                    많은 분들이 읽어보셨으면 좋겠어요. 책 상태도 매우 깨끗하니 안심하고 교환하세요.
+                    많은 분들이 읽어보셨으면 좋겠어요. 책 상태도 매우 깨끗하니 안심하고 교환하세요. 
+                    이 책을 통해 꿈의 의미와 소중함에 대해 다시 생각해볼 수 있었습니다.
                   </p>
                 </div>
 
@@ -656,9 +807,9 @@
                   <button class="btn-large btn-exchange">
                     🔄 교환 신청하기
                   </button>
-                  <button class="btn-large btn-chat">
+                  <a href="/components/ChatPage.tsx" class="btn-large btn-chat">
                     💬 채팅하기
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -670,7 +821,7 @@
                 <div class="condition-icon">📚</div>
                 <div class="condition-content">
                   <div class="condition-label">희망 교환 도서</div>
-                  <div class="condition-value">소설, 에세이, 자기계발서 (상태 무관)</div>
+                  <div class="condition-value">소설, 에세이, 자기계발서 등 장르 무관하지만 가급적 깨끗한 상태의 책을 원합니다. 특히 판타지나 SF 소설을 선호합니다.</div>
                 </div>
               </div>
 
@@ -678,7 +829,7 @@
                 <div class="condition-icon">📍</div>
                 <div class="condition-content">
                   <div class="condition-label">교환 방식</div>
-                  <div class="condition-value">직거래 (강남구 일대) 또는 택배거래 가능</div>
+                  <div class="condition-value">직거래 (강남구 일대 카페에서 만남) 또는 택배거래 가능합니다. 직거래 시 교통비는 각자 부담입니다.</div>
                 </div>
               </div>
 
@@ -686,15 +837,15 @@
                 <div class="condition-icon">⏰</div>
                 <div class="condition-content">
                   <div class="condition-label">교환 가능 시간</div>
-                  <div class="condition-value">평일 저녁, 주말 오후 (협의 가능)</div>
+                  <div class="condition-value">평일 저녁 7시 이후, 주말 오후 2시~8시 사이 협의 가능합니다. 급하지 않으니 서로 편한 시간에 만나요.</div>
                 </div>
               </div>
 
               <div class="condition-item">
-                <div class="condition-icon">💬</div>
+                <div class="condition-icon">💝</div>
                 <div class="condition-content">
                   <div class="condition-label">추가 사항</div>
-                  <div class="condition-value">책갈피와 독서 노트 함께 드려요!</div>
+                  <div class="condition-value">책갈피와 독서 노트 함께 드려요! 이 책에 대한 제 감상과 인상 깊었던 구절들을 정리해두었습니다.</div>
                 </div>
               </div>
             </div>
@@ -773,11 +924,12 @@
           <div class="container">
             <div class="footer-content">
               <div class="footer-section">
-                <h3>고객센터</h3>
+                <h3>교환 안내</h3>
                 <ul>
-                  <li><a href="#">고객문의</a></li>
-                  <li><a href="#">주문/배송 조회</a></li>
-                  <li><a href="#">반품/교환</a></li>
+                  <li><a href="#">교환 방법</a></li>
+                  <li><a href="#">안전 거래</a></li>
+                  <li><a href="#">분쟁 해결</a></li>
+                  <li><a href="#">FAQ</a></li>
                 </ul>
               </div>
               <div class="footer-section">
@@ -785,11 +937,31 @@
                 <ul>
                   <li><a href="#">이용약관</a></li>
                   <li><a href="#">개인정보처리방침</a></li>
+                  <li><a href="#">청소년보호정책</a></li>
+                  <li><a href="#">회원혜택</a></li>
+                </ul>
+              </div>
+              <div class="footer-section">
+                <h3>고객센터</h3>
+                <ul>
+                  <li><a href="#">고객문의</a></li>
+                  <li><a href="#">교환 문의</a></li>
+                  <li><a href="#">신고하기</a></li>
+                  <li><a href="#">사용자 가이드</a></li>
+                </ul>
+              </div>
+              <div class="footer-section">
+                <h3>커뮤니티</h3>
+                <ul>
+                  <li><a href="#">독서 모임</a></li>
+                  <li><a href="#">북클럽</a></li>
+                  <li><a href="#">리뷰 나누기</a></li>
+                  <li><a href="#">추천 도서</a></li>
                 </ul>
               </div>
             </div>
             <div class="footer-bottom">
-              <p>&copy; 2024 BookStore. All rights reserved.</p>
+              <p>&copy; 2024 북스토어. 모든 문학적 여정을 함께합니다. | 사업자등록번호: 123-45-67890</p>
             </div>
           </div>
         </footer>
