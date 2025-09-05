@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -704,17 +706,17 @@
               <a href="/App.tsx" class="logo">BookStore</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="/App.tsx">홈</a></li>
+                  <li><a href="${path}">홈</a></li>
                   <li><a href="#">베스트셀러</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="/components/BookExchangePage.tsx" class="active">책 교환</a></li>
+                  <li><a href="${path}/tradebook/bookexchange" class="active">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
-                <a href="/components/LoginPage.tsx" class="btn btn-outline">로그인</a>
-                <a href="/components/RegisterPage.tsx" class="btn btn-primary">회원가입</a>
+                <a href="${path}/member/login" class="btn btn-outline">로그인</a>
+                <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
               </div>
             </div>
           </div>
