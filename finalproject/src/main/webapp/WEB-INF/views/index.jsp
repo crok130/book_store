@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -984,12 +986,12 @@
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="/components/BookExchangePage.tsx">책 교환</a></li>
+                  <li><a href="tradebook/bookexchange">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
-                <a href="/components/LoginPage.tsx" class="btn btn-outline">로그인</a>
-                <a href="/components/RegisterPage.tsx" class="btn btn-primary">회원가입</a>
+                <a href="member/login" class="btn btn-outline">로그인</a>
+                <a href="member/register" class="btn btn-primary">회원가입</a>
               </div>
             </div>
           </div>
@@ -1269,7 +1271,7 @@
                     <span class="stat-label">성공한 교환</span>
                   </div>
                 </div>
-                <a href="/components/BookExchangePage.tsx" class="exchange-cta-btn">
+                <a href="tradebook/bookexchange" class="exchange-cta-btn">
                   순환의 여행 시작하기 →
                 </a>
               </div>
