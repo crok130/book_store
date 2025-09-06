@@ -211,7 +211,7 @@ mvn clean compile
 ## 📊 데이터베이스 설계
 
 ### ERD (Entity Relationship Diagram)
-![Database Schema](https://via.placeholder.com/800x600/4CAF50/FFFFFF?text=Database+ERD+Diagram)
+![Database Schema](https://github.com/user-attachments/assets/acc76922-17ba-463d-8346-25519e9abe1b)
 
 ### 주요 테이블
 - **members** - 회원 정보
@@ -268,3 +268,4 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 Made with ❤️ by BookStore Team
 
 </div>
+
