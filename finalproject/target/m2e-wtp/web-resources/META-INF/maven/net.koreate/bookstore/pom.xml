@@ -196,7 +196,31 @@
 		    <artifactId>spring-test</artifactId>
 		    <version>${org.springframework-version}</version>
 		    <scope>test</scope>
-		</dependency>		
+		</dependency>
+		
+		<!-- WebSocket API -->
+		<dependency>
+		    <groupId>javax.websocket</groupId>
+		    <artifactId>javax.websocket-api</artifactId>
+		    <version>1.1</version>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<!-- Tomcat WebSocket Client -->
+		<dependency>
+		    <groupId>org.apache.tomcat.embed</groupId>
+		    <artifactId>tomcat-embed-websocket</artifactId>
+		    <version>9.0.65</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<!-- Tomcat Juli Logging -->
+		<dependency>
+		    <groupId>org.apache.tomcat</groupId>
+		    <artifactId>tomcat-juli</artifactId>
+		    <version>9.0.65</version>
+		    <scope>test</scope>
+		</dependency>
 			       	       
 	</dependencies>
     <build>
