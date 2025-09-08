@@ -22,20 +22,12 @@ import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-/**
- * Spring Framework에서 WebSocket 통신 테스트 예제
- * 
- * 이 테스트는 WebSocket 서버와 클라이언트 간의 통신을 테스트합니다.
- * 실제 구현 시에는 이 패턴을 참고하여 채팅 기능을 구현하세요.
- */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/root-context.xml"})
 public class test {
 
-    /**
-     * WebSocket 클라이언트 테스트 (Mock 테스트)
-     * 실제 서버 없이 WebSocket 클라이언트 로직을 테스트합니다.
-     */
+
     @Test
     public void testWebSocketConnection() throws Exception {
         System.out.println("=== WebSocket 클라이언트 테스트 시작 ===");
@@ -199,7 +191,7 @@ public class test {
         
         try {
             // DB 연결 (db.properties 정보 사용)
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.219.105:1521/XE", "book_store", "root");
+            conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.105:1521/XE", "book_store", "root");
             System.out.println("✅ DB 연결 성공");
             
             // 채팅방 생성 SQL

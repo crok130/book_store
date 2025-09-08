@@ -24,4 +24,6 @@
 	<context:component-scan base-package="net.koreate.bookstore.*.controller" />
 	<context:component-scan base-package="net.koreate.bookstore.*.service" />
 	<context:component-scan base-package="net.koreate.bookstore" />
+	
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 </beans:beans>
