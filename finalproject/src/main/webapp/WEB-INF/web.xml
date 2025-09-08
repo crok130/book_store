@@ -51,5 +51,11 @@
 		<servlet-name>appServlet</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	
+	<multipart-config>
+		<max-file-size>20971520</max-file-size>
+		<max-request-size>41943040</max-request-size>
+		<file-size-threshold>1024</file-size-threshold>
+	</multipart-config>
 
 </web-app>
