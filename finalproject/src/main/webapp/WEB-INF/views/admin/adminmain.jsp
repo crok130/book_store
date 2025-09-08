@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<style>
+	<link rel="stylesheet" href="${path}/resources/css/adminmain.css">
+	<style style="display:none;">
         * {
           margin: 0;
           padding: 0;
