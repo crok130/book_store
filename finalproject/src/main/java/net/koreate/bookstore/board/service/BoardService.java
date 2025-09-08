@@ -1,6 +1,7 @@
 package net.koreate.bookstore.board.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public interface BoardService {
      * @param newBook 등록할 신간 도서 정보
      * @return 등록 성공 시 true, 실패 시 false
      */
-    boolean writeBoard(NewBookVO newBook) throws Exception;
+    boolean writeBoard(NewBookVO vo) throws Exception;
 
     /**
      * 게시글 상세보기.
@@ -34,20 +35,13 @@ public interface BoardService {
      */
     boolean deleteBoard(int newbook_num) throws Exception;
 
-    /**
-     * 페이징처리..
-     * 
-     * @param cri 페이징 정보 (페이지 번호, 페이지당 게시글 수)
-     * @return 게시글 목록
-     */
-    List<NewBookVO> getBoardList(Criteria cri) throws Exception;
 
-    /**
-     * 전체 게시글 갯수조회.
-     * 
-     * @return 전체 게시글 수
-     */
-    int getTotalCount() throws Exception;
+	/**
+	 * 검색할 게시글 번호, 검색 범위 기준 정보를 이용하여
+	 * 검색된 댓글 목록 리스트 와 페이징 블럭 출력에 필요한 PageMaker 객체를
+	 * Map 에 저장하여 반환
+	 */
+	Map<String, Object> commentListPage(int bno, Criteria cri)throws Exception;
 
 
     /**
