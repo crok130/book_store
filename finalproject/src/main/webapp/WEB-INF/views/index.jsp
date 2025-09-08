@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
     <style>
-		 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
           margin: 0;
@@ -481,6 +481,29 @@
           background: var(--color-warm-white);
         }
 
+        .more-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          padding: 1rem 2rem;
+          border-radius: var(--border-radius-lg);
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          box-shadow: var(--shadow-soft);
+          margin-top: 3rem;
+        }
+
+        .more-btn:hover {
+          background: var(--color-deep-blue);
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
+        }
+
         .books-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -583,8 +606,7 @@
           color: var(--color-text-secondary);
           font-weight: 500;
         }
-
-        /* More Button */
+		/* More Button */
         .more-button-container {
           display: flex;
           justify-content: center;
@@ -613,7 +635,7 @@
           transform: translateY(-2px);
           box-shadow: var(--shadow-medium);
         }
-
+		
         /* Newsletter */
         .newsletter-section {
           background: linear-gradient(135deg, var(--color-charcoal) 0%, var(--color-deep-blue) 100%);
@@ -914,6 +936,78 @@
           font-size: 0.9rem;
         }
 
+        /* User Menu Dropdown */
+        .user-menu {
+          position: relative;
+        }
+
+        .user-greeting {
+          background: transparent;
+          color: var(--color-charcoal);
+          padding: 0.75rem 1.5rem;
+          border: 2px solid rgba(45, 52, 54, 0.2);
+          border-radius: var(--border-radius-sm);
+          cursor: pointer;
+          font-weight: 500;
+          font-size: 0.9rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .user-greeting:hover {
+          background: var(--color-charcoal);
+          color: var(--color-warm-white);
+          border-color: var(--color-charcoal);
+          transform: translateY(-1px);
+        }
+
+        .user-dropdown {
+          position: absolute;
+          top: 100%;
+          right: 0;
+          background: var(--color-warm-white);
+          border: 1px solid rgba(156, 175, 158, 0.2);
+          border-radius: var(--border-radius-sm);
+          box-shadow: var(--shadow-strong);
+          min-width: 180px;
+          opacity: 0;
+          visibility: hidden;
+          transform: translateY(-10px);
+          transition: all 0.3s ease;
+          z-index: 1000;
+          margin-top: 0.5rem;
+        }
+
+        .user-dropdown.show {
+          opacity: 1;
+          visibility: visible;
+          transform: translateY(0);
+        }
+
+        .dropdown-item {
+          display: block;
+          padding: 0.75rem 1.5rem;
+          color: var(--color-text-secondary);
+          text-decoration: none;
+          font-size: 0.9rem;
+          font-weight: 400;
+          transition: all 0.3s ease;
+          border-bottom: 1px solid rgba(156, 175, 158, 0.1);
+        }
+
+        .dropdown-item:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-item:hover {
+          background: var(--color-cream);
+          color: var(--color-charcoal);
+          transform: translateX(5px);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
           .header-content {
@@ -969,11 +1063,16 @@
           .exchange-arrow {
             font-size: 2rem;
           }
+
+          .user-dropdown {
+            right: auto;
+            left: 0;
+          }
         }
     </style>
 </head>
 <body>
-        <div>
+      <div>
         {/* Header */}
         <header class="header">
           <div class="container">
@@ -981,17 +1080,27 @@
               <a href="#" class="logo">📚 BookStore</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="#">홈</a></li>
+                  <li><a href="${path}">홈</a></li>
                   <li><a href="#">베스트셀러</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="tradebook/bookexchange">책 교환</a></li>
+                  <li><a href="${path}/tradebook/bookexchange">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
-                <a href="member/login" class="btn btn-outline">로그인</a>
-                <a href="member/register" class="btn btn-primary">회원가입</a>
+                <a href="${path}/member/login" class="btn btn-outline">로그인</a>
+                <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
+                <div class="user-menu">
+                  <div class="user-greeting" onclick="toggleDropdown()">
+                    홍길동님 반갑습니다 ▼
+                  </div>
+                  <div class="user-dropdown">
+                    <a href="#" class="dropdown-item">로그아웃</a>
+                    <a href="${path}/chat/chat" class="dropdown-item">채팅</a>
+                    <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -1271,7 +1380,7 @@
                     <span class="stat-label">성공한 교환</span>
                   </div>
                 </div>
-                <a href="tradebook/bookexchange" class="exchange-cta-btn">
+                <a href="${path}/tradebook/bookexchange" class="exchange-cta-btn">
                   순환의 여행 시작하기 →
                 </a>
               </div>
@@ -1363,5 +1472,23 @@
           </div>
         </footer>
       </div>
+        <script>
+ 
+        function toggleDropdown() {
+          const dropdown = document.querySelector('.user-dropdown');
+          dropdown.classList.toggle('show');
+        }
+
+        // 외부 클릭시 드롭다운 닫기
+        document.addEventListener('click', function(event) {
+          const userMenu = document.querySelector('.user-menu');
+          const dropdown = document.querySelector('.user-dropdown');
+          
+          if (!userMenu.contains(event.target)) {
+            dropdown.classList.remove('show');
+          }
+        });
+
+      </script>
 </body>
 </html>

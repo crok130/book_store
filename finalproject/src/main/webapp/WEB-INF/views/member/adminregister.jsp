@@ -550,7 +550,7 @@
           </form>
 
           <div class="login-link">
-            이미 관리자 계정이 있으신가요? <a href="/components/AdminLoginPage.tsx">관리자 로그인</a>
+            이미 관리자 계정이 있으신가요? <a href="${path}/admin/adminregister">관리자 로그인</a>
           </div>
         </div>
       </div>
