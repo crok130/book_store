@@ -30,7 +30,7 @@ public interface MemberService {
      * @param memberNum 조회할 회원의 번호
      * @return 조회된 회원 정보가 담긴 MemberVO 객체, 해당 회원이 없으면 null
      */
-    MemberVO getMemberByNum(int memberNum)throws Exception;
+    MemberVO getMemberByNum(int member_num)throws Exception;
 
     /**
      * 회원 ID로 회원 정보를 조회합니다.
@@ -39,7 +39,7 @@ public interface MemberService {
      * @param memberId 조회할 회원의 ID
      * @return 조회된 회원 정보가 담긴 MemberVO 객체, 해당 회원이 없으면 null
      */
-    MemberVO getMemberById(String memberId)throws Exception;
+    MemberVO getMemberById(String member_id)throws Exception;
 
     /**
      * 회원 정보를 수정합니다.
@@ -92,7 +92,7 @@ public interface MemberService {
      * @param phone 검사할 핸드폰 번호
      * @return 중복되지 않으면 true, 중복되면 false
      */
-    boolean isPhoneAvailable(String phone)throws Exception;
+    boolean isPhoneAvailable(String member_phone)throws Exception;
 
     /**
      * 이메일로 비밀번호호 찾기 변경.
@@ -101,6 +101,6 @@ public interface MemberService {
      * @param newPw 새로운 비밀번호
      * @return 변경 성공 시 true, 실패 시 false
      */
-    boolean changePasswordByEmail(String email, String newPw)throws Exception;
+    boolean changePasswordByEmail(MemberVO vo)throws Exception;
 
 }
