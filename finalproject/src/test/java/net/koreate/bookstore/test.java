@@ -1,163 +1,100 @@
 package net.koreate.bookstore;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.Set;
-import java.util.Collections;
-
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map;
+import java.util.Set;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/root-context.xml"})
 public class test {
 
-    // 채팅방별 세션 관리: roomNum -> Set<Session>
-    private static Map<Integer, Set<MockSession>> chatRooms = new ConcurrentHashMap<>();
-    
+    private static final AtomicInteger roomSeq = new AtomicInteger(100);
+    private static final Map<Integer, Set<Integer>> roomAllowed = new ConcurrentHashMap<>();
+    private static final Map<Integer, Set<Integer>> roomConnected = new ConcurrentHashMap<>();
+
     @Test
-    public void testMultiRoomChat() throws Exception {
-        System.out.println("=== 다중 채팅방 테스트 ===");
-        
-        // 1번방: 1번회원, 2번회원
-        testChatRoom(1, 1, 2);
-        
-        // 2번방: 1번회원, 3번회원  
-        testChatRoom(2, 1, 3);
-        
-        System.out.println("=== 테스트 완료 ===");
+    public void testClickOpensRoomAndChat() {
+        // 게시글1: 방 생성 후 1,2만 허용
+        clickChatButton(1, 1, 2);
+        // 게시글2: 방 생성 후 1,3만 허용
+        clickChatButton(2, 1, 3);
     }
-    
-    private void testChatRoom(int roomNum, int user1, int user2) throws Exception {
-        System.out.println("\n 채팅방 " + roomNum + " 시작 (회원:" + user1 + ", " + user2 + ")");
-        
-        // 1. WebSocket URL
-        String wsUrl = "ws://localhost:8080/chat?room=" + roomNum;
-        System.out.println(" WebSocket: " + wsUrl);
-        
-        // 2. 채팅방에 세션 추가
-        MockSession session1 = new MockSession("user_" + user1 + "_room_" + roomNum);
-        MockSession session2 = new MockSession("user_" + user2 + "_room_" + roomNum);
-        
-        chatRooms.computeIfAbsent(roomNum, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()))
-                 .add(session1);
-        chatRooms.computeIfAbsent(roomNum, k -> Collections.newSetFromMap(new ConcurrentHashMap<>()))
-                 .add(session2);
-        
-        System.out.println("✅ 채팅방 " + roomNum + "에 회원 " + user1 + ", " + user2 + " 입장");
-        
-        // 3. 메시지 교환
-        for (int i = 1; i <= 3; i++) {
-            // 회원1 → 회원2 메시지
-            String msg1 = "{\"type\":\"MESSAGE\",\"chatroom_num\":" + roomNum + 
-                         ",\"sender_member_num\":" + user1 + 
-                         ",\"message_content\":\"안녕하세요 " + user1 + "번 회원입니다 " + i + "\"}";
-            System.out.println("�� 회원" + user1 + ": " + msg1);
-            
-            // 회원2 → 회원1 메시지
-            String msg2 = "{\"type\":\"MESSAGE\",\"chatroom_num\":" + roomNum + 
-                         ",\"sender_member_num\":" + user2 + 
-                         ",\"message_content\":\"안녕하세요 " + user2 + "번 회원입니다 " + i + "\"}";
-            System.out.println("�� 회원" + user2 + ": " + msg2);
+
+    private void clickChatButton(int boardNum, int seller, int buyer) {
+        System.out.println("\n[CLICK] 게시글 " + boardNum + " 채팅하기 버튼");
+
+        // 1) 방 생성
+        int room = roomSeq.incrementAndGet();
+        System.out.println("[ROOM] 생성됨 → room=" + room);
+
+        // 2) 이 방에는 seller, buyer 두 명만 허용
+        roomAllowed.put(room, Set.of(seller, buyer));
+
+        // 3) 프론트가 열 WebSocket URL(같은 채널)
+        String wsUrl = "ws://localhost:8080/chat?room=" + room;
+        System.out.println("[WS] URL=" + wsUrl);
+
+        // 4) 두 사용자 입장
+        join(room, seller);
+        join(room, buyer);
+
+        // 5) 비허용 사용자 입장 시도(예시 출력)
+        join(room, 9);
+        join(room, 99);
+
+        // 6) 채팅 (허용/접속된 사용자만 전송 허용)
+        send(room, buyer, "안녕하세요! 이 상품 보고 문의드립니다.");
+        send(room, seller, "안녕하세요! 무엇이 궁금하신가요?");
+        send(room, 9, "난 비인가자야(보내기 거부되어야 함)");
+        send(room, buyer, "상세 사진과 가격 알려주세요.");
+
+        // 7) 퇴장
+        leave(room, buyer);
+        leave(room, seller);
+        // 비접속자 퇴장 시도 예시
+        leave(room, 9);
+
+        System.out.println("[ROOM] 종료 room=" + room);
+    }
+
+    // 허용된 두 명 외엔 입장 거부, 정원(2명) 초과도 거부
+    private void join(int room, int user) {
+        Set<Integer> allowed = roomAllowed.get(room);
+        if (allowed == null || !allowed.contains(user)) {
+            System.out.println("[DENY] room=" + room + ", user=" + user + " (허용 아님)");
+            return;
         }
-        
-        // 4. 채팅방 정리
-        chatRooms.remove(roomNum);
-        System.out.println("✅ 채팅방 " + roomNum + " 종료\n");
-    }
-    
-    @Test
-    public void testConcurrentMultiRoom() throws Exception {
-        System.out.println("\n=== 동시 다중 채팅방 테스트 ===");
-        
-        ExecutorService executor = Executors.newFixedThreadPool(4);
-        CountDownLatch latch = new CountDownLatch(2);
-        
-        // 1번방: 1번회원, 2번회원 (동시)
-        executor.submit(() -> {
-            try {
-                testChatRoom(1, 1, 2);
-                latch.countDown();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        
-        // 2번방: 1번회원, 3번회원 (동시)
-        executor.submit(() -> {
-            try {
-                testChatRoom(2, 1, 3);
-                latch.countDown();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        
-        latch.await();
-        executor.shutdown();
-        System.out.println("=== 동시 테스트 완료 ===");
-    }
-    
-    @Test
-    public void testUserInMultipleRooms() throws Exception {
-        System.out.println("\n=== 1번회원이 여러 채팅방에 참여하는 테스트 ===");
-        
-        // 1번회원이 1번방과 2번방에 동시 참여
-        System.out.println("�� 1번회원이 1번방과 2번방에 동시 참여");
-        
-        // 1번방: 1번회원, 2번회원
-        testChatRoom(1, 1, 2);
-        
-        // 2번방: 1번회원, 3번회원
-        testChatRoom(2, 1, 3);
-        
-        System.out.println("✅ 1번회원이 여러 채팅방 참여 테스트 완료");
-    }
-    
-    static class MockSession {
-        String id;
-        MockSession(String id) { this.id = id; }
-        String getId() { return id; }
-    }
-    
-    @ClientEndpoint
-    public static class MultiRoomClient {
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("다중방 채팅 연결됨: " + session.getId());
+        Set<Integer> connected = roomConnected.computeIfAbsent(room, k -> ConcurrentHashMap.newKeySet());
+        if (connected.size() >= 2 && !connected.contains(user)) {
+            System.out.println("[DENY] room=" + room + ", user=" + user + " (정원 초과)");
+            return;
         }
-        
-        @OnMessage
-        public void onMessage(String message, Session session) {
-            System.out.println("다중방 채팅 메시지: " + message);
+        connected.add(user);
+        System.out.println("[JOIN] room=" + room + ", user=" + user);
+    }
+
+    // 허용+접속 사용자만 전송 가능
+    private void send(int room, int user, String msg) {
+        Set<Integer> allowed = roomAllowed.get(room);
+        Set<Integer> connected = roomConnected.get(room);
+        if (allowed == null || !allowed.contains(user) || connected == null || !connected.contains(user)) {
+            System.out.println("[DENY-SEND] room=" + room + ", user=" + user + " (권한 없음/미접속)");
+            return;
         }
-        
-        @OnClose
-        public void onClose(Session session, CloseReason reason) {
-            System.out.println("다중방 채팅 연결 종료");
+        System.out.println("{\"type\":\"MESSAGE\",\"chatroom_num\":" + room +
+                ",\"sender_member_num\":" + user + ",\"message_content\":\"" + msg + "\"}");
+    }
+
+    // 접속된 사용자만 퇴장 처리
+    private void leave(int room, int user) {
+        Set<Integer> connected = roomConnected.get(room);
+        if (connected == null || !connected.remove(user)) {
+            System.out.println("[IGNORE-LEAVE] room=" + room + ", user=" + user + " (미접속)");
+            return;
         }
-        
-        @OnError
-        public void onError(Session session, Throwable error) {
-            System.err.println("다중방 채팅 에러: " + error.getMessage());
+        System.out.println("[LEAVE] room=" + room + ", user=" + user);
+        if (connected.isEmpty()) {
+            roomConnected.remove(room);
         }
     }
 }
