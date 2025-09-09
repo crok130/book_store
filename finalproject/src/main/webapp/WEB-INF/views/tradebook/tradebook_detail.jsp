@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 	<jsp:include page="../common/header.jsp"/>
 
-        {/* Breadcrumb */}
+       
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
@@ -15,7 +15,7 @@
           </div>
         </section>
 
-        {/* Main Detail Section */}
+       
         <section class="detail-container">
           <div class="container">
             <div class="detail-content">
@@ -111,7 +111,7 @@
           </div>
         </section>
 
-        {/* Book Details Section */}
+        
         <section class="book-details-section">
           <div class="container">
             <h2 class="details-title">상세 정보</h2>
@@ -178,7 +178,7 @@
           </div>
         </section>
 
-        {/* Footer */}
+    
         <footer class="footer">
           <div class="container">
             <div class="footer-content">

@@ -3,7 +3,7 @@
 
 	<jsp:include page="common/header.jsp"/>
 
-        {/* Hero Section */}
+
         <section class="hero-section">
           <div class="container">
             <div class="hero-content">
@@ -31,7 +31,7 @@
           </div>
         </section>
 
-        {/* Filters */}
+     
         <section class="filters-section">
           <div class="container">
             <div class="filters-content">
@@ -82,7 +82,7 @@
           </div>
         </section>
 
-        {/* Exchange Books Section */}
+     
         <section class="exchange-books-section">
           <div class="container">
             <h2 class="section-title">교환 가능한 모든 도서</h2>
@@ -315,7 +315,7 @@
           </div>
         </section>
 
-        {/* Pagination */}
+
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">

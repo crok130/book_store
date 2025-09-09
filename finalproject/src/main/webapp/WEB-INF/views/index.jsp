@@ -342,6 +342,7 @@
                   <li><a href="#">개인정보처리방침</a></li>
                   <li><a href="#">청소년보호정책</a></li>
                   <li><a href="#">회원혜택</a></li>
+                  <li><a href="admin/adminmain">관리자페이지</a>
                 </ul>
               </div>
               <div class="footer-section">

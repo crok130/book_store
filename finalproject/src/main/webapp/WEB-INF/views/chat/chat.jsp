@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,8 +14,7 @@
         <a href="/components/BookExchangePage.tsx" class="back-btn">
           ← 교환 목록으로
         </a>
-
-        {/* Sidebar */}
+  
         <div class="sidebar">
           <div class="sidebar-header">
             <h2 class="sidebar-title">대화</h2>
@@ -77,7 +78,7 @@
           </div>
         </div>
 
-        {/* Main Chat Area */}
+     
         <div class="chat-main">
           <div class="chat-header">
             <div class="chat-header-info">
@@ -100,7 +101,7 @@
           </div>
 
           <div class="chat-messages">
-            {/* 첫 만남 및 관심 표현 */}
+ 
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">
@@ -121,7 +122,7 @@
               </div>
             </div>
 
-            {/* 책 상태 및 교환 조건 협의 */}
+       
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">
@@ -152,7 +153,7 @@
               </div>
             </div>
 
-            {/* 만남 약속 */}
+          
             <div class="message own">
               <div class="message-avatar">나</div>
               <div class="message-content">
@@ -183,7 +184,7 @@
               </div>
             </div>
 
-            {/* 당일 확인 */}
+         
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">
@@ -204,7 +205,7 @@
               </div>
             </div>
 
-            {/* 거래 완료 후 */}
+           
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">
@@ -225,7 +226,7 @@
               </div>
             </div>
 
-            {/* 추가 소통 */}
+          
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">

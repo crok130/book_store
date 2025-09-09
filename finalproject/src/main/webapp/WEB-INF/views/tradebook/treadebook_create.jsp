@@ -15,7 +15,7 @@
           </div>
         </section>
 
-        {/* Main Content */}
+        
         <main class="main-content">
           <div class="container">
             <div class="create-container">
@@ -25,7 +25,7 @@
               </div>
 
               <form class="create-form">
-                {/* 책 정보 */}
+               
                 <div class="form-section">
                   <h2 class="section-title">📖 교환할 책 정보</h2>
                   <div class="form-grid">
@@ -127,7 +127,7 @@
                   </div>
                 </div>
 
-                {/* 교환 조건 */}
+       
                 <div class="form-section">
                   <h2 class="section-title">🔄 교환 조건</h2>
                   <div class="form-grid">
@@ -183,7 +183,6 @@
                   </div>
                 </div>
 
-                {/* 교환 내용 */}
                 <div class="form-section">
                   <h2 class="section-title">💬 교환 소개</h2>
                   <div class="form-group">
@@ -201,7 +200,7 @@
                   </div>
                 </div>
 
-                {/* 추가 정보 */}
+         
                 <div class="form-section">
                   <h2 class="section-title">📝 추가 정보</h2>
                   <div class="form-grid">
@@ -231,7 +230,7 @@
                   </div>
                 </div>
 
-                {/* 액션 버튼 */}
+          
                 <div class="form-actions">
                   <button type="button" class="btn-large btn-cancel" onclick="history.back()">취소</button>
                   <button type="submit" class="btn-large btn-save">교환 글 등록하기</button>
@@ -241,7 +240,7 @@
           </div>
         </main>
 
-        {/* Footer */}
+
         <footer class="footer">
           <div class="container">
             <div class="footer-content">

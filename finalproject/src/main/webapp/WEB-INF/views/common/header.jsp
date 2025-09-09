@@ -10,10 +10,10 @@
 <link rel="stylesheet" href="${path}/resources/css/bookexchange.css">
 <link rel="stylesheet" href="${path}/resources/css/tradebooklist.css">
 <link rel="stylesheet" href="${path}/resources/css/newbooklist.css">
- <link rel="stylesheet" href="${path}/resources/css/bookdetail.css">
- <link rel="stylesheet" href="${path}/resources/css/cart.css">
- <link rel="stylesheet" href="${path}/resources/css/tradebook_detail.css">
-  <link rel="stylesheet" href="${path}/resources/css/treadebook_create.css">
+<link rel="stylesheet" href="${path}/resources/css/bookdetail.css">
+<link rel="stylesheet" href="${path}/resources/css/cart.css">
+<link rel="stylesheet" href="${path}/resources/css/tradebook_detail.css">
+<link rel="stylesheet" href="${path}/resources/css/treadebook_create.css">
 <link rel="stylesheet" href="${path}/resources/css/index.css">
 
 </head>

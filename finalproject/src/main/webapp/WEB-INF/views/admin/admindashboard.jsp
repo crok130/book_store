@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="${path}/resources/css/admindashboard.css">
 </head>
 <body>
-         <div class="dashboard-container">
-        {/* Sidebar */}
+       <div class="dashboard-container">
+  
         <div class="sidebar">
           <div class="sidebar-header">
             <a href="/components/AdminMainPage.tsx" class="sidebar-logo">
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        {/* Main Content */}
+       
         <div class="main-content">
           <div class="main-header">
             <div class="header-top">
@@ -140,7 +140,7 @@
           </div>
 
           <div class="dashboard-content">
-            {/* Stats Grid */}
+       
             <div class="stats-grid">
               <div class="stat-card">
                 <div class="stat-header">
@@ -179,7 +179,7 @@
               </div>
             </div>
 
-            {/* Quick Actions */}
+  
             <div class="quick-actions">
               <h2 class="section-title">
                 ⚡ 빠른 작업
@@ -222,8 +222,7 @@
                 </a>
               </div>
             </div>
-
-            {/* Charts and Activity */}
+          
             <div class="dashboard-grid">
               <div class="chart-card">
                 <h2 class="section-title">
@@ -276,7 +275,7 @@
               </div>
             </div>
 
-            {/* Recent Books Table */}
+          
             <div class="books-table">
               <h2 class="section-title">
                 📚 최근 등록된 도서

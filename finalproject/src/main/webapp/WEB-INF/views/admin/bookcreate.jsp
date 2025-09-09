@@ -9,7 +9,6 @@
 </head>
 <body>
      <div>
-        {/* Header */}
         <header class="header">
           <div class="container">
             <div class="header-content">
@@ -34,15 +33,15 @@
           </div>
         </header>
 
-        {/* Breadcrumb */}
-        <section class="breadcrumb">
+       
+          <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
               <a href="/components/AdminMainPage.tsx">관리자 홈</a>
               <span class="breadcrumb-separator">></span>
-              <a href="#">도서 관리</a>
+              <a href="/components/AdminDashboard.tsx">대시보드</a>
               <span class="breadcrumb-separator">></span>
-              <span>새 책 등록</span>
+              <span>책 등록</span>
             </nav>
           </div>
         </section>
@@ -56,8 +55,8 @@
                 <p class="create-subtitle">책 정보를 입력하여 새로운 도서를 등록하세요</p>
               </div>
 
-              <form class="create-form">
-                {/* 기본 정보 */}
+              {/* 기본 정보 */}
+              <form class="create-form" method="POST" action="newbookwrite" enctype="multipart/form-data">
                 <div class="form-section">
                   <h2 class="section-title">📖 기본 정보</h2>
                   <div class="form-grid">
@@ -68,7 +67,7 @@
                       <input 
                         type="text" 
                         id="title" 
-                        name="" 
+                        name="newbook_title" 
                         class="form-input" 
                         placeholder="책 제목을 입력하세요"
                         required
@@ -82,7 +81,7 @@
                       <input 
                         type="text" 
                         id="author" 
-                        name="author" 
+                        name="newbook_author" 
                         class="form-input" 
                         placeholder="저자명을 입력하세요"
                         required
@@ -96,7 +95,7 @@
                       <input 
                         type="text" 
                         id="publisher" 
-                        name="publisher" 
+                        name="newbook_publisher" 
                         class="form-input" 
                         placeholder="출판사명을 입력하세요"
                         required
@@ -110,7 +109,7 @@
                       <input 
                         type="date" 
                         id="publication-date" 
-                        name="publication-date" 
+                        name="newbook_publication_date" 
                         class="form-input" 
                         required
                       />
@@ -120,20 +119,20 @@
                       <label for="category" class="form-label">
                         카테고리<span class="required">*</span>
                       </label>
-                      <select id="category" name="category" class="form-select" required>
-                        <option value="">카테고리를 선택하세요</option>
-                        <option value="novel">소설/에세이</option>
-                        <option value="business">경영/경제</option>
-                        <option value="science">과학/기술</option>
-                        <option value="art">예술/디자인</option>
-                        <option value="children">아동/청소년</option>
-                        <option value="self-help">자기계발</option>
-                        <option value="computer">IT/컴퓨터</option>
-                        <option value="history">역사/문화</option>
-                        <option value="health">건강/의학</option>
-                        <option value="hobby">취미/스포츠</option>
-                        <option value="language">외국어</option>
-                        <option value="comics">만화</option>
+                      <select id="category" name="newbook_category" class="form-select" required>
+                        <option value="카테고리">카테고리를 선택하세요</option>
+                        <option value="소설/에세이">소설/에세이</option>
+                        <option value="경영/경제">경영/경제</option>
+                        <option value="과학/기술">과학/기술</option>
+                        <option value="예술/디자인">예술/디자인</option>
+                        <option value="아동/청소년">아동/청소년</option>
+                        <option value="자기계발">자기계발</option>
+                        <option value="IT/컴퓨터">IT/컴퓨터</option>
+                        <option value="역사/문화">역사/문화</option>
+                        <option value="건강/의학">건강/의학</option>
+                        <option value="취미/스포츠">취미/스포츠</option>
+                        <option value="외국어">외국어</option>
+                        <option value="만화">만화</option>
                       </select>
                     </div>
 
@@ -143,7 +142,7 @@
                       </label>
                       <textarea 
                         id="description" 
-                        name="description" 
+                        name="newbook_content" 
                         class="form-textarea" 
                         placeholder="책에 대한 자세한 설명을 입력하세요..."
                         required
@@ -168,11 +167,12 @@
                     <input 
                       type="file" 
                       id="book-image" 
-                      name="book-image" 
+                      name="newbook_imgs" 
                       class="image-input" 
                       accept="image/jpeg,image/png"
-                      required
+                      required 
                     />
+                    <!-- required -->
                   </div>
                 </div>
 
@@ -188,7 +188,7 @@
                         <input 
                           type="number" 
                           id="price" 
-                          name="price" 
+                          name="newbook_price" 
                           class="form-input price-input" 
                           placeholder="0"
                           min="0"
@@ -208,7 +208,7 @@
                         <input 
                           type="number" 
                           id="quantity" 
-                          name="quantity" 
+                          name="newbook_count"  
                           class="form-input quantity-input" 
                           value="1"
                           min="0"
@@ -230,7 +230,7 @@
                       <input 
                         type="text" 
                         id="isbn" 
-                        name="isbn" 
+                        name="newbook_isbn" 
                         class="form-input" 
                         placeholder="978-89-xxxxx-xx-x"
                       />
@@ -242,7 +242,7 @@
                       <input 
                         type="number" 
                         id="pages" 
-                        name="pages" 
+                        name="newbook_page" 
                         class="form-input" 
                         placeholder="페이지 수"
                         min="1"
@@ -255,7 +255,7 @@
                 <div class="form-actions">
                   <button type="button" class="btn-large btn-cancel">취소</button>
                   <button type="submit" class="btn-large btn-save">책 등록하기</button>
-                </div>
+                </div>q
               </form>
             </div>
           </div>
@@ -268,7 +268,7 @@
               <div class="footer-section">
                 <h3>관리자 도구</h3>
                 <ul>
-                  <li><a href="/components/AdminMainPage.tsx">대시보드</a></li>
+                  <li><a href="/components/AdminDashboard.tsx">대시보드</a></li>
                   <li><a href="/components/BookCreatePage.tsx">도서 등록</a></li>
                   <li><a href="#">도서 관리</a></li>
                   <li><a href="#">회원 관리</a></li>
@@ -276,7 +276,7 @@
                 </ul>
               </div>
               <div class="footer-section">
-                <h3>시스템 설정</h3>
+                <h3>설정</h3>
                 <ul>
                   <li><a href="#">시스템 설정</a></li>
                   <li><a href="#">권한 관리</a></li>
@@ -304,12 +304,12 @@
               </div>
             </div>
             <div class="footer-bottom">
-              <p>&copy; 2024 BookStore Admin. 관리자 전용 시스템 | All rights reserved.</p>
+              <p>&copy; 2024 BookStore Admin. All rights reserved. | 관리자 전용 시스템</p>
             </div>
           </div>
         </footer>
       </div>
-
+</body>
       <script>
         function increaseQuantity() {
           const quantityInput = document.getElementById('quantity');

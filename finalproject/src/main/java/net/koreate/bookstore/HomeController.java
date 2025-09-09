@@ -1,6 +1,7 @@
 package net.koreate.bookstore;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -15,5 +16,8 @@ public class HomeController {
 		
 		return "index";
 	}
+	
+	@GetMapping("admin/adminmain")
+	public void adminmian() {}
 	
 }

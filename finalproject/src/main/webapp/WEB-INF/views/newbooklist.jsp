@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 	<jsp:include page="common/header.jsp"/>
 
-        {/* Hero Section */}
+
         <section class="hero-section">
           <div class="container">
             <div class="hero-content">
@@ -15,7 +15,7 @@
           </div>
         </section>
 
-        {/* Filters */}
+   
         <section class="filters-section">
           <div class="container">
             <div class="filters-content">
@@ -53,7 +53,7 @@
           </div>
         </section>
 
-        {/* Books Section */}
+    
         <section class="books-section">
           <div class="container">
             <h2 class="section-title">신간 도서 전체 목록</h2>
@@ -277,7 +277,7 @@
           </div>
         </section>
 
-        {/* Pagination */}
+
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">
@@ -294,7 +294,7 @@
           </div>
         </section>
 
-        {/* Footer */}
+
         <footer class="footer">
           <div class="container">
             <div class="footer-content">

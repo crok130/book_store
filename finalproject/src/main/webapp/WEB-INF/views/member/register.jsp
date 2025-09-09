@@ -12,7 +12,6 @@
 <body>
     <div class="register-container">
         <a href="${path}" class="back-to-home">← 홈으로</a>
-        
         <div class="register-card">
           <div class="register-header">
             <div class="logo">BookStore</div>

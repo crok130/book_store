@@ -4,7 +4,7 @@
    
     <jsp:include page="common/header.jsp"/>
 
-        {/* Breadcrumb */}
+
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
@@ -17,7 +17,7 @@
           </div>
         </section>
 
-        {/* Product Detail */}
+  
         <section class="product-detail">
           <div class="container">
             <div class="product-content">
@@ -90,7 +90,7 @@
           </div>
         </section>
 
-        {/* Product Description */}
+
         <section class="product-description">
           <div class="container">
             <h2 class="description-title">책 소개</h2>
@@ -149,7 +149,7 @@
           </div>
         </section>
 
-        {/* Reviews Section */}
+
         <section class="reviews-section">
           <div class="container">
             <div class="reviews-header">
@@ -204,7 +204,7 @@
           </div>
         </section>
 
-        {/* Footer */}
+      
         <footer class="footer">
           <div class="container">
             <div class="footer-content">

@@ -4,8 +4,8 @@
 
     <jsp:include page="../common/header.jsp"/>
 
-        {/* Hero Section */}
-        <section class="hero-section">
+
+       <section class="hero-section">
           <div class="container">
             <div class="hero-content">
               <span class="exchange-icon">🔄</span>
@@ -14,11 +14,14 @@
                 이미 읽은 책에도 새로운 생명을 불어넣어 보세요.<br/>
                 당신의 책이 다른 이에게 새로운 감동이 될 수 있습니다.
               </p>
+              <a href="/components/BookExchangeCreatePage.tsx" class="create-post-btn">
+                📝 교환 글 작성하기
+              </a>
             </div>
           </div>
         </section>
 
-        {/* Stats Section */}
+
         <section class="stats-section">
           <div class="container">
             <div class="stats-grid">
@@ -42,7 +45,7 @@
           </div>
         </section>
 
-        {/* Filter Section */}
+
         <section class="filter-section">
           <div class="container">
             <div class="filter-content">
@@ -87,7 +90,7 @@
           </div>
         </section>
 
-        {/* Category Section */}
+
         <section class="category-section">
           <div class="container">
             <div class="category-filters">
@@ -103,7 +106,7 @@
           </div>
         </section>
 
-        {/* Books Section */}
+  
         <section class="books-section">
           <div class="container">
             <h2 class="section-title">교환 대기 중인 책들</h2>
@@ -268,7 +271,7 @@
           </div>
         </section>
 
-        {/* Footer */}
+ 
         <footer class="footer">
           <div class="container">
             <div class="footer-content">
