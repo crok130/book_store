@@ -1,100 +1,56 @@
 package net.koreate.bookstore;
 
 import org.junit.Test;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.websocket.*;
+import java.net.URI;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class test {
 
-    private static final AtomicInteger roomSeq = new AtomicInteger(100);
-    private static final Map<Integer, Set<Integer>> roomAllowed = new ConcurrentHashMap<>();
-    private static final Map<Integer, Set<Integer>> roomConnected = new ConcurrentHashMap<>();
+    // 서버 컨텍스트 경로에 맞게 수정 (예: /hotel)
+    private static final String BASE_WS = "ws://localhost:8080/hotel/chat";
+
+    // 세션 필요 시 세션 쿠키 설정(없으면 비워두기)
+    private static final String JSESSIONID = ""; // 예: "ABCDEF1234567890..."
+
+    @ClientEndpoint
+    public static class ChatClient {
+        private final String name;
+        public ChatClient(String name) { this.name = name; }
+        @OnOpen public void onOpen(Session s) { System.out.println(name + " OPEN " + s.getId()); }
+        @OnClose public void onClose(Session s, CloseReason r) { System.out.println(name + " CLOSE " + r.getCloseCode()); }
+        @OnError public void onError(Session s, Throwable t) { System.out.println(name + " ERROR " + t.getMessage()); }
+    }
 
     @Test
-    public void testClickOpensRoomAndChat() {
-        // 게시글1: 방 생성 후 1,2만 허용
-        clickChatButton(1, 1, 2);
-        // 게시글2: 방 생성 후 1,3만 허용
-        clickChatButton(2, 1, 3);
+    public void openTwoRoomsConnectionsOnly() throws Exception {
+        WebSocketContainer c = ContainerProvider.getWebSocketContainer();
+        ClientEndpointConfig cfg = buildCfgWithCookie(JSESSIONID);
+
+        // 방1 연결(유저1, 유저2) - 메시지 송수신 없음
+        Session r1u1 = c.connectToServer(new ChatClient("R1-U1"), cfg, URI.create(BASE_WS + "/1"));
+        Session r1u2 = c.connectToServer(new ChatClient("R1-U2"), cfg, URI.create(BASE_WS + "/1"));
+
+        // 방2 연결(유저1, 유저3) - 메시지 송수신 없음
+        Session r2u1 = c.connectToServer(new ChatClient("R2-U1"), cfg, URI.create(BASE_WS + "/2"));
+        Session r2u3 = c.connectToServer(new ChatClient("R2-U3"), cfg, URI.create(BASE_WS + "/2"));
+
+        // 잠깐 대기 후 종료
+        Thread.sleep(500);
+        safeClose(r1u1); safeClose(r1u2); safeClose(r2u1); safeClose(r2u3);
     }
 
-    private void clickChatButton(int boardNum, int seller, int buyer) {
-        System.out.println("\n[CLICK] 게시글 " + boardNum + " 채팅하기 버튼");
-
-        // 1) 방 생성
-        int room = roomSeq.incrementAndGet();
-        System.out.println("[ROOM] 생성됨 → room=" + room);
-
-        // 2) 이 방에는 seller, buyer 두 명만 허용
-        roomAllowed.put(room, Set.of(seller, buyer));
-
-        // 3) 프론트가 열 WebSocket URL(같은 채널)
-        String wsUrl = "ws://localhost:8080/chat?room=" + room;
-        System.out.println("[WS] URL=" + wsUrl);
-
-        // 4) 두 사용자 입장
-        join(room, seller);
-        join(room, buyer);
-
-        // 5) 비허용 사용자 입장 시도(예시 출력)
-        join(room, 9);
-        join(room, 99);
-
-        // 6) 채팅 (허용/접속된 사용자만 전송 허용)
-        send(room, buyer, "안녕하세요! 이 상품 보고 문의드립니다.");
-        send(room, seller, "안녕하세요! 무엇이 궁금하신가요?");
-        send(room, 9, "난 비인가자야(보내기 거부되어야 함)");
-        send(room, buyer, "상세 사진과 가격 알려주세요.");
-
-        // 7) 퇴장
-        leave(room, buyer);
-        leave(room, seller);
-        // 비접속자 퇴장 시도 예시
-        leave(room, 9);
-
-        System.out.println("[ROOM] 종료 room=" + room);
+    private ClientEndpointConfig buildCfgWithCookie(String jsid) {
+        if (jsid == null || jsid.isBlank()) return ClientEndpointConfig.Builder.create().build();
+        return ClientEndpointConfig.Builder.create().configurator(new ClientEndpointConfig.Configurator() {
+            @Override public void beforeRequest(Map<String, List<String>> headers) {
+                headers.put("Cookie", List.of("JSESSIONID=" + jsid));
+            }
+        }).build();
     }
 
-    // 허용된 두 명 외엔 입장 거부, 정원(2명) 초과도 거부
-    private void join(int room, int user) {
-        Set<Integer> allowed = roomAllowed.get(room);
-        if (allowed == null || !allowed.contains(user)) {
-            System.out.println("[DENY] room=" + room + ", user=" + user + " (허용 아님)");
-            return;
-        }
-        Set<Integer> connected = roomConnected.computeIfAbsent(room, k -> ConcurrentHashMap.newKeySet());
-        if (connected.size() >= 2 && !connected.contains(user)) {
-            System.out.println("[DENY] room=" + room + ", user=" + user + " (정원 초과)");
-            return;
-        }
-        connected.add(user);
-        System.out.println("[JOIN] room=" + room + ", user=" + user);
-    }
-
-    // 허용+접속 사용자만 전송 가능
-    private void send(int room, int user, String msg) {
-        Set<Integer> allowed = roomAllowed.get(room);
-        Set<Integer> connected = roomConnected.get(room);
-        if (allowed == null || !allowed.contains(user) || connected == null || !connected.contains(user)) {
-            System.out.println("[DENY-SEND] room=" + room + ", user=" + user + " (권한 없음/미접속)");
-            return;
-        }
-        System.out.println("{\"type\":\"MESSAGE\",\"chatroom_num\":" + room +
-                ",\"sender_member_num\":" + user + ",\"message_content\":\"" + msg + "\"}");
-    }
-
-    // 접속된 사용자만 퇴장 처리
-    private void leave(int room, int user) {
-        Set<Integer> connected = roomConnected.get(room);
-        if (connected == null || !connected.remove(user)) {
-            System.out.println("[IGNORE-LEAVE] room=" + room + ", user=" + user + " (미접속)");
-            return;
-        }
-        System.out.println("[LEAVE] room=" + room + ", user=" + user);
-        if (connected.isEmpty()) {
-            roomConnected.remove(room);
-        }
+    private void safeClose(Session s) {
+        try { if (s != null && s.isOpen()) s.close(); } catch (Exception ignore) {}
     }
 }
