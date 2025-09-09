@@ -28,7 +28,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"classpath:spring/root-context.xml"})
-public class MultiRoomTest {
+public class test {
 
     // 채팅방별 세션 관리: roomNum -> Set<Session>
     private static Map<Integer, Set<MockSession>> chatRooms = new ConcurrentHashMap<>();
