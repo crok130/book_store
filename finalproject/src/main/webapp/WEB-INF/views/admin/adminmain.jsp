@@ -5,7 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-	<style>
+	<link rel="stylesheet" href="${path}/resources/css/adminmain.css">
+	<style style="display:none;">
         * {
           margin: 0;
           padding: 0;
@@ -418,7 +419,7 @@
 </head>
 <body>
      <div>
-        {/* Header */}
+ 
         <header class="header">
           <div class="container">
             <div class="header-content">
@@ -441,7 +442,7 @@
           </div>
         </header>
 
-        {/* Hero Section */}
+   
         <section class="hero-section">
           <div class="container">
             <h1 class="hero-title">BookStore 관리자</h1>
@@ -452,7 +453,7 @@
           </div>
         </section>
 
-        {/* Stats Section */}
+    
         <section class="stats-section">
           <div class="container">
             <h2 class="section-title">실시간 현황</h2>
@@ -481,7 +482,7 @@
           </div>
         </section>
 
-        {/* Quick Actions */}
+
         <section class="actions-section">
           <div class="container">
             <h2 class="section-title">빠른 작업</h2>
@@ -517,7 +518,7 @@
           </div>
         </section>
 
-        {/* Recent Activity */}
+
         <section class="activity-section">
           <div class="container">
             <h2 class="section-title">최근 활동</h2>
@@ -547,7 +548,7 @@
           </div>
         </section>
 
-        {/* Footer */}
+   
         <footer class="footer">
           <div class="container">
             <div class="footer-content">
