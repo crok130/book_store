@@ -13,4 +13,5 @@ public class MemberVO {
     private String member_phone;
     private int member_status;
     private String member_nickname;	
+    private String member_birth;
 }

@@ -13,7 +13,7 @@ public interface MemberService {
      * @param member 등록할 회원 정보가 담긴 MemberVO 객체
      * @return 등록 성공 시 true, 실패 시 false
      */
-    boolean signUp(MemberVO vo)throws Exception;
+    String signUp(MemberVO vo)throws Exception;
 
     /**
      * 회원 로그인을 처리합니다.
@@ -60,7 +60,7 @@ public interface MemberService {
     boolean changePassword(MemberVO vo)throws Exception;
 
     /**
-     * 회원 탈퇴를 처리.다.
+     * 회원 탈퇴를 처리.
      * 
      * @param member_num 탈퇴할 회원의 번호
      * @param member_pw 탈퇴 확인을 위한 비밀번호
@@ -71,11 +71,20 @@ public interface MemberService {
     /**
      * 회원 ID 중복을 검사.
      * 회원 가입 시 사용할 ID의 중복 여부를 확인합니다.
-     * 
+     * 	
      * @param member_id 검사할 회원 ID
      * @return 중복되지 않으면 true, 중복되면 false
      */
     boolean isIdAvailable(String member_id)throws Exception;
+    
+    /**
+     * 회원 닉네임 중복을 검사.
+     * 회원 가입 시 사용할 닉네임의 중복 여부를 확인합니다.
+     * 	
+     * @param member_nickname 검사할 회원 ID
+     * @return 중복되지 않으면 true, 중복되면 false
+     */    
+    boolean isNicknameAvailable(String member_nickname) throws Exception;
 
     /**
      * 이메일 중복을 검사.
@@ -84,7 +93,7 @@ public interface MemberService {
      * @param email 검사할 이메일 주소
      * @return 중복되지 않으면 true, 중복되면 false
      */
-    boolean isEmailAvailable(String member_email);
+    boolean isEmailAvailable(String member_email) throws Exception;
 
     /**
      * 핸드폰 번호 중복을 검사.
