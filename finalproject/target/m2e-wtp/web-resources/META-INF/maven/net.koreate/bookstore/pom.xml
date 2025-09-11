@@ -119,7 +119,7 @@
 			<scope>test</scope>
 		</dependency> 
 		
-				<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
@@ -212,13 +212,6 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- Tomcat Juli Logging -->
-		<dependency>
-		    <groupId>org.apache.tomcat</groupId>
-		    <artifactId>tomcat-juli</artifactId>
-		    <version>9.0.65</version>
-		    <scope>test</scope>
-		</dependency>
 	       	       
 	</dependencies>
     <build>

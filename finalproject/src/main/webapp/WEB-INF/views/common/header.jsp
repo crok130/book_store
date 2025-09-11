@@ -19,7 +19,6 @@
 </head>
 <body>
       <div>
-        {/* Header */}
         <header class="header">
           <div class="container">
             <div class="header-content">
@@ -35,8 +34,12 @@
                 </ul>
               </nav>
               <div class="user-actions">
+     	<c:choose>
+			<c:when test="${empty userInfo}">
                 <a href="${path}/member/login" class="btn btn-outline">로그인</a>
                 <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
+           	</c:when>
+           	<c:otherwise>
                 <div class="user-menu">
                   <div class="user-greeting" onclick="toggleDropdown()">
                     홍길동님 반갑습니다 ▼
@@ -47,6 +50,8 @@
                     <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
                   </div>
                 </div>
+           	</c:otherwise>
+      	</c:choose>
               </div>
             </div>
           </div>

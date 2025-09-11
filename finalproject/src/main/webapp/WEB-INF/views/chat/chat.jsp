@@ -101,7 +101,6 @@
           </div>
 
           <div class="chat-messages">
- 
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">

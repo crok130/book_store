@@ -13,13 +13,19 @@ import lombok.ToString;
 @Getter
 public class Criteria {
 	
-	private int page;				// 요청 페이지 번호
-	private int perPageNum;			// 한페이지에 출력할 게시글(행) 수
+	/**
+	 * 요청 페이지 번호
+	 */
+	private int page;				
+	
+	/**
+	 * 한 요청 페이지당 출력할 데이터 행 개수
+	 */
+	private int perPageNum;			
 
 	public Criteria() {
 		this(1, 10);
 	}
-	
 	
 	public void setPage(int page) {
 		if(page <= 0) {
@@ -43,8 +49,12 @@ public class Criteria {
 	public int getStartRow() {
 		return (this.page - 1) * this.perPageNum;
 	}
-	
 }
+
+
+
+
+
 
 
 

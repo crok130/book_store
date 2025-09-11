@@ -12,10 +12,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		// Native WebSocket endpoint
-		registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("http://localhost:8080");
 		// SockJS fallback endpoint
-    		registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("http://localhost:8080").withSockJS();
+    	registry.addEndpoint("/ws-stomp").setAllowedOriginPatterns("http://localhost:8080").withSockJS();
 	}
 
 	@Override
@@ -23,6 +21,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 		registry.enableSimpleBroker("/topic", "/queue");
 		registry.setApplicationDestinationPrefixes("/app");
 	}
+
+
+	
 }
 
 
