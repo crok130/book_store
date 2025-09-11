@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="path" value="${pageContext.request.contextPath}" scope="session" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -35,17 +35,17 @@
               </nav>
               <div class="user-actions">
      	<c:choose>
-			<c:when test="${empty userInfo}">
+			<c:when test="${empty sessionScope.userInfo}">
                 <a href="${path}/member/login" class="btn btn-outline">로그인</a>
                 <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
            	</c:when>
            	<c:otherwise>
                 <div class="user-menu">
                   <div class="user-greeting" onclick="toggleDropdown()">
-                    홍길동님 반갑습니다 ▼
+                    ${userInfo.member_nickname}님 반갑습니다 ▼
                   </div>
                   <div class="user-dropdown">
-                    <a href="#" class="dropdown-item">로그아웃</a>
+                    <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chat" class="dropdown-item">채팅</a>
                     <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
                   </div>

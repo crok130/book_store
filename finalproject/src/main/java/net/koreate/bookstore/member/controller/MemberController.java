@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,8 +31,6 @@ public class MemberController {
 	// 이메일 발송을 위한 스프링 메일 전송기
 	private final JavaMailSender mailSender;
 	// 서버 로그 출력용 (디버깅/상태 확인)
-	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
-	
 	
 	@GetMapping("login")
 	public void login() {}
@@ -44,9 +43,18 @@ public class MemberController {
 	}
 	
 	@PostMapping("login")
-	public String POSTlogin(String member_id, String member_pw, HttpSession session, RedirectAttributes rda) throws Exception {
-		ms.signIn(member_id, member_pw, session);
-		rda.addFlashAttribute("msg","로그인 성공");
+	public String POSTlogin(String member_id, String member_pw, HttpSession session,  RedirectAttributes rttr) throws Exception {
+		MemberVO vo = ms.signIn(member_id, member_pw, session); 
+		if(vo == null) {
+			rttr.addFlashAttribute("msg","아이디 혹은 비밀번호가 일치하지 않습니다.");
+			return "redirect:/member/login";
+		}
+		return "redirect:/";
+	}
+	
+	@GetMapping("logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("userInfo");
 		return "redirect:/";
 	}
 	
@@ -106,9 +114,4 @@ public class MemberController {
 	}
 	
 	
-	
-	// postmapping 으로 처리하여 client 가 회원가입을 진행 시 server에 저장되게 하기
-	
-	
-
 }
