@@ -2,6 +2,7 @@
 package net.koreate.bookstore.member.controller;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,15 +34,20 @@ public class MemberController {
 	
 	
 	@GetMapping("login")
-	public void login() {
-		
-	}
+	public void login() {}
 	
 	// GET /user/join 요청을 처리 : 회원가입 화면(member/register.jsp)으로 이동
 	@GetMapping("register")
 	public String register() {
 		// /WEB-INF/views/member/register.jsp
 		return "member/register";
+	}
+	
+	@PostMapping("login")
+	public String POSTlogin(String member_id, String member_pw, HttpSession session, RedirectAttributes rda) throws Exception {
+		ms.signIn(member_id, member_pw, session);
+		rda.addFlashAttribute("msg","로그인 성공");
+		return "redirect:/";
 	}
 	
 	// 아이디 가입가능 여부 체크

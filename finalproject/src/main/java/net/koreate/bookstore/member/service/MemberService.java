@@ -1,5 +1,7 @@
 package net.koreate.bookstore.member.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
 import net.koreate.bookstore.vo.MemberVO;
@@ -18,11 +20,11 @@ public interface MemberService {
     /**
      * 회원 로그인을 처리합니다.
      * 
-     * @param memberId 로그인할 회원 ID
-     * @param memberPw 로그인할 회원 비밀번호
+     * @param member_id 로그인할 회원 ID
+     * @param member_pw 로그인할 회원 비밀번호
      * @return 로그인 성공 시 MemberVO 객체, 실패 시 null
      */
-    MemberVO signIn(MemberVO vo)throws Exception;
+    MemberVO signIn(String member_id, String member_pw, HttpSession sessio)throws Exception;
 
     /**
      * 회원 정보를 조회합니다.
