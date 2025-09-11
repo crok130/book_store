@@ -212,10 +212,7 @@
           </div>
 
           <div class="login-link">
-
-=======
-            이미 계정이 있으신가요? <a href="${path}/member/longin">로그인</a>
-
+            이미 계정이 있으신가요? <a href="login">로그인</a>
           </div>
         </div>
       </div>

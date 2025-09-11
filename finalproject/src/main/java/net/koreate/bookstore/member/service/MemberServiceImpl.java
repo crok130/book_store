@@ -1,5 +1,7 @@
 package net.koreate.bookstore.member.service;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -18,9 +20,10 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	@Override
-	public MemberVO signIn(MemberVO vo) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public MemberVO signIn(String member_id, String member_pw, HttpSession session) throws Exception {
+		MemberVO vo = dao.login(member_id, member_pw);
+		session.setAttribute("userInfo", vo);
+		return vo;
 	}
 
 	@Override
@@ -78,5 +81,7 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+
 
 }

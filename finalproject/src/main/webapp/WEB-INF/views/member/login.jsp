@@ -26,7 +26,7 @@
             <p class="login-subtitle">문학적 여정을 이어가기 위해 로그인해 주세요</p>
           </div>
 
-          <form class="login-form" method="POST" action="">
+          <form class="login-form" method="POST" action="login">
             <div class="form-group">
               <label class="form-label">아이디</label>
               <input
