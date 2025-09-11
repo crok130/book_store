@@ -5,497 +5,36 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-    <style>
-         * {
-          margin: 0;
-          padding: 0;
-          box-sizing: border-box;
-        }
-
-        body {
-          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-          line-height: 1.6;
-          color: #333;
-          background-color: #fafafa;
-        }
-
-        .container {
-          max-width: 1200px;
-          margin: 0 auto;
-          padding: 0 20px;
-        }
-
-        /* Header */
-        .header {
-          background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-          color: white;
-          box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-          position: sticky;
-          top: 0;
-          z-index: 100;
-        }
-
-        .header-content {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 1rem 0;
-        }
-
-        .logo {
-          font-size: 1.8rem;
-          font-weight: 700;
-          color: white;
-          text-decoration: none;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .admin-badge {
-          background: #e74c3c;
-          color: white;
-          padding: 0.2rem 0.6rem;
-          border-radius: 12px;
-          font-size: 0.7rem;
-          font-weight: 600;
-        }
-
-        .nav-menu {
-          display: flex;
-          list-style: none;
-          gap: 2rem;
-        }
-
-        .nav-menu a {
-          text-decoration: none;
-          color: rgba(255, 255, 255, 0.9);
-          font-weight: 500;
-          transition: color 0.3s ease;
-        }
-
-        .nav-menu a:hover {
-          color: white;
-        }
-
-        .user-actions {
-          display: flex;
-          gap: 1rem;
-          align-items: center;
-        }
-
-        .btn {
-          padding: 0.6rem 1.2rem;
-          border: none;
-          border-radius: 6px;
-          cursor: pointer;
-          font-weight: 500;
-          transition: all 0.3s ease;
-          text-decoration: none;
-          display: inline-block;
-        }
-
-        .btn-admin {
-          background: #e74c3c;
-          color: white;
-        }
-
-        .btn-admin:hover {
-          background: #c0392b;
-        }
-
-        .btn-outline-admin {
-          background: transparent;
-          color: white;
-          border: 2px solid rgba(255, 255, 255, 0.5);
-        }
-
-        .btn-outline-admin:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: white;
-        }
-
-        /* Breadcrumb */
-        .breadcrumb {
-          background: white;
-          padding: 1rem 0;
-          border-bottom: 1px solid #e9ecef;
-        }
-
-        .breadcrumb-nav {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          font-size: 0.9rem;
-          color: #666;
-        }
-
-        .breadcrumb-nav a {
-          color: #667eea;
-          text-decoration: none;
-          transition: color 0.3s ease;
-        }
-
-        .breadcrumb-nav a:hover {
-          color: #5a6fd8;
-        }
-
-        .breadcrumb-separator {
-          color: #999;
-        }
-
-        /* Main Content */
-        .main-content {
-          background: #fafafa;
-          padding: 3rem 0;
-        }
-
-        .create-container {
-          max-width: 800px;
-          margin: 0 auto;
-          background: white;
-          border-radius: 12px;
-          box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-          overflow: hidden;
-        }
-
-        .create-header {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          padding: 2rem;
-          text-align: center;
-        }
-
-        .create-title {
-          font-size: 2rem;
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-        }
-
-        .create-subtitle {
-          font-size: 1rem;
-          opacity: 0.9;
-        }
-
-        .create-form {
-          padding: 2.5rem;
-        }
-
-        .form-section {
-          margin-bottom: 2.5rem;
-        }
-
-        .section-title {
-          font-size: 1.3rem;
-          font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 1.5rem;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .form-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 1.5rem;
-        }
-
-        .form-group {
-          margin-bottom: 1.5rem;
-        }
-
-        .form-group.full-width {
-          grid-column: 1 / -1;
-        }
-
-        .form-label {
-          display: block;
-          font-weight: 600;
-          color: #2c3e50;
-          margin-bottom: 0.5rem;
-          font-size: 0.95rem;
-        }
-
-        .required {
-          color: #e74c3c;
-          margin-left: 0.3rem;
-        }
-
-        .form-input,
-        .form-textarea,
-        .form-select {
-          width: 100%;
-          padding: 0.8rem 1rem;
-          border: 2px solid #e9ecef;
-          border-radius: 8px;
-          font-size: 1rem;
-          transition: all 0.3s ease;
-          background: white;
-          outline: none;
-        }
-
-        .form-input:focus,
-        .form-textarea:focus,
-        .form-select:focus {
-          border-color: #667eea;
-          box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-        }
-
-        .form-textarea {
-          resize: vertical;
-          min-height: 120px;
-          font-family: inherit;
-        }
-
-        .form-select {
-          cursor: pointer;
-          background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
-          background-position: right 0.75rem center;
-          background-repeat: no-repeat;
-          background-size: 1rem;
-          padding-right: 2.5rem;
-          appearance: none;
-        }
-
-        .form-help {
-          font-size: 0.85rem;
-          color: #666;
-          margin-top: 0.5rem;
-        }
-
-        /* Image Upload */
-        .image-upload-area {
-          border: 2px dashed #d1d5db;
-          border-radius: 8px;
-          padding: 2rem;
-          text-align: center;
-          background: #f9fafb;
-          transition: all 0.3s ease;
-          cursor: pointer;
-        }
-
-        .image-upload-area:hover {
-          border-color: #667eea;
-          background: #f0f4ff;
-        }
-
-        .image-upload-icon {
-          font-size: 3rem;
-          color: #9ca3af;
-          margin-bottom: 1rem;
-        }
-
-        .image-upload-text {
-          font-size: 1rem;
-          color: #374151;
-          margin-bottom: 0.5rem;
-        }
-
-        .image-upload-hint {
-          font-size: 0.85rem;
-          color: #6b7280;
-        }
-
-        .image-input {
-          display: none;
-        }
-
-        /* Price Input */
-        .price-input-group {
-          position: relative;
-        }
-
-        .price-symbol {
-          position: absolute;
-          right: 1rem;
-          top: 50%;
-          transform: translateY(-50%);
-          color: #666;
-          font-weight: 600;
-        }
-
-        .price-input {
-          padding-right: 2.5rem;
-        }
-
-        /* Quantity Input */
-        .quantity-group {
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-        }
-
-        .quantity-btn {
-          width: 40px;
-          height: 40px;
-          border: 2px solid #e9ecef;
-          background: white;
-          border-radius: 6px;
-          cursor: pointer;
-          font-size: 1.2rem;
-          font-weight: 600;
-          color: #666;
-          transition: all 0.3s ease;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .quantity-btn:hover {
-          border-color: #667eea;
-          color: #667eea;
-        }
-
-        .quantity-input {
-          width: 80px;
-          text-align: center;
-        }
-
-        /* Action Buttons */
-        .form-actions {
-          display: flex;
-          gap: 1rem;
-          justify-content: flex-end;
-          padding-top: 2rem;
-          border-top: 2px solid #f1f3f4;
-          margin-top: 2rem;
-        }
-
-        .btn-large {
-          padding: 1rem 2rem;
-          font-size: 1.1rem;
-          font-weight: 600;
-          border-radius: 8px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: none;
-          min-width: 140px;
-        }
-
-        .btn-cancel {
-          background: #6c757d;
-          color: white;
-        }
-
-        .btn-cancel:hover {
-          background: #5a6268;
-        }
-
-        .btn-save {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-        }
-
-        .btn-save:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-        }
-
-        /* Footer */
-        .footer {
-          background: #1a252f;
-          color: white;
-          padding: 3rem 0 2rem;
-        }
-
-        .footer-content {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-          gap: 2rem;
-          margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-          margin-bottom: 1rem;
-          color: white;
-          font-weight: 600;
-        }
-
-        .footer-section ul {
-          list-style: none;
-        }
-
-        .footer-section ul li {
-          margin-bottom: 0.5rem;
-        }
-
-        .footer-section ul li a {
-          color: #bbb;
-          text-decoration: none;
-          transition: color 0.3s ease;
-        }
-
-        .footer-section ul li a:hover {
-          color: white;
-        }
-
-        .footer-bottom {
-          border-top: 1px solid #333;
-          padding-top: 2rem;
-          text-align: center;
-          color: #bbb;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-          .header-content {
-            flex-direction: column;
-            gap: 1rem;
-          }
-
-          .nav-menu {
-            gap: 1rem;
-          }
-
-          .form-grid {
-            grid-template-columns: 1fr;
-          }
-
-          .create-form {
-            padding: 1.5rem;
-          }
-
-          .form-actions {
-            flex-direction: column;
-          }
-
-          .btn-large {
-            width: 100%;
-          }
-        }
-    </style>
+    <link rel="stylesheet" href="${path}/resources/css/bookcreate.css">
 </head>
 <body>
      <div>
-        {/* Header */}
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="/components/AdminMainPage.tsx" class="logo">
-                🛠️ BookStore Admin
-                <span class="admin-badge">ADMIN</span>
-              </a>
+              <a href="/components/AdminMainPage.tsx" class="logo">🛠️ BookStore Admin</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="/components/AdminDashboard.tsx">대시보드</a></li>
+                  <li><a href="/components/AdminMainPage.tsx">대시보드</a></li>
                   <li><a href="/components/BookCreatePage.tsx">도서 등록</a></li>
-                  <li><a href="#">도서 관리</a></li>
-                  <li><a href="#">회원 관리</a></li>
-                  <li><a href="#">주문 관리</a></li>
-                  <li><a href="#">통계</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
-                <a href="/components/AdminLoginPage.tsx" class="btn btn-outline-admin">로그인</a>
-                <a href="/components/AdminRegisterPage.tsx" class="btn btn-admin">관리자 등록</a>
+                <div class="user-menu">
+                  <div class="user-greeting" onclick="toggleDropdown()">
+                    관리자님 안녕하세요 ▼
+                  </div>
+                  <div class="user-dropdown">
+                    <a href="#" class="dropdown-item">로그아웃</a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </header>
 
-        {/* Breadcrumb */}
-        <section class="breadcrumb">
+       
+          <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
               <a href="/components/AdminMainPage.tsx">관리자 홈</a>
@@ -516,8 +55,8 @@
                 <p class="create-subtitle">책 정보를 입력하여 새로운 도서를 등록하세요</p>
               </div>
 
-              <form class="create-form">
-                {/* 기본 정보 */}
+              {/* 기본 정보 */}
+              <form class="create-form" method="POST" action="newbookwrite" enctype="multipart/form-data">
                 <div class="form-section">
                   <h2 class="section-title">📖 기본 정보</h2>
                   <div class="form-grid">
@@ -528,7 +67,7 @@
                       <input 
                         type="text" 
                         id="title" 
-                        name="title" 
+                        name="newbook_title" 
                         class="form-input" 
                         placeholder="책 제목을 입력하세요"
                         required
@@ -542,7 +81,7 @@
                       <input 
                         type="text" 
                         id="author" 
-                        name="author" 
+                        name="newbook_author" 
                         class="form-input" 
                         placeholder="저자명을 입력하세요"
                         required
@@ -556,7 +95,7 @@
                       <input 
                         type="text" 
                         id="publisher" 
-                        name="publisher" 
+                        name="newbook_publisher" 
                         class="form-input" 
                         placeholder="출판사명을 입력하세요"
                         required
@@ -570,7 +109,7 @@
                       <input 
                         type="date" 
                         id="publication-date" 
-                        name="publication-date" 
+                        name="newbook_publication_date" 
                         class="form-input" 
                         required
                       />
@@ -580,20 +119,20 @@
                       <label for="category" class="form-label">
                         카테고리<span class="required">*</span>
                       </label>
-                      <select id="category" name="category" class="form-select" required>
-                        <option value="">카테고리를 선택하세요</option>
-                        <option value="novel">소설/에세이</option>
-                        <option value="business">경영/경제</option>
-                        <option value="science">과학/기술</option>
-                        <option value="art">예술/디자인</option>
-                        <option value="children">아동/청소년</option>
-                        <option value="self-help">자기계발</option>
-                        <option value="computer">IT/컴퓨터</option>
-                        <option value="history">역사/문화</option>
-                        <option value="health">건강/의학</option>
-                        <option value="hobby">취미/스포츠</option>
-                        <option value="language">외국어</option>
-                        <option value="comics">만화</option>
+                      <select id="category" name="newbook_category" class="form-select" required>
+                        <option value="카테고리">카테고리를 선택하세요</option>
+                        <option value="소설/에세이">소설/에세이</option>
+                        <option value="경영/경제">경영/경제</option>
+                        <option value="과학/기술">과학/기술</option>
+                        <option value="예술/디자인">예술/디자인</option>
+                        <option value="아동/청소년">아동/청소년</option>
+                        <option value="자기계발">자기계발</option>
+                        <option value="IT/컴퓨터">IT/컴퓨터</option>
+                        <option value="역사/문화">역사/문화</option>
+                        <option value="건강/의학">건강/의학</option>
+                        <option value="취미/스포츠">취미/스포츠</option>
+                        <option value="외국어">외국어</option>
+                        <option value="만화">만화</option>
                       </select>
                     </div>
 
@@ -603,7 +142,7 @@
                       </label>
                       <textarea 
                         id="description" 
-                        name="description" 
+                        name="newbook_content" 
                         class="form-textarea" 
                         placeholder="책에 대한 자세한 설명을 입력하세요..."
                         required
@@ -628,11 +167,12 @@
                     <input 
                       type="file" 
                       id="book-image" 
-                      name="book-image" 
+                      name="newbook_imgs" 
                       class="image-input" 
                       accept="image/jpeg,image/png"
-                      required
+                      required 
                     />
+                    <!-- required -->
                   </div>
                 </div>
 
@@ -648,7 +188,7 @@
                         <input 
                           type="number" 
                           id="price" 
-                          name="price" 
+                          name="newbook_price" 
                           class="form-input price-input" 
                           placeholder="0"
                           min="0"
@@ -668,7 +208,7 @@
                         <input 
                           type="number" 
                           id="quantity" 
-                          name="quantity" 
+                          name="newbook_count"  
                           class="form-input quantity-input" 
                           value="1"
                           min="0"
@@ -690,7 +230,7 @@
                       <input 
                         type="text" 
                         id="isbn" 
-                        name="isbn" 
+                        name="newbook_isbn" 
                         class="form-input" 
                         placeholder="978-89-xxxxx-xx-x"
                       />
@@ -702,7 +242,7 @@
                       <input 
                         type="number" 
                         id="pages" 
-                        name="pages" 
+                        name="newbook_page" 
                         class="form-input" 
                         placeholder="페이지 수"
                         min="1"
@@ -715,7 +255,7 @@
                 <div class="form-actions">
                   <button type="button" class="btn-large btn-cancel">취소</button>
                   <button type="submit" class="btn-large btn-save">책 등록하기</button>
-                </div>
+                </div>q
               </form>
             </div>
           </div>
@@ -784,5 +324,20 @@
             quantityInput.value = currentValue - 1;
           }
         }
+
+        function toggleDropdown() {
+          const dropdown = document.querySelector('.user-dropdown');
+          dropdown.classList.toggle('show');
+        }
+
+        // 외부 클릭시 드롭다운 닫기
+        document.addEventListener('click', function(event) {
+          const userMenu = document.querySelector('.user-menu');
+          const dropdown = document.querySelector('.user-dropdown');
+          
+          if (!userMenu.contains(event.target)) {
+            dropdown.classList.remove('show');
+          }
+        });
       </script>
 </html>

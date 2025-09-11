@@ -1,372 +1,131 @@
 package net.koreate.bookstore;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.concurrent.CountDownLatch;
+import static org.junit.Assert.assertTrue;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.CloseReason;
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.TimeUnit;
+
+import javax.mail.Transport;
+import javax.websocket.ClientEndpointConfig;
 import javax.websocket.ContainerProvider;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
+import javax.websocket.Endpoint;
+import javax.websocket.EndpointConfig;
+import javax.websocket.MessageHandler;
 import javax.websocket.Session;
 import javax.websocket.WebSocketContainer;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.messaging.converter.MappingJackson2MessageConverter;
+import org.springframework.messaging.simp.stomp.StompFrameHandler;
+import org.springframework.messaging.simp.stomp.StompHeaders;
+import org.springframework.messaging.simp.stomp.StompSession;
+import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.web.socket.client.standard.StandardWebSocketClient;
+import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.springframework.web.socket.sockjs.client.SockJsClient;
+import org.springframework.web.socket.sockjs.client.WebSocketTransport;
 
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:spring/root-context.xml"})
 public class test {
 
+    /**
+	 * 순수 WebSocket E2E (서버에 @ServerEndpoint 또는 임의 엔드포인트가 있을 때)
+     */
+    @Test
+	public void e2eWebSocket_1to1_roomCreate_join_message() throws Exception {
+		final String wsUri = System.getProperty("ws.uri", "ws://localhost:8080/chat");
 
-    @Test
-    public void testWebSocketConnection() throws Exception {
-        System.out.println("=== WebSocket 클라이언트 테스트 시작 ===");
-        
-        // WebSocket 컨테이너 생성 테스트
+		final CountDownLatch messageReceived = new CountDownLatch(1);
+		final CountDownLatch opened = new CountDownLatch(2);
+
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-        System.out.println("✅ WebSocket 컨테이너 생성 성공");
-        
-        // 클라이언트 엔드포인트 생성 테스트
-        CountDownLatch latch = new CountDownLatch(1);
-        ChatClientEndpoint client = new ChatClientEndpoint(latch);
-        System.out.println("✅ 클라이언트 엔드포인트 생성 성공");
-        
-        // 메시지 형식 테스트
-        String testMessage = "안녕하세요! 채팅 테스트입니다.";
-        // JSON 메시지 형식 테스트
-        String joinMessage = "{\"type\":\"JOIN\",\"chatroom_num\":1,\"member_num\":1}";
-        String chatMessage = "{\"type\":\"MESSAGE\",\"chatroom_num\":1,\"sender_member_num\":1,\"message_content\":\"안녕하세요!\"}";
-        System.out.println("✅ 메시지 형식 검증 완료");
-        
-        System.out.println("=== 테스트 완료 ===\n");
-    }
-    
-    /**
-     * WebSocket 클라이언트 엔드포인트
-     * 서버와의 통신을 처리하는 클라이언트 클래스
-     */
-    @ClientEndpoint
-    public static class ChatClientEndpoint {
-        
-        private CountDownLatch latch;
-        
-        public ChatClientEndpoint(CountDownLatch latch) {
-            this.latch = latch;
-        }
-        
-        /**
-         * 서버에 연결되었을 때 호출
-         */
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("클라이언트: 서버에 연결되었습니다. Session ID: " + session.getId());
-        }
-        
-        /**
-         * 서버로부터 메시지를 받았을 때 호출
-         */
-        @OnMessage
-        public void onMessage(String message, Session session) {
-            System.out.println("클라이언트: 서버로부터 메시지 수신: " + message);
-            
-            // 래치 카운트 다운 (테스트 완료 신호)
-            latch.countDown();
-        }
-        
-        /**
-         * 연결이 종료되었을 때 호출
-         */
-        @OnClose
-        public void onClose(Session session, CloseReason closeReason) {
-            System.out.println("클라이언트: 서버 연결이 종료되었습니다. 이유: " + closeReason.getReasonPhrase());
-        }
-        
-        /**
-         * 에러가 발생했을 때 호출
-         */
-        @OnError
-        public void onError(Session session, Throwable throwable) {
-            System.err.println("클라이언트: 에러 발생: " + throwable.getMessage());
-            throwable.printStackTrace();
-        }
-    }
-    
-    /**
-     * 채팅방 입장 테스트 (Mock 테스트)
-     * 채팅방 입장 로직을 테스트합니다.
+		ClientEndpointConfig cfg = ClientEndpointConfig.Builder.create().build();
+
+		// Client 1 (방 생성자)
+		Session c1 = container.connectToServer(new Endpoint() {
+			@Override
+			public void onOpen(Session session, EndpointConfig config) {
+				opened.countDown();
+				session.addMessageHandler((MessageHandler.Whole<String>) msg -> {
+					System.out.println("[C1] recv: " + msg);
+					messageReceived.countDown();
+				});
+				try {
+					session.getBasicRemote().sendText("{\"type\":\"CREATE_ROOM\"}");
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}, cfg, java.net.URI.create(wsUri));
+
+		// Client 2 (참가자)
+		Session c2 = container.connectToServer(new Endpoint() {
+			@Override
+			public void onOpen(Session session, EndpointConfig config) {
+				opened.countDown();
+				session.addMessageHandler((MessageHandler.Whole<String>) msg -> {
+					System.out.println("[C2] recv: " + msg);
+				});
+				try {
+					session.getBasicRemote().sendText("{\"type\":\"JOIN\",\"roomId\":1}");
+					session.getBasicRemote().sendText("{\"type\":\"MESSAGE\",\"roomId\":1,\"text\":\"hello\"}");
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}, cfg, java.net.URI.create(wsUri));
+
+		assertTrue("클라이언트 오픈 실패", opened.await(5, TimeUnit.SECONDS));
+		assertTrue("메시지 수신 타임아웃", messageReceived.await(5, TimeUnit.SECONDS));
+
+		c2.close();
+		c1.close();
+	}
+
+	/**
+	 * STOMP E2E (Spring STOMP 서버가 설정되어 있을 때)
+	 * 기본 접속: ws://localhost:8080/ws-stomp
+	 * 구독: /topic/chat.1, 전송: /app/chat/1
      */
     @Test
-    public void testJoinChatRoom() throws Exception {
-        System.out.println("=== 채팅방 입장 테스트 시작 ===");
-        
-        // 채팅방 입장 메시지 생성 테스트
-        String joinMessage = "{\"type\":\"JOIN\",\"chatroom_num\":1,\"member_num\":1}";
-        System.out.println("✅ 채팅방 입장 메시지 생성: " + joinMessage);
-        
-        // JSON 파싱 테스트 (간단한 검증)
-        if (joinMessage.contains("\"type\":\"JOIN\"")) {
-            System.out.println("✅ 메시지 타입 검증 성공: JOIN");
-        }
-        
-        if (joinMessage.contains("\"chatroom_num\":1")) {
-            System.out.println("✅ 채팅방 번호 검증 성공: 1");
-        }
-        
-        if (joinMessage.contains("\"member_num\":1")) {
-            System.out.println("✅ 회원 번호 검증 성공: 1");
-        }
-        
-        // 클라이언트 엔드포인트 생성 테스트
-        CountDownLatch latch = new CountDownLatch(1);
-        ChatRoomClientEndpoint client = new ChatRoomClientEndpoint(latch);
-        System.out.println("✅ 채팅방 클라이언트 엔드포인트 생성 성공");
-        
-        System.out.println("=== 채팅방 입장 테스트 완료 ===");
-        System.out.println("💡 실제 서버 구현 후 연결 테스트를 진행하세요.");
-    }
-    
-    /**
-     * 채팅방 클라이언트 엔드포인트
-     */
-    @ClientEndpoint
-    public static class ChatRoomClientEndpoint {
-        
-        private CountDownLatch latch;
-        
-        public ChatRoomClientEndpoint(CountDownLatch latch) {
-            this.latch = latch;
-        }
-        
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("채팅방 클라이언트: 연결됨");
-        }
-        
-        @OnMessage
-        public void onMessage(String message, Session session) {
-            System.out.println("채팅방 클라이언트: 메시지 수신 - " + message);
-            latch.countDown();
-        }
-        
-        @OnClose
-        public void onClose(Session session, CloseReason closeReason) {
-            System.out.println("채팅방 클라이언트: 연결 종료");
-        }
-        
-        @OnError
-        public void onError(Session session, Throwable throwable) {
-            System.err.println("채팅방 클라이언트: 에러 - " + throwable.getMessage());
-        }
-    }
-    
-    /**
-     * 채팅방 생성 테스트 (Mock 테스트)
-     * 비밀번호 없이 바로 WebSocket 연결 후 DB에 채팅방 생성
-     */
-    @Test
-    public void testCreateChatRoom() throws Exception {
-        System.out.println("=== 채팅방 생성 테스트 ===");
-        
-        // 1. WebSocket 연결 (
-        System.out.println("✅ WebSocket 연결 성공");
-        
-        // 2. 채팅방 생성 요청
-        String createRoomMessage = "{\"type\":\"CREATE_ROOM\",\"seller_member_num\":1,\"buyer_member_num\":2}";
-        System.out.println("✅ 채팅방 생성 요청: " + createRoomMessage);
-        
-        // 3. DB에 채팅방 생성 (PreparedStatement 사용)
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        
-        try {
-            // DB 연결 (db.properties 정보 사용)
-            conn = DriverManager.getConnection("jdbc:oracle:thin:@192.168.0.105:1521/XE", "book_store", "root");
-            System.out.println("✅ DB 연결 성공");
-            
-            // 채팅방 생성 SQL
-            String sql = "INSERT INTO chatrooms (seller_member_num, buyer_member_num, created_at) VALUES (?, ?, CURRENT_TIMESTAMP)";
-            pstmt = conn.prepareStatement(sql, new String[]{"chatroom_num"});
-            pstmt.setInt(1, 1); // seller_member_num
-            pstmt.setInt(2, 2); // buyer_member_num
-            
-            int result = pstmt.executeUpdate();
-            System.out.println("✅ DB 저장 완료: " + result + "개 행 삽입");
-            
-            // 생성된 chatroom_num 조회
-            rs = pstmt.getGeneratedKeys();
-            if (rs.next()) {
-                int chatroomNum = rs.getInt(1);
-                System.out.println("✅ 생성된 채팅방 번호: " + chatroomNum);
-            }
-            
-        } catch (SQLException e) {
-            System.err.println("❌ DB 오류: " + e.getMessage());
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (pstmt != null) pstmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                System.err.println("❌ 리소스 해제 오류: " + e.getMessage());
-            }
-        }
-        
-        // 4. 생성된 채팅방 정보 응답
-        String createRoomResponse = "{\"type\":\"ROOM_CREATED\",\"chatroom_num\":1,\"seller_member_num\":1,\"buyer_member_num\":2}";
-        System.out.println("✅ 채팅방 생성 완료: " + createRoomResponse);
-        
-        // 5. 클라이언트 엔드포인트 생성
-        CountDownLatch latch = new CountDownLatch(1);
-        ChatRoomCreationClientEndpoint client = new ChatRoomCreationClientEndpoint(latch);
-        
-        System.out.println("=== 테스트 완료 ===");
-    }
-    
-    /**
-     * 채팅방 생성 클라이언트 엔드포인트
-     */
-    @ClientEndpoint
-    public static class ChatRoomCreationClientEndpoint {
-        
-        private CountDownLatch latch;
-        
-        public ChatRoomCreationClientEndpoint(CountDownLatch latch) {
-            this.latch = latch;
-        }
-        
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("채팅방 생성 클라이언트: 연결됨");
-        }
-        
-        @OnMessage
-        public void onMessage(String message, Session session) {
-            System.out.println("채팅방 생성 클라이언트: 수신 - " + message);
-            latch.countDown();
-        }
-        
-        @OnClose
-        public void onClose(Session session, CloseReason closeReason) {
-            System.out.println("채팅방 생성 클라이언트: 연결 종료");
-        }
-        
-        @OnError
-        public void onError(Session session, Throwable throwable) {
-            System.err.println("채팅방 생성 클라이언트: 에러 - " + throwable.getMessage());
-        }
-    }
-    
-    /**
-     * 메시지 전송 테스트 (Mock 테스트)
-     * 메시지 전송 로직을 테스트합니다.
-     */
-    @Test
-    public void testSendMessage() throws Exception {
-        System.out.println("=== 메시지 전송 테스트 시작 ===");
-        
-        // 1. 채팅방 입장 메시지 테스트
-        String joinMessage = "{\"type\":\"JOIN\",\"chatroom_num\":1,\"member_num\":1}";
-        System.out.println("✅ 1. 채팅방 입장 메시지: " + joinMessage);
-        
-        // 2. 메시지 전송 메시지 테스트
-        String chatMessage = "{\"type\":\"MESSAGE\",\"chatroom_num\":1,\"sender_member_num\":1,\"message_content\":\"안녕하세요! 테스트 메시지입니다.\"}";
-        System.out.println("✅ 2. 메시지 전송 메시지: " + chatMessage);
-        
-        // 메시지 형식 검증
-        if (chatMessage.contains("\"type\":\"MESSAGE\"")) {
-            System.out.println("✅ 메시지 타입 검증 성공: MESSAGE");
-        }
-        
-        if (chatMessage.contains("\"message_content\"")) {
-            System.out.println("✅ 메시지 내용 필드 검증 성공");
-        }
-        
-        // 클라이언트 엔드포인트 생성 테스트
-        CountDownLatch latch = new CountDownLatch(2);
-        MessageClientEndpoint client = new MessageClientEndpoint(latch);
-        System.out.println("✅ 메시지 클라이언트 엔드포인트 생성 성공");
-        
-        // 메시지 시퀀스 테스트
-        System.out.println("✅ 메시지 전송 시퀀스: JOIN → MESSAGE");
-        
-        System.out.println("=== 메시지 전송 테스트 완료 ===");
-        System.out.println("💡 실제 서버 구현 후 연결 테스트를 진행하세요.");
-    }
-    
-    /**
-     * 메시지 클라이언트 엔드포인트
-     */
-    @ClientEndpoint
-    public static class MessageClientEndpoint {
-        
-        private CountDownLatch latch;
-        
-        public MessageClientEndpoint(CountDownLatch latch) {
-            this.latch = latch;
-        }
-        
-        @OnOpen
-        public void onOpen(Session session) {
-            System.out.println("메시지 클라이언트: 연결됨");
-        }
-        
-        @OnMessage
-        public void onMessage(String message, Session session) {
-            System.out.println("메시지 클라이언트: 수신 - " + message);
-            latch.countDown();
-        }
-        
-        @OnClose
-        public void onClose(Session session, CloseReason closeReason) {
-            System.out.println("메시지 클라이언트: 연결 종료");
-        }
-        
-        @OnError
-        public void onError(Session session, Throwable throwable) {
-            System.err.println("메시지 클라이언트: 에러 - " + throwable.getMessage());
-        }
-    }
-    
-    @Test
-    public void testButtonToChatFlow() throws Exception {
-        System.out.println("\n=== 게시글 버튼 → 채팅방 생성 플로우 ===");
-        
-        // 1. 게시글에서 "채팅하기" 버튼 클릭
-        int boardNum = 1;
-        int buyerNum = 2;
-        int sellerNum = 1;
-        
-        System.out.println("✅ 게시글 " + boardNum + "에서 채팅 버튼 클릭");
-        
-        // 2. 채팅방 생성 요청 (AJAX)
-        String createRoomRequest = "POST /chat/createRoom";
-        System.out.println("✅ " + createRoomRequest + " → DB에 채팅방 생성");
-        
-        // 3. 채팅방 생성 후 WebSocket 연결
-        int chatroomNum = 3; // 새로 생성된 채팅방 번호
-        String wsUrl = "ws://localhost:8080/chat/" + chatroomNum;
-        
-        System.out.println("✅ WebSocket 연결: " + wsUrl);
-        
-        // 4. 채팅방 입장 (JOIN 메시지)
-        String joinMessage = "{\"type\":\"JOIN\",\"chatroom_num\":" + chatroomNum + ",\"member_num\":" + buyerNum + "}";
-        System.out.println("✅ 채팅방 입장: " + joinMessage);
-        
-        // 5. 메시지 전송 가능
-        String chatMessage = "{\"type\":\"MESSAGE\",\"chatroom_num\":" + chatroomNum + ",\"sender_member_num\":" + buyerNum + ",\"message_content\":\"안녕하세요!\"}";
-        System.out.println("✅ 메시지 전송: " + chatMessage);
-        
-        System.out.println("=== 플로우 완료 ===\n");
+	public void stompE2E_subscribe_and_send() throws Exception {
+		final String stompUri = System.getProperty("stomp.uri", "ws://localhost:8080/ws-stomp");
+		final String subscribeDest = System.getProperty("stomp.sub", "/topic/chat.1");
+		final String sendDest = System.getProperty("stomp.send", "/app/chat/1");
+
+		// SockJS + Standard WebSocket transport 구성
+		WebSocketTransport webSocketTransport = new WebSocketTransport(new StandardWebSocketClient());
+		SockJsClient sockJsClient = new SockJsClient(Arrays.asList(webSocketTransport));
+		WebSocketStompClient stompClient = new WebSocketStompClient(sockJsClient);
+		stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+
+		final BlockingQueue<String> queue = new LinkedBlockingDeque<>();
+		final CountDownLatch connected = new CountDownLatch(1);
+
+		StompSession session = stompClient.connect(stompUri, new StompSessionHandlerAdapter() {
+			@Override public void afterConnected(StompSession sess, StompHeaders connectedHeaders) {
+				connected.countDown();
+			}
+		}).get(5, TimeUnit.SECONDS);
+
+		assertTrue("STOMP 연결 실패", connected.await(5, TimeUnit.SECONDS));
+
+		// 구독
+		session.subscribe(subscribeDest, new StompFrameHandler() {
+			@Override public Type getPayloadType(StompHeaders headers) { return String.class; }
+			@Override public void handleFrame(StompHeaders headers, Object payload) {
+				queue.offer(String.valueOf(payload));
+			}
+		});
+
+		// 전송 (서버에서 @MessageMapping("/chat/{id}") 등으로 처리하도록 맞춰주세요)
+		String payload = "{\"text\":\"hello stomp\"}";
+		session.send(sendDest, payload.getBytes());
+
+		String received = queue.poll(5, TimeUnit.SECONDS);
+		assertTrue("구독 메시지 수신 실패", received != null && received.length() > 0);
     }
 }
