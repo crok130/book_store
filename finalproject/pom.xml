@@ -1,3 +1,4 @@
+
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
@@ -119,7 +120,7 @@
 			<scope>test</scope>
 		</dependency> 
 		
-				<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
 		    <groupId>org.projectlombok</groupId>
 		    <artifactId>lombok</artifactId>
@@ -183,7 +184,7 @@
 		    <version>1.6.2</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-	-->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
 		<dependency>
 		    <groupId>org.springframework</groupId>
 		    <artifactId>spring-context-support</artifactId>
@@ -212,13 +213,6 @@
 			<version>${org.springframework-version}</version>
 		</dependency>
 		
-		<!-- Tomcat Juli Logging -->
-		<dependency>
-		    <groupId>org.apache.tomcat</groupId>
-		    <artifactId>tomcat-juli</artifactId>
-		    <version>9.0.65</version>
-		    <scope>test</scope>
-		</dependency>
 	       	       
 	</dependencies>
     <build>
@@ -260,3 +254,4 @@
         </plugins>
     </build>
 </project>
+

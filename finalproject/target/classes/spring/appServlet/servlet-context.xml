@@ -31,3 +31,4 @@
 	
 	<mybatis-spring:scan base-package="net.koreate.bookstore.*.dao"/>
 </beans:beans>
+
