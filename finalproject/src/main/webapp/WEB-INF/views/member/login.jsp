@@ -10,6 +10,12 @@
      <link rel="stylesheet" href="${path}/resources/css/login.css">
 </head>
 <body>
+ <script>
+	
+	if('${msg}' !== '' && '${msg}'!== null){
+		alert("${msg}");
+	}
+</script>
      <div class="login-container">
         <a href="${path}/" class="back-to-home">← 홈으로</a>
         
