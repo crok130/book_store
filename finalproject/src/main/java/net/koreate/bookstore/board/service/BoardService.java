@@ -1,11 +1,10 @@
 package net.koreate.bookstore.board.service;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import net.koreate.bookstore.util.Criteria;
+import net.koreate.bookstore.common.utils.Criteria;
 import net.koreate.bookstore.vo.NewBookVO;
 
 @Service

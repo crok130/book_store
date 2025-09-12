@@ -1,4 +1,4 @@
-package net.koreate.bookstore.util;
+package net.koreate.bookstore.common.utils;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
