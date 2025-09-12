@@ -43,12 +43,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("login")
-	public String POSTlogin(String member_id, String member_pw, HttpSession session,  RedirectAttributes rttr) throws Exception {
+	public String POSTlogin(String member_id, String member_pw, HttpSession session) throws Exception {
 		MemberVO vo = ms.signIn(member_id, member_pw, session); 
-		if(vo == null) {
-			rttr.addFlashAttribute("msg","아이디 혹은 비밀번호가 일치하지 않습니다.");
-			return "redirect:/member/login";
-		}
 		return "redirect:/";
 	}
 	

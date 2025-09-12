@@ -1,5 +1,6 @@
 package net.koreate.bookstore.board.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -53,6 +54,12 @@ public interface BoardService {
      */
     boolean changeBookCount(NewBookVO vo) throws Exception;
 
+    /**
+     * 인덱스페이지 상품 표출
+     * 
+     * @return 인덱스 페이지에 상품6개 보여주는 곳에 리스트 타입으로 VO 반환
+     */
+    List<NewBookVO> listBook() throws Exception;
 
 
 }

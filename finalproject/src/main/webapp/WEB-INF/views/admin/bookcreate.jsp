@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="path" value="${pageContext.request.contextPath}" scope="session" />
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,15 +10,20 @@
     <link rel="stylesheet" href="${path}/resources/css/bookcreate.css">
 </head>
 <body>
+<script>
+	if('${msg}' !== '' && '${msg}'!== null){
+		alert("${msg}");
+	}
+</script>
      <div>
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="/components/AdminMainPage.tsx" class="logo">🛠️ BookStore Admin</a>
+              <a href="admindashboard" class="logo">🛠️ BookStore Admin</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="/components/AdminMainPage.tsx">대시보드</a></li>
-                  <li><a href="/components/BookCreatePage.tsx">도서 등록</a></li>
+                  <li><a href="dashboard">대시보드</a></li>
+                  <li><a href="bookcreate">도서 등록</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
@@ -37,16 +44,14 @@
           <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
-              <a href="/components/AdminMainPage.tsx">관리자 홈</a>
-              <span class="breadcrumb-separator">></span>
-              <a href="/components/AdminDashboard.tsx">대시보드</a>
+              <a href="dashboard">대시보드</a>
               <span class="breadcrumb-separator">></span>
               <span>책 등록</span>
             </nav>
           </div>
         </section>
 
-        {/* Main Content */}
+
         <main class="main-content">
           <div class="container">
             <div class="create-container">
@@ -55,7 +60,7 @@
                 <p class="create-subtitle">책 정보를 입력하여 새로운 도서를 등록하세요</p>
               </div>
 
-              {/* 기본 정보 */}
+       
               <form class="create-form" method="POST" action="newbookwrite" enctype="multipart/form-data">
                 <div class="form-section">
                   <h2 class="section-title">📖 기본 정보</h2>
@@ -152,7 +157,7 @@
                   </div>
                 </div>
 
-                {/* 이미지 업로드 */}
+
                 <div class="form-section">
                   <h2 class="section-title">📷 책 표지 이미지</h2>
                   <div class="form-group">
@@ -176,7 +181,7 @@
                   </div>
                 </div>
 
-                {/* 판매 정보 */}
+
                 <div class="form-section">
                   <h2 class="section-title">💰 판매 정보</h2>
                   <div class="form-grid">
@@ -221,7 +226,7 @@
                   </div>
                 </div>
 
-                {/* 추가 정보 */}
+
                 <div class="form-section">
                   <h2 class="section-title">📝 추가 정보</h2>
                   <div class="form-grid">
@@ -251,7 +256,7 @@
                   </div>
                 </div>
 
-                {/* 액션 버튼 */}
+
                 <div class="form-actions">
                   <button type="button" class="btn-large btn-cancel">취소</button>
                   <button type="submit" class="btn-large btn-save">책 등록하기</button>
@@ -261,7 +266,7 @@
           </div>
         </main>
 
-        {/* Footer */}
+
         <footer class="footer">
           <div class="container">
             <div class="footer-content">
