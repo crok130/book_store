@@ -5,11 +5,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.koreate.bookstore.member.dao.MemberDAO;
 import net.koreate.bookstore.vo.MemberVO;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService{
 
 	private final MemberDAO dao;
@@ -23,6 +25,7 @@ public class MemberServiceImpl implements MemberService{
 	public MemberVO signIn(String member_id, String member_pw, HttpSession session) throws Exception {
 		MemberVO vo = dao.login(member_id, member_pw);
 		session.setAttribute("userInfo", vo);
+		log.info("vo : {}", vo);
 		return vo;
 	}
 

@@ -23,6 +23,6 @@ public interface MemberDAO {
     @Insert("INSERT INTO members(member_id,member_pw,member_name,member_addr,member_email,member_phone,member_nickname,member_birth,member_status) VALUES(#{member_id},#{member_pw},#{member_name},#{member_addr},#{member_email},#{member_phone},#{member_nickname},#{member_birth},0)")
     int register(MemberVO vo) throws Exception;
     
-    @Select("SELECT * members WHERE member_status = 0 AND member_id = #{member_id} AND member_pw = #{member_pw}")
+    @Select("SELECT * FROM members WHERE member_status = 0 AND member_id = #{member_id} AND member_pw = #{member_pw}")
     MemberVO login(@Param("member_id") String member_id, @Param("member_pw")String member_pw) throws Exception;
 }
