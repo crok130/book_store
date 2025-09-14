@@ -15,7 +15,7 @@
 		alert("${msg}");
 	}
 </script>
-       <div class="dashboard-container">
+         <div class="dashboard-container">
         <div class="sidebar">
           <div class="sidebar-header">
             <a href="/components/AdminMainPage.tsx" class="sidebar-logo">
@@ -228,7 +228,7 @@
                 </a>
               </div>
             </div>
-          
+
             <div class="dashboard-grid">
               <div class="chart-card">
                 <h2 class="section-title">

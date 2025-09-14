@@ -23,6 +23,7 @@ public class HomeController {
 	public String index(Model model) throws Exception {
 		List<NewBookVO> list = new ArrayList<>();
 		list = bs.listBook();
+		System.out.println(list);
 		model.addAttribute("list", list);
 		return "index";
 	}

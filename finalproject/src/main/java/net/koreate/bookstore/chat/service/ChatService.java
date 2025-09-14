@@ -3,6 +3,7 @@ package net.koreate.bookstore.chat.service;
 import java.util.List;
 
 import net.koreate.bookstore.vo.ChatRoomVO;
+import net.koreate.bookstore.vo.ChatVO;
 import net.koreate.bookstore.vo.MessageVO;
 
 /**
@@ -35,7 +36,7 @@ public interface ChatService {
      * @param member_num 회원 번호
      * @return 참여한 채팅방 목록
      */
-    List<ChatRoomVO> getChatRoomList(int member_num) throws Exception;
+    List<ChatVO> getChatRoomList(int member_num) throws Exception;
 
     /**
      * 두 회원 간의 기존 채팅방을 조회 이미 채팅한적 내역있는지 조회.

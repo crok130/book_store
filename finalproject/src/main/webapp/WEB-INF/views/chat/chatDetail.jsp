@@ -23,8 +23,16 @@
             <p class="sidebar-subtitle">책 교환 관련 대화들</p>
           </div>
           
-          <div class="chat-list">
-            <div class="empty-state">
+           <div class="chat-list">
+             <div class="chat-item">
+               <div class="chat-item-header">
+                 <span class="chat-user-name">김문학</span>
+                 <span class="chat-time">오후 2:30</span>
+               </div>
+               <div class="chat-book-info">"달러구트 꿈 백화점" 교환</div>
+               <div class="chat-last-message">네, 그럼 내일 2시에 만나요!</div>
+             </div>
+            <div class="empty-state" id="empty-state" style="display: none;">
               <div class="empty-state-icon">💬</div>
               <div class="empty-state-title">아직 대화가 없습니다</div>
               <div class="empty-state-description">책 교환을 시작하면 여기에 대화가 표시됩니다</div>
@@ -65,5 +73,137 @@
           </div>
         </div>
       </div>
+      
+      <script>
+		fetch("chatAside")
+		.then(res => {
+			console.log("Response status:", res.status);
+			if (!res.ok) {
+				throw new Error(`HTTP error! status: ${res.status}`);
+			}
+			return res.json();
+		})
+		.then(data => {
+			console.log("받은 데이터:", data);
+			
+			const chatList = document.querySelector('.chat-list');
+			const emptyState = document.getElementById('empty-state');
+			const existingChatItem = chatList.querySelector('.chat-item');
+			
+			// 데이터가 있고 배열이 비어있지 않으면
+			if (data && data.length > 0) {
+				// 기존 하드코딩된 채팅 아이템 제거
+				if (existingChatItem) {
+					existingChatItem.remove();
+				}
+				
+				// 빈 상태 숨기기
+				emptyState.style.display = 'none';
+				
+				// 새로운 채팅 아이템들 생성
+				data.forEach(chat => {
+					const chatItem = document.createElement('div');
+					chatItem.className = 'chat-item';
+					
+					// 시간 포맷팅 함수
+					const formatTime = (timestamp) => {
+						if (!timestamp) return '시간 없음';
+						const date = new Date(timestamp);
+						const hours = date.getHours();
+						const minutes = date.getMinutes();
+						const period = hours >= 12 ? '오후' : '오전';
+						const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+						return `${period} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
+					};
+					
+					chatItem.innerHTML = 
+						'<div class="chat-item-header">' +
+							'<span class="chat-user-name">' + (chat.opponent_nickname || '알 수 없음') + '</span>' +
+							'<span class="chat-time">' + formatTime(chat.sent_at) + '</span>' +
+						'</div>' +
+						'<div class="chat-book-info">"' + (chat.tradebook_title || '책 제목 없음') + '" 교환</div>' +
+						'<div class="chat-last-message">' + (chat.message_content || '메시지 없음') + '</div>';
+					
+					// 클릭 이벤트 추가
+					chatItem.addEventListener('click', function() {
+						document.querySelector('.chat-item.active')?.classList.remove('active');
+						this.classList.add('active');
+					});
+					
+					chatList.appendChild(chatItem);
+				});
+			} else {
+				// 데이터가 없거나 빈 배열이면
+				// 기존 하드코딩된 채팅 아이템 제거
+				if (existingChatItem) {
+					existingChatItem.remove();
+				}
+				// 빈 상태 보여주기
+				emptyState.style.display = 'block';
+			}
+		})
+		.catch(err => {
+			console.error("에러 발생:", err);
+			// 에러 발생 시 빈 상태 표시
+			const existingChatItem = document.querySelector('.chat-item');
+			if (existingChatItem) {
+				existingChatItem.remove();
+			}
+			document.getElementById('empty-state').style.display = 'block';
+		});
+      </script>
 </body>
+   <script>
+        // Auto-resize textarea
+        const messageInput = document.querySelector('.message-input');
+        messageInput.addEventListener('input', function() {
+          this.style.height = 'auto';
+          this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send message on Enter (but not Shift+Enter)
+        messageInput.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            // Send message logic here
+            console.log('Sending message:', this.value);
+            this.value = '';
+            this.style.height = 'auto';
+          }
+        });
+
+        // Chat item selection
+        document.querySelectorAll('.chat-item').forEach(item => {
+          item.addEventListener('click', function() {
+            document.querySelector('.chat-item.active')?.classList.remove('active');
+            this.classList.add('active');
+          });
+        });
+
+        // Complete trade function
+        function completeTrade() {
+          const btn = document.querySelector('.complete-trade-btn');
+          if (btn.classList.contains('completed')) return;
+          
+          if (confirm('거래를 완료하시겠습니까? 완료 후에는 되돌릴 수 없습니다.')) {
+            btn.innerHTML = '✅ 거래완료됨';
+            btn.classList.add('completed');
+            
+            // Add system message to chat
+            const messagesContainer = document.querySelector('.chat-messages');
+            const systemMessage = document.createElement('div');
+            systemMessage.innerHTML = `
+              <div style="text-align: center; margin: 2rem 0; padding: 1rem; background: rgba(156, 175, 158, 0.1); border-radius: 12px; color: var(--color-text-secondary); font-style: italic;">
+                🎉 거래가 성공적으로 완료되었습니다! 
+              </div>
+            `;
+            messagesContainer.appendChild(systemMessage);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+          }
+        }
+
+        // Make function global
+        window.completeTrade = completeTrade;
+     </script>
 </html>
+ 

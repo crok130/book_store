@@ -14,7 +14,7 @@
         <a href="/components/BookExchangePage.tsx" class="back-btn">
           ← 교환 목록으로
         </a>
-  
+
         <div class="sidebar">
           <div class="sidebar-header">
             <h2 class="sidebar-title">대화</h2>

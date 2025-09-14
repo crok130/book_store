@@ -41,7 +41,7 @@
         </header>
 
        
-          <section class="breadcrumb">
+        <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
               <a href="dashboard">대시보드</a>
@@ -175,7 +175,7 @@
                       name="newbook_imgs" 
                       class="image-input" 
                       accept="image/jpeg,image/png"
-                      required 
+                      required
                     />
                     <!-- required -->
                   </div>
@@ -260,7 +260,7 @@
                 <div class="form-actions">
                   <button type="button" class="btn-large btn-cancel">취소</button>
                   <button type="submit" class="btn-large btn-save">책 등록하기</button>
-                </div>q
+                </div>
               </form>
             </div>
           </div>
