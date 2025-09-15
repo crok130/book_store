@@ -26,12 +26,6 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public ChatRoomVO getChatRoom(int chatroom_num) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public List<ChatVO> getChatRoomList(int member_num) throws Exception {
 		log.info("받은 member_num : {}", member_num);
 		
@@ -49,8 +43,10 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public boolean sendMessage(MessageVO message) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		if (message == null) return false;
+		if (message.getMessage_content() == null || message.getMessage_content().trim().isEmpty()) return false;
+		int affected = dao.insertMessage(message);
+		return affected == 1;
 	}
 
 	@Override
@@ -61,20 +57,9 @@ public class ChatServiceImpl implements ChatService{
 		return messages != null ? messages : new ArrayList<>();
 	}
 
-	@Override
-	public MessageVO getLastMessage(int chatroom_num) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public boolean sendImageMessage(int chatroom_num, int sender_member_num, String imagePath) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean deleteMessage(int message_num, int member_num) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -101,18 +86,6 @@ public class ChatServiceImpl implements ChatService{
 	public boolean markAllMessagesAsRead(int chatroom_num, int member_num) throws Exception {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	public List<ChatRoomVO> searchChatRooms(int member_num, String keyword) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<MessageVO> searchMessages(int chatroom_num, String keyword) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

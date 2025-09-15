@@ -23,14 +23,6 @@ public interface ChatService {
     ChatRoomVO createChatRoom(ChatRoomVO room) throws Exception;
 
     /**
-     * 채팅방을 조회.
-     * 
-     * @param chatroom_num 조회할 채팅방 번호
-     * @return 채팅방 정보
-     */
-    ChatRoomVO getChatRoom(int chatroom_num) throws Exception;
-
-    /**
      * 회원이 참여한 채팅방 목록을 조회합니다.
      * 
      * @param member_num 회원 번호
@@ -65,15 +57,6 @@ public interface ChatService {
     List<MessageVO> getMessageList(int chatroom_num) throws Exception;
 
     /**
-     * 채팅방의 최근 메시지를 조회합니다.
-     * 채팅방 목록에서 마지막 메시지를 표시할 때 사용합니다.
-     * 
-     * @param chatroom_num 채팅방 번호
-     * @return 최근 메시지, 없으면 null
-     */
-    MessageVO getLastMessage(int chatroom_num) throws Exception;
-
-    /**
      * 이미지 메시지를 전송합니다.
      * 파일 업로드를 통해 이미지를 전송하고 메시지로 저장합니다.
      * 
@@ -83,16 +66,6 @@ public interface ChatService {
      * @return 전송 성공 시 true, 실패 시 false
      */
     boolean sendImageMessage(int chatroom_num, int sender_member_num, String imagePath) throws Exception;
-
-    /**
-     * 메시지를 삭제합니다.
-     * 발신자만 자신의 메시지를 삭제할 수 있습니다.
-     * 
-     * @param message_num 삭제할 메시지 번호
-     * @param member_num 요청한 회원 번호
-     * @return 삭제 성공 시 true, 실패 시 false
-     */
-    boolean deleteMessage(int message_num, int member_num) throws Exception;
 
     /**
      * 채팅방을 나갑니다.
@@ -134,25 +107,6 @@ public interface ChatService {
      */
     boolean markAllMessagesAsRead(int chatroom_num, int member_num) throws Exception;
 
-    /**
-     * 채팅방을 검색합니다.
-     * 회원이 참여한 채팅방 중에서 특정 키워드로 검색합니다.
-     * 
-     * @param member_num 회원 번호
-     * @param keyword 검색 키워드
-     * @return 검색된 채팅방 목록
-     */
-    List<ChatRoomVO> searchChatRooms(int member_num, String keyword) throws Exception;
-
-    /**
-     * 채팅방의 메시지를 검색합니다.
-     * 특정 채팅방에서 메시지 내용을 검색합니다.
-     * 
-     * @param chatroom_num 채팅방 번호
-     * @param keyword 검색 키워드
-     * @return 검색된 메시지 목록
-     */
-    List<MessageVO> searchMessages(int chatroom_num, String keyword) throws Exception;
 
     /**
      * 채팅방을 차단합니다.

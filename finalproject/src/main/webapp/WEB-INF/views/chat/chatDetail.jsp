@@ -9,6 +9,12 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 	<link rel="stylesheet" href="${path}/resources/css/chatDetail.css">
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+    <style>
+      /* 긴 메시지도 한 개의 말풍선 안에서 줄바꿈/개행 유지 */
+      .message-text { white-space: pre-wrap; overflow-wrap: anywhere; word-break: break-word; }
+    </style>
 </head>
 <body>
 
@@ -85,6 +91,114 @@
           const displayH = h % 12 === 0 ? 12 : h % 12;
           return period + ' ' + displayH + ':' + String(m).padStart(2, '0');
         }
+
+		// ===== STOMP WebSocket 연결 관리 =====
+		let stompClient = null;
+		let currentRoomId = null;
+		// 최근 내가 전송한 메시지(중복 에코 제거용)
+		let recentSelfMessages = [];
+
+		function connectSocket() {
+			if (stompClient && stompClient.connected) return;
+			const socket = new SockJS('${path}/ws-stomp');
+			stompClient = Stomp.over(socket);
+			stompClient.debug = null;
+			// 연결 안정성 향상을 위한 하트비트
+			stompClient.heartbeat = { outgoing: 10000, incoming: 10000 };
+			stompClient.connect({}, function() {
+				console.log('STOMP connected');
+				if (currentRoomId) subscribeRoom(currentRoomId);
+			}, function(err) {
+				console.error('STOMP error', err);
+				// 짧은 지연 후 재연결 시도
+				setTimeout(function(){ if (!stompClient || !stompClient.connected) connectSocket(); }, 2000);
+			});
+		}
+
+		function subscribeRoom(roomId) {
+			if (!stompClient || !stompClient.connected) return;
+			// 같은 방이라도 재연결 직후 구독이 없을 수 있으므로 확인
+			if (currentRoomId === roomId && stompClient.subscriptions && stompClient.subscriptions['sub-' + currentRoomId]) return;
+			if (currentRoomId && stompClient.subscriptions && stompClient.subscriptions['sub-' + currentRoomId]) {
+				stompClient.subscriptions['sub-' + currentRoomId].unsubscribe();
+			}
+			currentRoomId = roomId;
+			ensureChatUI();
+			const sub = stompClient.subscribe('/topic/chat.' + roomId, function(msg) {
+				console.log('RECV:', msg.body);
+				try {
+					const data = JSON.parse(msg.body || '{}');
+					// 내가 방금 보낸 메시지의 에코는 중복 표시 방지
+					if (data && Number(data.sender_member_num) === Number(CURRENT_USER_NUM)) {
+						const now = Date.now();
+						recentSelfMessages = recentSelfMessages.filter(m => now - m.t < 2000);
+						if (recentSelfMessages.some(m => m.text === (data.message_content || ''))) {
+							return;
+						}
+					}
+					appendIncomingMessage(data);
+				} catch(e) { console.error(e); }
+			});
+			stompClient.subscriptions = stompClient.subscriptions || {};
+			stompClient.subscriptions['sub-' + roomId] = sub;
+		}
+
+		function sendMessageOverStomp(text) {
+			if (!stompClient || !stompClient.connected) { console.warn('WS 미연결'); connectSocket(); return; }
+			if (!currentRoomId) { console.warn('방 선택 필요'); return; }
+			const payload = {
+				chatroom_num: currentRoomId,
+				sender_member_num: CURRENT_USER_NUM,
+				message_content: text,
+				sent_at: new Date().toISOString()
+			};
+			stompClient.send('/app/chat/' + currentRoomId, {}, JSON.stringify(payload));
+			// 전송 즉시 화면에 반영하여 F5 없이 보이도록
+			appendIncomingMessage(payload);
+			recentSelfMessages.push({ text, t: Date.now() });
+		}
+
+		function appendIncomingMessage(msg) {
+			let messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+			if (!messagesContainer) {
+				ensureChatUI();
+				messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+			}
+			// 다른 방 메시지는 무시
+			if (msg.chatroom_num && currentRoomId && Number(msg.chatroom_num) !== Number(currentRoomId)) {
+				return;
+			}
+			if (!messagesContainer) return;
+			const isMine = (msg.sender_member_num === CURRENT_USER_NUM);
+			const item = document.createElement('div');
+			item.className = 'message' + (isMine ? ' own' : '');
+			item.innerHTML =
+				'<div class="message-avatar">' + (isMine ? '나' : '상대') + '</div>' +
+				'<div class="message-content">' +
+					'<div class="message-bubble">' +
+						'<div class="message-text">' + (msg.message_content || '') + '</div>' +
+						'<div class="message-time">' + formatKoreanTime(msg.sent_at) + '</div>' +
+					'</div>' +
+				'</div>';
+			messagesContainer.appendChild(item);
+			messagesContainer.scrollTop = messagesContainer.scrollHeight;
+		}
+
+		// 헤더/메시지 영역이 존재하도록 보장
+		function ensureChatUI() {
+			let chatHeader = document.getElementById('chat-header') || document.querySelector('.chat-header');
+			if (chatHeader && chatHeader.classList && chatHeader.classList.contains('chat-header')) {
+				chatHeader.removeAttribute('class');
+				chatHeader.setAttribute('id', 'chat-header');
+			}
+			let messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+			if (messagesContainer && messagesContainer.classList && messagesContainer.classList.contains('chat-messages')) {
+				messagesContainer.removeAttribute('class');
+				messagesContainer.setAttribute('id', 'chat-messages');
+			}
+		}
+
+		// 초기에는 연결하지 않음. 채팅 아이템 클릭 시에만 연결/구독한다.
 		fetch("chatAside")
 		.then(res => {
 			console.log("Response status:", res.status);
@@ -139,9 +253,13 @@
 						document.querySelector('.chat-item.active')?.classList.remove('active');
 						this.classList.add('active');
 						
+						// 먼저 현재 방을 지정해 전송 가드를 통과하도록 함
+						currentRoomId = Number(chat.chatroom_num);
+						// 웹소켓 연결 및 구독을 먼저 수행
+						connectSocket();
+						subscribeRoom(currentRoomId);
 						// 채팅 헤더 업데이트
 						updateChatHeader(chat);
-						
 						// 메시지 로드
 						loadChatMessages(chat.chatroom_num);
 					});
@@ -256,24 +374,27 @@
         messageInput.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
-            // Send message logic here
-            const container = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
-            if (container) {
-              const msgDiv = document.createElement('div');
-              msgDiv.className = 'message own';
-              msgDiv.innerHTML = '<div class="message-avatar">나</div>' +
-                                  '<div class="message-content">' +
-                                  '<div class="message-bubble">' +
-                                  '<div class="message-text">' + (this.value || '').trim() + '</div>' +
-                                  '<div class="message-time">' + formatKoreanTime(new Date()) + '</div>' +
-                                  '</div></div>';
-              container.appendChild(msgDiv);
-              container.scrollTop = container.scrollHeight;
-            }
-            console.log('Sending message:', this.value);
+            const text = (this.value || '').trim();
+            if (!text) return;
+            // 서버로 전송만 수행 (낙관적 UI 제거: 에코 수신으로 단일 말풍선 유지)
+            if (!(stompClient && stompClient.connected && currentRoomId)) { console.warn('방 선택/연결 후 전송'); return; }
+            sendMessageOverStomp(text);
+            console.log('Sending message:', text);
             this.value = '';
             this.style.height = 'auto';
           }
+        });
+
+        // Send button click
+        document.querySelector('.send-btn')?.addEventListener('click', function() {
+          const ta = document.querySelector('.message-input');
+          const text = (ta?.value || '').trim();
+          if (!text) return;
+          // 서버 전송만 수행 (낙관적 UI 제거)
+          if (!(stompClient && stompClient.connected && currentRoomId)) { console.warn('방 선택/연결 후 전송'); return; }
+          sendMessageOverStomp(text);
+          ta.value = '';
+          ta.style.height = 'auto';
         });
 
         // Chat item selection

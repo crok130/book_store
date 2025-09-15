@@ -2,6 +2,7 @@ package net.koreate.bookstore.chat.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 
 import net.koreate.bookstore.vo.ChatVO;
@@ -41,6 +42,13 @@ public interface ChatDAO {
 			"WHERE chatroom_num = #{chatroom_num} " +
 			"ORDER BY sent_at ASC")
 	List<MessageVO> getMessageList(int chatroom_num) throws Exception;
+		  
+	/**
+	 * 메시지 저장
+	 */
+	@Insert("INSERT INTO messages (chatroom_num, sender_member_num, message_content) " +
+			"VALUES (#{chatroom_num}, #{sender_member_num}, #{message_content})")
+	int insertMessage(MessageVO message) throws Exception;
 			  
 }
 
