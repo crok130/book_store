@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
+<c:set var="loginUserNum" value="${sessionScope.userInfo.member_num}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,10 +11,9 @@
 	<link rel="stylesheet" href="${path}/resources/css/chatDetail.css">
 </head>
 <body>
-<body>
 
       <div class="chat-container">
-        <a href="#" class="back-btn">
+        <a href="${path}/tradebook/bookexchange" class="back-btn">
           ← 교환 목록으로
         </a>
   
@@ -39,7 +39,6 @@
             </div>
           </div>
         </div>
-
         <div class="chat-main">
           <div class="chat-header">
             <div class="no-chat-selected">
@@ -62,8 +61,7 @@
                   class="message-input" 
                   placeholder="메시지를 입력하세요..."
                   rows="1"
-                >
-                </textarea>
+                ></textarea>
                 <button class="attach-btn" title="사진 첨부">📷</button>
               </div>
               <button class="send-btn">
@@ -75,6 +73,18 @@
       </div>
       
       <script>
+        const CURRENT_USER_NUM = ${loginUserNum != null ? loginUserNum : 0};
+        // 공통 시간 포맷터: '오전/오후 h:mm'
+        function formatKoreanTime(ts) {
+          if (!ts) return '';
+          const d = new Date(ts);
+          if (isNaN(d.getTime())) return ts; // 파싱 불가하면 원문 표시
+          let h = d.getHours();
+          const m = d.getMinutes();
+          const period = h >= 12 ? '오후' : '오전';
+          const displayH = h % 12 === 0 ? 12 : h % 12;
+          return period + ' ' + displayH + ':' + String(m).padStart(2, '0');
+        }
 		fetch("chatAside")
 		.then(res => {
 			console.log("Response status:", res.status);
@@ -128,6 +138,12 @@
 					chatItem.addEventListener('click', function() {
 						document.querySelector('.chat-item.active')?.classList.remove('active');
 						this.classList.add('active');
+						
+						// 채팅 헤더 업데이트
+						updateChatHeader(chat);
+						
+						// 메시지 로드
+						loadChatMessages(chat.chatroom_num);
 					});
 					
 					chatList.appendChild(chatItem);
@@ -151,11 +167,86 @@
 			}
 			document.getElementById('empty-state').style.display = 'block';
 		});
+		
+		// 채팅 헤더 업데이트 함수
+		function updateChatHeader(chat) {
+			let chatHeader = document.getElementById('chat-header') || document.querySelector('.chat-header');
+			// 선택 시 class -> id로 전환
+			if (chatHeader && chatHeader.classList && chatHeader.classList.contains('chat-header')) {
+				chatHeader.removeAttribute('class');
+				chatHeader.setAttribute('id', 'chat-header');
+			}
+			
+			// 헤더 내용을 동적으로 변경
+			chatHeader.innerHTML = 
+				'<div class="chat-header-info">' +
+					'<div class="chat-avatar" style="position: relative;">' +
+						(chat.opponent_nickname || '알 수 없음').charAt(0) +
+						'<div class="online-status"></div>' +
+					'</div>' +
+					'<div class="chat-user-info">' +
+						'<h3>' + (chat.opponent_nickname || '알 수 없음') + '</h3>' +
+						'<div class="chat-book-title">"' + (chat.tradebook_title || '책 제목 없음') + '" 교환 문의</div>' +
+					'</div>' +
+					'<div class="chat-actions">' +
+						'<button class="action-btn" title="통화">📞</button>' +
+						'<button class="action-btn" title="더보기">⋯</button>' +
+						'<button class="complete-trade-btn" data-chatroom="' + chat.chatroom_num + '" data-tradebook="' + chat.tradebook_num + '" onclick="completeTrade()">' +
+							'✅ 거래완료' +
+						'</button>' +
+					'</div>' +
+				'</div>';
+		}
+		
+		// 메시지 로드 함수
+		function loadChatMessages(chatroomNum) {
+			let messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+			// 선택 시 class -> id로 전환
+			if (messagesContainer && messagesContainer.classList && messagesContainer.classList.contains('chat-messages')) {
+				messagesContainer.removeAttribute('class');
+				messagesContainer.setAttribute('id', 'chat-messages');
+			}
+			// 기존 내용 제거
+			messagesContainer.innerHTML = '';
+			
+			fetch('chatcontent?chatroom_num=' + encodeURIComponent(chatroomNum))
+				.then(res => {
+					if (!res.ok) throw new Error('HTTP ' + res.status);
+					return res.json();
+				})
+				.then(list => {
+					if (!Array.isArray(list)) list = [];
+					list.forEach(msg => {
+						const isMine = (msg.sender_member_num === CURRENT_USER_NUM);
+						const item = document.createElement('div');
+						item.className = 'message' + (isMine ? ' own' : '');
+						item.innerHTML =
+							'<div class="message-avatar">' + (isMine ? '나' : '상대') + '</div>' +
+							'<div class="message-content">' +
+								'<div class="message-bubble">' +
+									'<div class="message-text">' + (msg.message_content || '') + '</div>' +
+									'<div class="message-time">' + formatKoreanTime(msg.sent_at) + '</div>' +
+								'</div>' +
+							'</div>';
+						messagesContainer.appendChild(item);
+					});
+					messagesContainer.scrollTop = messagesContainer.scrollHeight;
+				})
+				.catch(err => {
+					console.error('chatcontent error', err);
+				});
+		}
       </script>
 </body>
    <script>
         // Auto-resize textarea
         const messageInput = document.querySelector('.message-input');
+        // Remove any incidental whitespace on focus
+        messageInput.addEventListener('focus', function() {
+          if (this.value && this.value.trim() !== this.value) {
+            this.value = this.value.trim();
+          }
+        });
         messageInput.addEventListener('input', function() {
           this.style.height = 'auto';
           this.style.height = Math.min(this.scrollHeight, 120) + 'px';
@@ -166,6 +257,19 @@
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             // Send message logic here
+            const container = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+            if (container) {
+              const msgDiv = document.createElement('div');
+              msgDiv.className = 'message own';
+              msgDiv.innerHTML = '<div class="message-avatar">나</div>' +
+                                  '<div class="message-content">' +
+                                  '<div class="message-bubble">' +
+                                  '<div class="message-text">' + (this.value || '').trim() + '</div>' +
+                                  '<div class="message-time">' + formatKoreanTime(new Date()) + '</div>' +
+                                  '</div></div>';
+              container.appendChild(msgDiv);
+              container.scrollTop = container.scrollHeight;
+            }
             console.log('Sending message:', this.value);
             this.value = '';
             this.style.height = 'auto';
@@ -190,15 +294,28 @@
             btn.classList.add('completed');
             
             // Add system message to chat
-            const messagesContainer = document.querySelector('.chat-messages');
-            const systemMessage = document.createElement('div');
-            systemMessage.innerHTML = `
-              <div style="text-align: center; margin: 2rem 0; padding: 1rem; background: rgba(156, 175, 158, 0.1); border-radius: 12px; color: var(--color-text-secondary); font-style: italic;">
-                🎉 거래가 성공적으로 완료되었습니다! 
-              </div>
-            `;
-            messagesContainer.appendChild(systemMessage);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            const messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
+            if (messagesContainer) {
+              const systemMessage = document.createElement('div');
+              systemMessage.innerHTML = '<div style="text-align: center; margin: 2rem 0; padding: 1rem; background: rgba(156, 175, 158, 0.1); border-radius: 12px; color: var(--color-text-secondary); font-style: italic;">🎉 거래가 성공적으로 완료되었습니다!</div>';
+              messagesContainer.appendChild(systemMessage);
+              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+
+            // 교환 상태 업데이트 (tradebook_trade = 'n')
+            const targetBtn = document.querySelector('.complete-trade-btn');
+            const tradebook_num = targetBtn ? targetBtn.getAttribute('data-tradebook') : null;
+            console.log(tradebook_num);
+            if (tradebook_num) {
+              fetch('${path}/chat/complete?tradebook_num=' + tradebook_num, {
+                method: 'PUT'
+              }).then(res => res.json)
+              .then(data => {
+           			console.log(data);  
+              }).cath(err => {
+            	  	console.log(err);
+              });
+         	}
           }
         }
 

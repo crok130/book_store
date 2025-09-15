@@ -175,5 +175,7 @@ public interface ChatService {
      * @return 해제 성공 시 true, 실패 시 false
      */
     boolean unblockUser(int chatroom_num, int unblocked_member_num, int unblocking_member_num) throws Exception;
+    
+    
 
 }

@@ -55,8 +55,10 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public List<MessageVO> getMessageList(int chatroom_num) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		log.info("메시지 목록 조회 chatroom_num: {}", chatroom_num);
+		List<MessageVO> messages = dao.getMessageList(chatroom_num);
+		log.info("메시지 건수: {}", messages != null ? messages.size() : 0);
+		return messages != null ? messages : new ArrayList<>();
 	}
 
 	@Override
@@ -124,5 +126,5 @@ public class ChatServiceImpl implements ChatService{
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }
