@@ -3,7 +3,6 @@
 
     <jsp:include page="common/header.jsp"/>
 
-        {/* Hero Section */}
         <section class="search-section">
           <div class="container">
             <div class="search-content">
@@ -21,7 +20,6 @@
           </div>
         </section>
 
-        {/* Recommended Section */}
         <section class="recommended-section">
           <div class="container">
             <h2 class="recommended-title">추천 도서</h2>
@@ -102,7 +100,6 @@
           </div>
         </section>
 
-        {/* Categories */}
         <section class="categories-section">
           <div class="container">
             <h2 class="section-title">문학의 세계로</h2>
@@ -140,7 +137,6 @@
           </div>
         </section>
 
-        {/* Featured Books */}
         <section class="featured-section">
           <div class="container">
             <h2 class="section-title">독자들의 사랑</h2>
@@ -256,7 +252,6 @@
           </div>
         </section>
 
-        {/* Book Exchange Section */}
         <section class="exchange-promo-section">
           <div class="container">
             <div class="exchange-promo-content">
@@ -304,7 +299,6 @@
           </div>
         </section>
 
-        {/* Newsletter */}
         <section class="newsletter-section">
           <div class="container">
             <div class="newsletter-content">
@@ -322,7 +316,6 @@
           </div>
         </section>
 
-        {/* Footer */}
         <footer class="footer">
           <div class="container">
             <div class="footer-content">
@@ -342,7 +335,7 @@
                   <li><a href="#">개인정보처리방침</a></li>
                   <li><a href="#">청소년보호정책</a></li>
                   <li><a href="#">회원혜택</a></li>
-                  <li><a href="admin/adminmain">관리자페이지</a>
+                  <li><a href="admin/write">관리자페이지</a>
                 </ul>
               </div>
               <div class="footer-section">
