@@ -72,8 +72,8 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public int getUnreadMessageCount(int chatroom_num, int member_num) throws Exception {
-		// TODO Auto-generated method stub
-		return 0;
+		log.info("안읽은 메시지 개수 조회 chatroom_num: {}, member_num: {}", chatroom_num, member_num);
+		return dao.getUnreadMessageCount(chatroom_num, member_num);
 	}
 
 	@Override
@@ -84,8 +84,10 @@ public class ChatServiceImpl implements ChatService{
 
 	@Override
 	public boolean markAllMessagesAsRead(int chatroom_num, int member_num) throws Exception {
-		// TODO Auto-generated method stub
-		return false;
+		log.info("모든 메시지 읽음 처리 chatroom_num: {}, member_num: {}", chatroom_num, member_num);
+		int affected = dao.markAllMessagesAsRead(chatroom_num, member_num);
+		log.info("읽음 처리된 메시지 수: {}", affected);
+		return affected >= 0; // 0개 이상 처리되면 성공
 	}
 
 	@Override

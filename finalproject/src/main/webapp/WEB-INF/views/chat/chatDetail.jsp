@@ -110,14 +110,24 @@
 				if (currentRoomId) subscribeRoom(currentRoomId);
 			}, function(err) {
 				console.error('STOMP error', err);
+				console.log('연결끊킴');
 				// 짧은 지연 후 재연결 시도
 				setTimeout(function(){ if (!stompClient || !stompClient.connected) connectSocket(); }, 2000);
+			});
+			
+			// 웹소켓 연결 끊김 감지
+			socket.onclose = function(event) {
+				console.log('연결끊킴');
+			};
+			
+			// 페이지 언로드 시 연결 끊김 감지
+			window.addEventListener('beforeunload', function() {
+				console.log('연결끊킴');
 			});
 		}
 
 		function subscribeRoom(roomId) {
 			if (!stompClient || !stompClient.connected) return;
-			// 같은 방이라도 재연결 직후 구독이 없을 수 있으므로 확인
 			if (currentRoomId === roomId && stompClient.subscriptions && stompClient.subscriptions['sub-' + currentRoomId]) return;
 			if (currentRoomId && stompClient.subscriptions && stompClient.subscriptions['sub-' + currentRoomId]) {
 				stompClient.subscriptions['sub-' + currentRoomId].unsubscribe();
@@ -128,19 +138,34 @@
 				console.log('RECV:', msg.body);
 				try {
 					const data = JSON.parse(msg.body || '{}');
+					console.log('파싱된 데이터:', data);
+					console.log('현재 사용자:', CURRENT_USER_NUM, '발신자:', data.sender_member_num);
+					
 					// 내가 방금 보낸 메시지의 에코는 중복 표시 방지
 					if (data && Number(data.sender_member_num) === Number(CURRENT_USER_NUM)) {
+						console.log('내가 보낸 메시지, 중복 방지');
 						const now = Date.now();
 						recentSelfMessages = recentSelfMessages.filter(m => now - m.t < 2000);
 						if (recentSelfMessages.some(m => m.text === (data.message_content || ''))) {
+							console.log('중복 메시지 제거');
 							return;
 						}
 					}
+					console.log('메시지 표시 시작');
 					appendIncomingMessage(data);
-				} catch(e) { console.error(e); }
+				} catch(e) { console.error('메시지 파싱 오류:', e); }
 			});
 			stompClient.subscriptions = stompClient.subscriptions || {};
 			stompClient.subscriptions['sub-' + roomId] = sub;
+
+			// 구독 직후: 현재 사용자가 방에 들어왔으므로 읽음 처리 STOMP 전송
+			try {
+				stompClient.send('/app/chat/' + roomId + '/read', {}, JSON.stringify({
+					chatroom_num: roomId,
+					sender_member_num: CURRENT_USER_NUM
+				}));
+				console.log('구독 직후 읽음 처리 전송');
+			} catch(e) { console.error(e); }
 		}
 
 		function sendMessageOverStomp(text) {
@@ -153,9 +178,17 @@
 				sent_at: new Date().toISOString()
 			};
 			stompClient.send('/app/chat/' + currentRoomId, {}, JSON.stringify(payload));
-			// 전송 즉시 화면에 반영하여 F5 없이 보이도록
+
 			appendIncomingMessage(payload);
 			recentSelfMessages.push({ text, t: Date.now() });
+			
+			// 메시지 전송 후 현재 채팅방의 모든 메시지를 읽음 처리(STOMP)
+			if (stompClient && stompClient.connected) {
+				stompClient.send('/app/chat/' + currentRoomId + '/read', {}, JSON.stringify({
+					chatroom_num: currentRoomId,
+					sender_member_num: CURRENT_USER_NUM
+				}));
+			}
 		}
 
 		function appendIncomingMessage(msg) {
@@ -182,6 +215,15 @@
 				'</div>';
 			messagesContainer.appendChild(item);
 			messagesContainer.scrollTop = messagesContainer.scrollHeight;
+			
+			// 웹소켓 연결된 상태에서 메시지를 받으면 읽음 처리(STOMP)
+			if (!isMine && stompClient && stompClient.connected) {
+				console.log('상대방 메시지 수신, 읽음 처리 시작');
+				stompClient.send('/app/chat/' + currentRoomId + '/read', {}, JSON.stringify({
+					chatroom_num: currentRoomId,
+					sender_member_num: CURRENT_USER_NUM
+				}));
+			}
 		}
 
 		// 헤더/메시지 영역이 존재하도록 보장
@@ -240,10 +282,18 @@
 						return `${period} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
 					};
 					
+					// 안읽은 메시지 개수 표시 로직
+					// 현재 활성화된 채팅방이면 안읽은 메시지 배지를 표시하지 않음
+					const unreadCount = chat.unread_count || 0;
+					const isCurrentRoom = currentRoomId && Number(chat.chatroom_num) === Number(currentRoomId);
+					const unreadBadge = (unreadCount > 0 && !isCurrentRoom) ? 
+						'<div class="unread-badge">' + unreadCount + '</div>' : 
+						'<span class="chat-time">' + formatTime(chat.sent_at) + '</span>';
+					
 					chatItem.innerHTML = 
 						'<div class="chat-item-header">' +
 							'<span class="chat-user-name">' + (chat.opponent_nickname || '알 수 없음') + '</span>' +
-							'<span class="chat-time">' + formatTime(chat.sent_at) + '</span>' +
+							unreadBadge +
 						'</div>' +
 						'<div class="chat-book-info">"' + (chat.tradebook_title || '책 제목 없음') + '" 교환</div>' +
 						'<div class="chat-last-message">' + (chat.message_content || '메시지 없음') + '</div>';
@@ -262,6 +312,23 @@
 						updateChatHeader(chat);
 						// 메시지 로드
 						loadChatMessages(chat.chatroom_num);
+						
+						// 안읽은 메시지 배지 제거 (시간 표시로 변경)
+						const header = this.querySelector('.chat-item-header');
+						const unreadBadge = header.querySelector('.unread-badge');
+						if (unreadBadge) {
+							// 시간 포맷팅 함수 (로컬에서 정의)
+							const formatTimeLocal = (timestamp) => {
+								if (!timestamp) return '시간 없음';
+								const date = new Date(timestamp);
+								const hours = date.getHours();
+								const minutes = date.getMinutes();
+								const period = hours >= 12 ? '오후' : '오전';
+								const displayHours = hours > 12 ? hours - 12 : (hours === 0 ? 12 : hours);
+								return `${period} ${displayHours}:${minutes.toString().padStart(2, '0')}`;
+							};
+							unreadBadge.outerHTML = '<span class="chat-time">' + formatTimeLocal(chat.sent_at) + '</span>';
+						}
 					});
 					
 					chatList.appendChild(chatItem);
@@ -357,9 +424,9 @@
       </script>
 </body>
    <script>
-        // Auto-resize textarea
+
         const messageInput = document.querySelector('.message-input');
-        // Remove any incidental whitespace on focus
+      
         messageInput.addEventListener('focus', function() {
           if (this.value && this.value.trim() !== this.value) {
             this.value = this.value.trim();
@@ -370,13 +437,13 @@
           this.style.height = Math.min(this.scrollHeight, 120) + 'px';
         });
 
-        // Send message on Enter (but not Shift+Enter)
+    
         messageInput.addEventListener('keydown', function(e) {
           if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             const text = (this.value || '').trim();
             if (!text) return;
-            // 서버로 전송만 수행 (낙관적 UI 제거: 에코 수신으로 단일 말풍선 유지)
+         
             if (!(stompClient && stompClient.connected && currentRoomId)) { console.warn('방 선택/연결 후 전송'); return; }
             sendMessageOverStomp(text);
             console.log('Sending message:', text);
@@ -442,6 +509,34 @@
 
         // Make function global
         window.completeTrade = completeTrade;
+        
+        // 임시 테스트용: 수동 읽음 처리 함수
+        window.markAsRead = function() {
+            if (currentRoomId) {
+                console.log('수동 읽음 처리 시작');
+                console.log('전송할 데이터:', {
+                    chatroom_num: currentRoomId,
+                    member_num: CURRENT_USER_NUM
+                });
+                fetch('${path}/chat/markRead', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chatroom_num: currentRoomId,
+                        member_num: CURRENT_USER_NUM
+                    })
+                }).then(response => {
+                    console.log('수동 읽음 처리 응답:', response.status);
+                    return response.text();
+                }).then(data => {
+                    console.log('수동 읽음 처리 결과:', data);
+                }).catch(err => console.log('수동 읽음 처리 실패:', err));
+            } else {
+                console.log('채팅방이 선택되지 않음');
+            }
+        };
      </script>
 </html>
  

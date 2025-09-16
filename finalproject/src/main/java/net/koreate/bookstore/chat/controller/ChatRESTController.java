@@ -7,7 +7,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,4 +46,6 @@ public class ChatRESTController {
 		
 		return null;
 	}
+	
+	// REST 읽음 처리 제거: 읽음 처리는 STOMP 컨트롤러에서 처리합니다.
 }

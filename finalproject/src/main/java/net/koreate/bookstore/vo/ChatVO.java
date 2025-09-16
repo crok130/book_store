@@ -12,4 +12,5 @@ public class ChatVO {
     private String tradebook_title;     // 책 제목
     private String message_content;     // 마지막 메시지 내용
     private Timestamp sent_at;          // 마지막 메시지 시간
+    private int unread_count;           // 안읽은 메시지 개수
 }

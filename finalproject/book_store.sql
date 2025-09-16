@@ -71,6 +71,7 @@ CREATE TABLE messages (
     memssage_img VARCHAR2(200)
 );
 
+
 -- 1. 도서 목록을 출간일순으로 정렬할 때
 CREATE INDEX idx_newbook_publication_date ON newbook(newbook_publication_date);
 
