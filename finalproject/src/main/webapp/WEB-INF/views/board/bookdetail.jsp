@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 
    
-    <jsp:include page="common/header.jsp"/>
+    <jsp:include page="../common/header.jsp"/>
 
 
         <section class="breadcrumb">

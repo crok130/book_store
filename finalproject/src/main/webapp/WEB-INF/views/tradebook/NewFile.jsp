@@ -606,35 +606,28 @@
           line-height: 1.5;
         }
 
-		  /* More Button */
-		.more-button-container {
-		  display: flex;
-		  justify-content: center;
-		  margin-top: 4rem;
-		}
-		
-		.more-btn {
-		  padding: 1rem 3rem;
-		  background: transparent;
-		  color: var(--color-charcoal);
-		  border: 2px solid var(--color-sage);
-		  border-radius: var(--border-radius-sm);
-		  cursor: pointer;
-		  font-weight: 500;
-		  font-size: 1rem;
-		  letter-spacing: -0.01em;
-		  transition: all 0.3s ease;
-		  display: inline-flex;
-		  align-items: center;
-		  gap: 0.75rem;
-		}
-		
-		.more-btn:hover {
-		  background: var(--color-sage);
-		  color: var(--color-warm-white);
-		  transform: translateY(-2px);
-		  box-shadow: var(--shadow-medium);
-		}
+        .more-btn {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.5rem;
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          padding: 1rem 2rem;
+          border-radius: var(--border-radius-lg);
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 1rem;
+          letter-spacing: -0.01em;
+          transition: all 0.3s ease;
+          box-shadow: var(--shadow-soft);
+          margin-top: 3rem;
+        }
+
+        .more-btn:hover {
+          background: linear-gradient(135deg, var(--color-muted-green), var(--color-deep-blue));
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-medium);
+        }
 
         /* Footer */
         .footer {
@@ -796,7 +789,6 @@
             right: auto;
             left: 0;
           }
-          
         }
 </style>
 </head>
@@ -805,21 +797,21 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="${path}" class="logo">BookStore</a>
+              <a href="/App.tsx" class="logo">BookStore</a>
               <nav>
                 <ul class="nav-menu">
-                  <li><a href="${path}">홈</a></li>
+                  <li><a href="/App.tsx">홈</a></li>
                   <li><a href="#">베스트셀러</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="${path}/trade/bookexchange" class="active">책 교환</a></li>
+                  <li><a href="/components/BookExchangePage.tsx" class="active">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
         <c:choose>
             <c:when test="${empty sessionScope.userInfo}">
-                <a href="${path}/member/login" class="btn btn-outline">로그인</a>
+                <a href="${path}/meber/login" class="btn btn-outline">로그인</a>
                 <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
            	</c:when>
            	<c:otherwise>
@@ -849,7 +841,7 @@
                 이미 읽은 책에도 새로운 생명을 불어넣어 보세요.<br/>
                 당신의 책이 다른 이에게 새로운 감동이 될 수 있습니다.
               </p>
-              <a href="${path}/tradebook/write" class="create-post-btn">
+              <a href="/components/BookExchangeCreatePage.tsx" class="create-post-btn">
                 📝 교환 글 작성하기
               </a>
             </div>

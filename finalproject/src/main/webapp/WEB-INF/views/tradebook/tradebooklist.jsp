@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+	    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
           margin: 0;
@@ -120,13 +120,11 @@
           transition: width 0.3s ease;
         }
 
-        .nav-menu a:hover,
-        .nav-menu a.active {
+        .nav-menu a:hover {
           color: var(--color-charcoal);
         }
 
-        .nav-menu a:hover::after,
-        .nav-menu a.active::after {
+        .nav-menu a:hover::after {
           width: 100%;
         }
 
@@ -178,9 +176,9 @@
 
         /* Hero Section */
         .hero-section {
-          background: linear-gradient(135deg, var(--color-deep-blue) 0%, var(--color-charcoal) 100%);
+          background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-muted-green) 100%);
           color: var(--color-warm-white);
-          padding: 6rem 0 8rem;
+          padding: 4rem 0;
           text-align: center;
           position: relative;
           overflow: hidden;
@@ -193,8 +191,8 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E") repeat;
-          opacity: 0.4;
+          background: url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' stroke='%23ffffff' stroke-width='1' stroke-opacity='0.1'/%3E%3C/g%3E%3C/svg%3E") repeat;
+          opacity: 0.3;
         }
 
         .hero-content {
@@ -202,113 +200,61 @@
           z-index: 2;
         }
 
-        .exchange-icon {
-          font-size: 4rem;
-          margin-bottom: 2rem;
-          display: block;
-          opacity: 0.9;
-        }
-
         .hero-title {
           font-family: var(--font-serif);
-          font-size: 3.5rem;
-          margin-bottom: 1.5rem;
+          font-size: 3rem;
+          margin-bottom: 1rem;
           font-weight: 600;
           letter-spacing: -0.02em;
           line-height: 1.2;
         }
 
         .hero-subtitle {
-          font-size: 1.25rem;
+          font-size: 1.2rem;
           margin-bottom: 2rem;
-          opacity: 0.85;
+          opacity: 0.9;
           font-weight: 300;
-          max-width: 700px;
+          max-width: 600px;
           margin-left: auto;
           margin-right: auto;
           line-height: 1.6;
         }
 
-        .create-post-btn {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.75rem;
-          background: rgba(254, 253, 251, 0.2);
-          color: var(--color-warm-white);
-          padding: 1.25rem 2.5rem;
-          border-radius: 50px;
-          text-decoration: none;
-          font-weight: 600;
-          font-size: 1.1rem;
-          letter-spacing: -0.01em;
-          transition: all 0.4s ease;
-          backdrop-filter: blur(20px);
-          border: 2px solid rgba(255, 255, 255, 0.3);
-          margin-top: 1rem;
+        /* Stats */
+        .stats {
+          display: flex;
+          justify-content: center;
+          gap: 3rem;
+          margin-top: 2rem;
         }
 
-        .create-post-btn:hover {
-          background: rgba(254, 253, 251, 0.3);
-          transform: translateY(-3px);
-          box-shadow: var(--shadow-strong);
-          border-color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Stats Section */
-        .stats-section {
-          background: var(--color-warm-white);
-          padding: 4rem 0;
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-          gap: 2rem;
-        }
-
-        .stat-card {
+        .stat {
           text-align: center;
-          padding: 2rem;
-          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
-          border-radius: var(--border-radius-lg);
-          box-shadow: var(--shadow-soft);
-          transition: all 0.4s ease;
-          border: 1px solid rgba(156, 175, 158, 0.1);
-        }
-
-        .stat-card:hover {
-          transform: translateY(-8px);
-          box-shadow: var(--shadow-strong);
-          border-color: rgba(156, 175, 158, 0.3);
         }
 
         .stat-number {
+          display: block;
           font-family: var(--font-serif);
-          font-size: 2.5rem;
+          font-size: 2rem;
           font-weight: 700;
-          color: var(--color-terracotta);
           margin-bottom: 0.5rem;
           letter-spacing: -0.02em;
         }
 
         .stat-label {
-          color: var(--color-text-secondary);
-          font-size: 1rem;
-          font-weight: 400;
+          font-size: 0.95rem;
+          opacity: 0.8;
+          font-weight: 300;
         }
 
-        /* Filter Section */
-        .filter-section {
-          background: rgba(254, 253, 251, 0.95);
-          backdrop-filter: blur(20px);
+        /* Filters */
+        .filters-section {
+          background: var(--color-warm-white);
           padding: 2rem 0;
           border-bottom: 1px solid rgba(156, 175, 158, 0.1);
-          position: sticky;
-          top: 84px;
-          z-index: 999;
         }
 
-        .filter-content {
+        .filters-content {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -323,9 +269,9 @@
 
         .search-input {
           width: 100%;
-          padding: 1rem 1.25rem;
+          padding: 0.8rem 1rem;
           border: 2px solid rgba(156, 175, 158, 0.2);
-          border-radius: var(--border-radius-md);
+          border-radius: var(--border-radius-sm);
           font-size: 1rem;
           outline: none;
           transition: all 0.3s ease;
@@ -354,13 +300,12 @@
           font-weight: 600;
           color: var(--color-charcoal);
           font-size: 0.95rem;
-          letter-spacing: -0.01em;
         }
 
         .filter-select {
-          padding: 0.8rem 1rem;
+          padding: 0.6rem 0.8rem;
           border: 2px solid rgba(156, 175, 158, 0.2);
-          border-radius: var(--border-radius-md);
+          border-radius: var(--border-radius-sm);
           background: var(--color-warm-white);
           color: var(--color-text-primary);
           font-size: 0.9rem;
@@ -375,74 +320,25 @@
           box-shadow: 0 0 0 3px rgba(156, 175, 158, 0.1);
         }
 
-        /* Category Pills */
-        .category-section {
-          background: linear-gradient(135deg, var(--color-soft-beige) 0%, var(--color-cream) 100%);
-          padding: 3rem 0;
-        }
-
-        .category-filters {
-          display: flex;
-          gap: 1rem;
-          justify-content: center;
-          flex-wrap: wrap;
-        }
-
-        .category-pill {
-          padding: 0.8rem 1.5rem;
-          background: var(--color-warm-white);
-          border: 2px solid rgba(156, 175, 158, 0.2);
-          border-radius: 25px;
-          color: var(--color-text-secondary);
-          text-decoration: none;
-          font-weight: 500;
-          font-size: 0.9rem;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          letter-spacing: -0.01em;
-        }
-
-        .category-pill:hover,
-        .category-pill.active {
-          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
-          color: var(--color-warm-white);
-          border-color: var(--color-sage);
-          transform: translateY(-2px);
-          box-shadow: var(--shadow-soft);
-        }
-
-        /* Books Section */
-        .books-section {
+        /* Exchange Books Section */
+        .exchange-books-section {
           padding: 4rem 0;
           background: var(--color-warm-white);
         }
 
         .section-title {
-          text-align: center;
           font-family: var(--font-serif);
-          font-size: 2.75rem;
-          margin-bottom: 1rem;
+          font-size: 2.5rem;
+          margin-bottom: 3rem;
           color: var(--color-charcoal);
           font-weight: 600;
           letter-spacing: -0.02em;
         }
 
-        .section-subtitle {
-          text-align: center;
-          font-size: 1.1rem;
-          color: var(--color-text-secondary);
-          margin-bottom: 3rem;
-          font-weight: 300;
-          max-width: 500px;
-          margin-left: auto;
-          margin-right: auto;
-        }
-
-        .books-grid {
+        .exchange-grid {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
           gap: 2.5rem;
-          margin-top: 3rem;
         }
 
         .exchange-card {
@@ -463,7 +359,7 @@
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(135deg, rgba(156, 175, 158, 0.05), rgba(212, 165, 116, 0.05));
+          background: linear-gradient(135deg, rgba(156, 175, 158, 0.05), rgba(143, 166, 133, 0.05));
           opacity: 0;
           transition: opacity 0.3s ease;
           z-index: 1;
@@ -474,48 +370,46 @@
         }
 
         .exchange-card:hover {
-          transform: translateY(-12px) scale(1.02);
+          transform: translateY(-8px) scale(1.02);
           box-shadow: var(--shadow-strong);
           border-color: rgba(156, 175, 158, 0.3);
         }
 
-        .exchange-badge {
-          position: absolute;
-          top: 1rem;
-          left: 1rem;
-          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
-          color: var(--color-warm-white);
-          padding: 0.4rem 1rem;
-          border-radius: 20px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          z-index: 10;
-          letter-spacing: 0.5px;
-          text-transform: uppercase;
-        }
-
-        .book-image {
+        .exchange-book-image {
           width: 100%;
-          height: 240px;
+          height: 200px;
           object-fit: cover;
           transition: transform 0.4s ease;
           position: relative;
           z-index: 2;
         }
 
-        .exchange-card:hover .book-image {
+        .exchange-card:hover .exchange-book-image {
           transform: scale(1.05);
         }
 
         .exchange-info {
-          padding: 2rem;
+          padding: 1.5rem;
           position: relative;
           z-index: 2;
         }
 
-        .book-title {
+        .exchange-badge {
+          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
+          color: var(--color-warm-white);
+          padding: 0.3rem 0.8rem;
+          border-radius: 15px;
+          font-size: 0.7rem;
+          font-weight: 600;
+          display: inline-block;
+          margin-bottom: 0.8rem;
+          letter-spacing: 0.5px;
+          text-transform: uppercase;
+        }
+
+        .exchange-book-title {
           font-family: var(--font-serif);
-          font-size: 1.3rem;
+          font-size: 1.2rem;
           font-weight: 600;
           margin-bottom: 0.5rem;
           color: var(--color-charcoal);
@@ -523,118 +417,107 @@
           letter-spacing: -0.01em;
         }
 
-        .book-author {
+        .exchange-book-author {
           color: var(--color-text-secondary);
           margin-bottom: 1rem;
-          font-size: 0.95rem;
+          font-size: 0.9rem;
           font-weight: 400;
         }
 
-        .book-condition {
-          display: inline-block;
-          background: linear-gradient(135deg, var(--color-sage) 0%, var(--color-muted-green) 100%);
-          color: var(--color-warm-white);
-          padding: 0.3rem 0.8rem;
-          border-radius: 15px;
-          font-size: 0.75rem;
-          font-weight: 600;
-          margin-bottom: 1rem;
-          letter-spacing: 0.5px;
-        }
-
-        .book-condition.fair {
-          background: linear-gradient(135deg, var(--color-terracotta) 0%, #C19660 100%);
-        }
-
-        .book-condition.poor {
-          background: linear-gradient(135deg, #D66853 0%, #B8574A 100%);
-        }
-
-        .owner-info {
+        .exchange-details {
           display: flex;
+          justify-content: space-between;
           align-items: center;
-          gap: 0.8rem;
           margin-bottom: 1rem;
         }
 
-        .owner-avatar {
-          width: 36px;
-          height: 36px;
-          border-radius: 50%;
-          background: linear-gradient(135deg, var(--color-sage), var(--color-muted-green));
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: var(--color-warm-white);
-          font-weight: 600;
+        .exchange-condition {
           font-size: 0.9rem;
-        }
-
-        .owner-details {
-          flex: 1;
-        }
-
-        .owner-name {
           font-weight: 600;
-          color: var(--color-charcoal);
-          font-size: 0.95rem;
-          margin-bottom: 0.2rem;
+          padding: 0.3rem 0.8rem;
+          border-radius: 12px;
+          background: rgba(156, 175, 158, 0.15);
+          color: var(--color-sage);
         }
 
-        .owner-location {
+        .exchange-date {
+          font-size: 0.8rem;
           color: var(--color-text-secondary);
-          font-size: 0.85rem;
         }
 
-        .wants-section {
-          border-top: 1px solid rgba(156, 175, 158, 0.2);
-          padding-top: 1rem;
-          margin-top: 1rem;
-        }
-
-        .wants-label {
-          font-size: 0.85rem;
+        .exchange-location {
+          display: flex;
+          align-items: center;
+          gap: 0.3rem;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
           color: var(--color-text-secondary);
-          margin-bottom: 0.5rem;
+        }
+
+        .exchange-user {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          font-size: 0.9rem;
+          color: var(--color-text-primary);
           font-weight: 500;
         }
 
-        .wants-text {
-          font-size: 0.9rem;
-          color: var(--color-charcoal);
-          font-style: italic;
-          line-height: 1.5;
+        .user-avatar {
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--color-sage);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 0.8rem;
+          color: var(--color-warm-white);
+          font-weight: 600;
         }
 
-		  /* More Button */
-		.more-button-container {
-		  display: flex;
-		  justify-content: center;
-		  margin-top: 4rem;
-		}
-		
-		.more-btn {
-		  padding: 1rem 3rem;
-		  background: transparent;
-		  color: var(--color-charcoal);
-		  border: 2px solid var(--color-sage);
-		  border-radius: var(--border-radius-sm);
-		  cursor: pointer;
-		  font-weight: 500;
-		  font-size: 1rem;
-		  letter-spacing: -0.01em;
-		  transition: all 0.3s ease;
-		  display: inline-flex;
-		  align-items: center;
-		  gap: 0.75rem;
-		}
-		
-		.more-btn:hover {
-		  background: var(--color-sage);
-		  color: var(--color-warm-white);
-		  transform: translateY(-2px);
-		  box-shadow: var(--shadow-medium);
-		}
+        /* Pagination */
+        .pagination-section {
+          padding: 3rem 0;
+          text-align: center;
+          background: var(--color-warm-white);
+        }
+
+        .pagination {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .page-btn {
+          padding: 0.8rem 1.2rem;
+          border: 2px solid rgba(156, 175, 158, 0.2);
+          background: var(--color-warm-white);
+          color: var(--color-charcoal);
+          text-decoration: none;
+          border-radius: var(--border-radius-sm);
+          transition: all 0.3s ease;
+          font-weight: 500;
+        }
+
+        .page-btn:hover,
+        .page-btn.active {
+          background: var(--color-sage);
+          color: var(--color-warm-white);
+          border-color: var(--color-sage);
+        }
+
+        .page-btn.disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .page-btn.disabled:hover {
+          background: var(--color-warm-white);
+          color: var(--color-charcoal);
+          border-color: rgba(156, 175, 158, 0.2);
+        }
 
         /* Footer */
         .footer {
@@ -772,10 +655,15 @@
           }
 
           .hero-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
           }
 
-          .filter-content {
+          .stats {
+            flex-direction: column;
+            gap: 1rem;
+          }
+
+          .filters-content {
             flex-direction: column;
             align-items: stretch;
           }
@@ -784,24 +672,23 @@
             justify-content: center;
           }
 
-          .books-grid {
+          .exchange-grid {
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
           }
 
-          .category-filters {
-            justify-content: flex-start;
+          .pagination {
+            flex-wrap: wrap;
           }
 
           .user-dropdown {
             right: auto;
             left: 0;
           }
-          
         }
 </style>
 </head>
 <body>
-      <div>
+    <div>
         <header class="header">
           <div class="container">
             <div class="header-content">
@@ -813,7 +700,7 @@
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
-                  <li><a href="${path}/trade/bookexchange" class="active">책 교환</a></li>
+                  <li><a href="${path}/tradebook/bookexchange" style="color: var(--color-charcoal);">책 교환</a></li>
                 </ul>
               </nav>
               <div class="user-actions">
@@ -843,56 +730,67 @@
         <section class="hero-section">
           <div class="container">
             <div class="hero-content">
-              <span class="exchange-icon">🔄</span>
-              <h1 class="hero-title">책의 순환</h1>
+              <h1 class="hero-title">모든 교환 도서</h1>
               <p class="hero-subtitle">
-                이미 읽은 책에도 새로운 생명을 불어넣어 보세요.<br/>
-                당신의 책이 다른 이에게 새로운 감동이 될 수 있습니다.
+                다양한 독서 취향의 만남, 새로운 이야기와의 인연.<br/>
+                당신의 책장에서 시작되는 특별한 교환을 경험해보세요.
               </p>
-              <a href="${path}/tradebook/write" class="create-post-btn">
-                📝 교환 글 작성하기
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <section class="stats-section">
-          <div class="container">
-            <div class="stats-grid">
-              <div class="stat-card">
-                <div class="stat-number">1,247</div>
-                <div class="stat-label">교환 가능한 책</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">892</div>
-                <div class="stat-label">성공한 교환</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">523</div>
-                <div class="stat-label">활성 사용자</div>
-              </div>
-              <div class="stat-card">
-                <div class="stat-number">4.8</div>
-                <div class="stat-label">평균 만족도</div>
+              
+              <div class="stats">
+                <div class="stat">
+                  <span class="stat-number">2,547</span>
+                  <span class="stat-label">교환 가능한 책</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-number">1,283</span>
+                  <span class="stat-label">활발한 회원</span>
+                </div>
+                <div class="stat">
+                  <span class="stat-number">4,892</span>
+                  <span class="stat-label">성공한 교환</span>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        <section class="filter-section">
+        <section class="filters-section">
           <div class="container">
-            <div class="filter-content">
+            <div class="filters-content">
               <div class="search-filter">
                 <input 
                   type="text" 
                   class="search-input" 
-                  placeholder="책 제목이나 저자명으로 검색하세요..."
+                  placeholder="도서명이나 저자명을 입력하세요..."
                 />
+              </div>
+              <div class="filter-group">
+                <span class="filter-label">카테고리:</span>
+                <select class="filter-select">
+                  <option>전체 카테고리</option>
+                  <option>소설/에세이</option>
+                  <option>경영/경제</option>
+                  <option>과학/기술</option>
+                  <option>예술/디자인</option>
+                  <option>자기계발</option>
+                  <option>IT/컴퓨터</option>
+                  <option>아동/청소년</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <span class="filter-label">상태:</span>
+                <select class="filter-select">
+                  <option>전체</option>
+                  <option>최상급</option>
+                  <option>상급</option>
+                  <option>중급</option>
+                  <option>하급</option>
+                </select>
               </div>
               <div class="filter-group">
                 <span class="filter-label">지역:</span>
                 <select class="filter-select">
-                  <option>전체 지역</option>
+                  <option>전국</option>
                   <option>서울</option>
                   <option>부산</option>
                   <option>대구</option>
@@ -902,202 +800,254 @@
                   <option>울산</option>
                 </select>
               </div>
-              <div class="filter-group">
-                <span class="filter-label">상태:</span>
-                <select class="filter-select">
-                  <option>전체 상태</option>
-                  <option>최상</option>
-                  <option>양호</option>
-                  <option>보통</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">정렬:</span>
-                <select class="filter-select">
-                  <option>최신순</option>
-                  <option>인기순</option>
-                  <option>거리순</option>
-                </select>
-              </div>
             </div>
           </div>
         </section>
 
-        <section class="category-section">
+        <section class="exchange-books-section">
           <div class="container">
-            <div class="category-filters">
-              <a href="#" class="category-pill active">전체</a>
-              <a href="#" class="category-pill">소설/에세이</a>
-              <a href="#" class="category-pill">경영/경제</a>
-              <a href="#" class="category-pill">과학/기술</a>
-              <a href="#" class="category-pill">예술/디자인</a>
-              <a href="#" class="category-pill">자기계발</a>
-              <a href="#" class="category-pill">IT/컴퓨터</a>
-              <a href="#" class="category-pill">아동/청소년</a>
-            </div>
-          </div>
-        </section>
-
-        <section class="books-section">
-          <div class="container">
-            <h2 class="section-title">교환 대기 중인 책들</h2>
-            <p class="section-subtitle">독자들이 사랑으로 키운 책들이 새로운 주인을 기다리고 있습니다</p>
-            
-            <div class="books-grid">
-              <a href="/components/BookExchangeDetailPage.tsx" class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
+            <h2 class="section-title">교환 가능한 모든 도서</h2>
+            <div class="exchange-grid">
+              <div class="exchange-card">
                 <img 
                   src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop"
-                  alt="달러구트 꿈 백화점"
-                  class="book-image"
+                  alt="미움받을 용기"
+                  class="exchange-book-image"
                 />
                 <div class="exchange-info">
-                  <h3 class="book-title">달러구트 꿈 백화점</h3>
-                  <p class="book-author">이미예</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">김</div>
-                    <div class="owner-details">
-                      <div class="owner-name">김독서</div>
-                      <div class="owner-location">서울 강남구</div>
-                    </div>
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">미움받을 용기</h3>
+                  <p class="exchange-book-author">기시미 이치로</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">상급</span>
+                    <span class="exchange-date">2일 전</span>
                   </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"반지의 제왕 시리즈나 판타지 소설"</div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>서울 강남구</span>
                   </div>
-                </div>
-              </a>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
-                  alt="세이노의 가르침"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">세이노의 가르침</h3>
-                  <p class="book-author">세이노</p>
-                  <span class="book-condition fair">양호</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">조</div>
-                    <div class="owner-details">
-                      <div class="owner-name">조성장</div>
-                      <div class="owner-location">경기 수원시</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"부의 추월차선이나 투자 관련 도서"</div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">김</div>
+                    <span>김독서님</span>
                   </div>
                 </div>
               </div>
 
               <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
+                <img 
+                  src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=300&fit=crop"
+                  alt="달러구트 꿈 백화점"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">달러구트 꿈 백화점</h3>
+                  <p class="exchange-book-author">이미예</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">최상급</span>
+                    <span class="exchange-date">1일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>부산 해운대구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">이</div>
+                    <span>이책사님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
+                <img 
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop"
+                  alt="부의 추월차선"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">부의 추월차선</h3>
+                  <p class="exchange-book-author">엠제이 드마코</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">상급</span>
+                    <span class="exchange-date">3일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>대구 중구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">박</div>
+                    <span>박경제님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
+                <img 
+                  src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?w=400&h=300&fit=crop"
+                  alt="클린 코드"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">클린 코드</h3>
+                  <p class="exchange-book-author">로버트 C. 마틴</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">중급</span>
+                    <span class="exchange-date">5일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>서울 마포구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">최</div>
+                    <span>최개발님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
+                <img 
+                  src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop"
+                  alt="아몬드"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">아몬드</h3>
+                  <p class="exchange-book-author">손원평</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">상급</span>
+                    <span class="exchange-date">1주일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>인천 남동구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">정</div>
+                    <span>정소설님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
+                <img 
+                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
+                  alt="채식주의자"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">채식주의자</h3>
+                  <p class="exchange-book-author">한강</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">최상급</span>
+                    <span class="exchange-date">3일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>광주 서구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">한</div>
+                    <span>한문학님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
                 <img 
                   src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
                   alt="불편한 편의점"
-                  class="book-image"
+                  class="exchange-book-image"
                 />
                 <div class="exchange-info">
-                  <h3 class="book-title">불편한 편의점</h3>
-                  <p class="book-author">김호연</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">한</div>
-                    <div class="owner-details">
-                      <div class="owner-name">한이야기</div>
-                      <div class="owner-location">충남 천안시</div>
-                    </div>
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">불편한 편의점</h3>
+                  <p class="exchange-book-author">김호연</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">상급</span>
+                    <span class="exchange-date">2일 전</span>
                   </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"따뜻한 감동을 주는 한국 소설"</div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>대전 유성구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">강</div>
+                    <span>강이야기님</span>
                   </div>
                 </div>
               </div>
 
               <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1549964336-ce406285ffc4?w=400&h=300&fit=crop"
-                  alt="사피엔스"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">사피엔스</h3>
-                  <p class="book-author">유발 하라리</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">박</div>
-                    <div class="owner-details">
-                      <div class="owner-name">박역사</div>
-                      <div class="owner-location">대구 중구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"호모 데우스나 21 레슨스"</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop"
-                  alt="클린 코드"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">클린 코드</h3>
-                  <p class="book-author">로버트 C. 마틴</p>
-                  <span class="book-condition">양호</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">강</div>
-                    <div class="owner-details">
-                      <div class="owner-name">강개발</div>
-                      <div class="owner-location">대전 유성구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"리팩토링이나 디자인 패턴 관련 서적"</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
                 <img 
                   src="https://images.unsplash.com/photo-1599185186578-0ba91c2a15c0?w=400&h=300&fit=crop"
-                  alt="1984"
-                  class="book-image"
+                  alt="사피엔스"
+                  class="exchange-book-image"
                 />
                 <div class="exchange-info">
-                  <h3 class="book-title">1984</h3>
-                  <p class="book-author">조지 오웰</p>
-                  <span class="book-condition fair">양호</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">정</div>
-                    <div class="owner-details">
-                      <div class="owner-name">정문학</div>
-                      <div class="owner-location">인천 남동구</div>
-                    </div>
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">사피엔스</h3>
+                  <p class="exchange-book-author">유발 하라리</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">중급</span>
+                    <span class="exchange-date">4일 전</span>
                   </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"동물농장이나 올더스 헉슬리의 멋진 신세계"</div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>울산 중구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">유</div>
+                    <span>유역사님</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="exchange-card">
+                <img 
+                  src="https://images.unsplash.com/photo-1549964336-ce406285ffc4?w=400&h=300&fit=crop"
+                  alt="코스모스"
+                  class="exchange-book-image"
+                />
+                <div class="exchange-info">
+                  <div class="exchange-badge">교환중</div>
+                  <h3 class="exchange-book-title">코스모스</h3>
+                  <p class="exchange-book-author">칼 세이건</p>
+                  <div class="exchange-details">
+                    <span class="exchange-condition">하급</span>
+                    <span class="exchange-date">6일 전</span>
+                  </div>
+                  <div class="exchange-location">
+                    <span>📍</span>
+                    <span>서울 송파구</span>
+                  </div>
+                  <div class="exchange-user">
+                    <div class="user-avatar">칼</div>
+                    <span>칼과학님</span>
                   </div>
                 </div>
               </div>
             </div>
-         	<div class="more-button-container">
-                <a class="more-btn" href="${path}/tradebook/list">
-                  더보기 📚
-                </a>
+          </div>
+        </section>
+
+        <section class="pagination-section">
+          <div class="container">
+            <div class="pagination">
+              <a href="#" class="page-btn disabled">‹ 이전</a>
+              <a href="#" class="page-btn active">1</a>
+              <a href="#" class="page-btn">2</a>
+              <a href="#" class="page-btn">3</a>
+              <a href="#" class="page-btn">4</a>
+              <a href="#" class="page-btn">5</a>
+              <span class="page-btn">...</span>
+              <a href="#" class="page-btn">18</a>
+              <a href="#" class="page-btn">다음 ›</a>
             </div>
           </div>
         </section>
@@ -1106,11 +1056,11 @@
           <div class="container">
             <div class="footer-content">
               <div class="footer-section">
-                <h3>교환 안내</h3>
+                <h3>고객센터</h3>
                 <ul>
-                  <li><a href="#">교환 방법</a></li>
-                  <li><a href="#">안전 거래</a></li>
-                  <li><a href="#">분쟁 해결</a></li>
+                  <li><a href="#">고객문의</a></li>
+                  <li><a href="#">주문/배송 조회</a></li>
+                  <li><a href="#">반품/교환</a></li>
                   <li><a href="#">FAQ</a></li>
                 </ul>
               </div>
@@ -1124,21 +1074,21 @@
                 </ul>
               </div>
               <div class="footer-section">
-                <h3>고객센터</h3>
+                <h3>회사소개</h3>
                 <ul>
-                  <li><a href="#">고객문의</a></li>
-                  <li><a href="#">교환 문의</a></li>
-                  <li><a href="#">신고하기</a></li>
-                  <li><a href="#">사용자 가이드</a></li>
+                  <li><a href="#">회사정보</a></li>
+                  <li><a href="#">인재채용</a></li>
+                  <li><a href="#">제휴문의</a></li>
+                  <li><a href="#">광고문의</a></li>
                 </ul>
               </div>
               <div class="footer-section">
-                <h3>커뮤니티</h3>
+                <h3>SNS</h3>
                 <ul>
-                  <li><a href="#">독서 모임</a></li>
-                  <li><a href="#">북클럽</a></li>
-                  <li><a href="#">리뷰 나누기</a></li>
-                  <li><a href="#">추천 도서</a></li>
+                  <li><a href="#">인스타그램</a></li>
+                  <li><a href="#">페이스북</a></li>
+                  <li><a href="#">유튜브</a></li>
+                  <li><a href="#">네이버 블로그</a></li>
                 </ul>
               </div>
             </div>
@@ -1149,7 +1099,7 @@
         </footer>
       </div>
 </body>
-      <script>
+    <script>
         function toggleDropdown() {
           const dropdown = document.querySelector('.user-dropdown');
           dropdown.classList.toggle('show');

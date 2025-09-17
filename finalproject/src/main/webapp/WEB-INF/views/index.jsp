@@ -245,9 +245,9 @@
               </div>
             </div>
           <div class="more-button-container">
-            <button class="more-btn">
+            <a class="more-btn" href="${path}/board/list">
               더보기 📚
-            </button>
+            </a>
           </div>
           </div>
         </section>

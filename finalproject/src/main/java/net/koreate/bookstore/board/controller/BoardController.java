@@ -54,6 +54,10 @@ public class BoardController {
 		return "admin/admindashboard";
 	}
 	
+	@GetMapping("board/list")
+	public String booklist() {
+		return "board/newbooklist";
+	}
 	
 	@PostMapping("admin/newbookwrite")
 	public String newbookwrite(NewBookVO vo, @RequestPart("newbook_imgs") MultipartFile file, RedirectAttributes rttr) throws Exception{
