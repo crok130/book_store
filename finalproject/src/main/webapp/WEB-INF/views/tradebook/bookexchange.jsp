@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style>
-	        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
+	    @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
         * {
           margin: 0;
@@ -801,6 +801,12 @@
 </style>
 </head>
 <body>
+ <script>
+	
+	if('${msg}' !== '' && '${msg}'!== null){
+		alert("${msg}");
+	}
+</script>
       <div>
         <header class="header">
           <div class="container">

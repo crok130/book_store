@@ -63,8 +63,13 @@ public class TradeBoardController {
 		vo.setTradebook_img(tradeBook_img);
 		MemberVO user = (MemberVO) session.getAttribute("userInfo");
 		vo.setMember_num(user.getMember_num());
-		ts.write(vo);
-		return null;
+		int write = ts.write(vo);
+		if(write == 1) {
+			rttr.addFlashAttribute("msg", "게시글작성 성공");
+		}else {
+			rttr.addFlashAttribute("msg", "게시글작성 실패");
+		}
+		return write == 1 ? "redirect:/tradebook/bookexchange" : "redirect:/tradebook/write";
 	}
 	
 }

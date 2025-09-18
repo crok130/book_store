@@ -1,7 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<jsp:include page="../common/header.jsp"/>
-
+	<script>
+	
+		if('${msg}' !== '' && '${msg}'!== null){
+			alert("${msg}");
+		}
+	</script>
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
@@ -23,7 +28,7 @@
                 <p class="create-subtitle">소중한 책에게 새로운 독자와의 만남을 선사해보세요</p>
               </div>
 
-              <form class="create-form" method="POST" action="trade/write" enctype="multipart/form-data">
+              <form class="create-form" method="POST" action="${path}/tradebook/write" enctype="multipart/form-data">
                
                 <div class="form-section">
                   <h2 class="section-title">📖 교환할 책 정보</h2>
