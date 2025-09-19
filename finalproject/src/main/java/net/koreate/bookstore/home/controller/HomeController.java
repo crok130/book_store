@@ -1,4 +1,4 @@
-package net.koreate.bookstore;
+package net.koreate.bookstore.home.controller;
 
 import java.util.ArrayList;
 import java.util.List;

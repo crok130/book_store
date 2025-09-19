@@ -3,10 +3,10 @@ package net.koreate.bookstore.board.controller;
 import java.io.File;
 
 import javax.annotation.PostConstruct;
-import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -23,25 +23,21 @@ import net.koreate.bookstore.vo.NewBookVO;
 public class BoardController {
 	
 	@Autowired
-	private String uploadPath;
-	
-	private final ServletContext servletContext;
-	
-	private String realPath;
+	private String uploadDir;  // C:\Temp\img
 	
 	private final BoardService bs;
 	
+	private String realPath;
+	
 	@PostConstruct
 	public void initPath() {
-		realPath = servletContext.getRealPath(
-			File.separator+uploadPath
-		);
+		realPath = uploadDir;  // C:\Temp\img 직접 사용
 		File file = new File(realPath);
 		if(!file.exists()) {
 			file.mkdirs();
-			System.out.println("경로 생성 완료");
+			System.out.println("경로 생성 완료: " + realPath);
 		}
-		System.out.println("FileController 초기화 완료");
+		System.out.println("FileController 초기화 완료: " + realPath);
 	}
 	
 	@GetMapping("admin/write")
@@ -71,6 +67,13 @@ public class BoardController {
 			rttr.addFlashAttribute("msg", "게시글 작성 실패");
 			return "redirect:/admin/write";
 		}
+	}
+	
+	@GetMapping("board/detail")
+	public String BookDetil(int num, Model model) throws Exception {
+		NewBookVO vo = bs.readBoard(num);
+		model.addAttribute("read", vo);
+		return "board/bookdetail";
 	}
 
 

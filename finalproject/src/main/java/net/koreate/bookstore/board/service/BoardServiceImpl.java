@@ -7,12 +7,14 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.koreate.bookstore.board.dao.BoardDAO;
 import net.koreate.bookstore.common.utils.Criteria;
 import net.koreate.bookstore.vo.NewBookVO;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardServiceImpl implements BoardService{
 	
 	private final BoardDAO dao;
@@ -23,9 +25,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public NewBookVO readBoard(int newbook_num) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public NewBookVO readBoard(int newbook_num) throws Exception {	
+		return dao.read(newbook_num);
 	}
 
 	@Override

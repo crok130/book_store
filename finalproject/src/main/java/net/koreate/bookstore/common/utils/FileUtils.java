@@ -54,8 +54,8 @@ public class FileUtils {
 		System.out.println(formatName);
 		
 		if(MediaUtils.getMediaType(formatName) != null) {
-			// 이미지 파일
-			uploadFileName = makeThumbnail(realPath,datePath,uploadFileName);
+			// 이미지 파일 - 원본 이미지 사용
+			uploadFileName = originalUploadFileName;
 		}else {
 			uploadFileName = originalUploadFileName;
 		}
@@ -90,7 +90,7 @@ public class FileUtils {
 			= Scalr.resize(image, 
 					Scalr.Method.AUTOMATIC,		// 고정 크기에 따른 상대 크기
 					Scalr.Mode.FIT_TO_HEIGHT,	// 높이를 고정 크기로 지정
-					100);						// 높이는 100px , 너비는 비율에 따라 자동으로 조절
+					300);						// 높이는 300px , 너비는 비율에 따라 자동으로 조절
 		String thumbnailImage
 			= realPath+datePath+File.separator+"s_"+savedName;
 		String ext = savedName.substring(

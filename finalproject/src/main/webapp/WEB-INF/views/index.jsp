@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <jsp:include page="common/header.jsp"/>
 
         <section class="search-section">
@@ -19,6 +19,7 @@
             </div>
           </div>
         </section>
+        
 
         <section class="recommended-section">
           <div class="container">
@@ -142,107 +143,27 @@
             <h2 class="section-title">독자들의 사랑</h2>
             <p class="section-subtitle">시간이 흘러도 변하지 않는 가치를 인정받은 작품들</p>
             <div class="books-grid">
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop&crop=face"
-                  alt="달러구트 꿈 백화점"
-                  class="book-image"
-                />
+            <c:forEach var="book" items="${list}">
+               <div class="book-card" onclick="location.href='board/detail?num=${book.newbook_num}'">
+      
+                    <img 
+                      src="${pageContext.request.contextPath}/img${book.newbook_img}"
+                      alt="${book.newbook_title}"
+                      class="book-image"
+     
+                    />
                 <div class="book-info">
-                  <h3 class="book-title">달러구트 꿈 백화점</h3>
-                  <p class="book-author">이미예</p>
+                  <h3 class="book-title">${book.newbook_title}</h3>
+                  <p class="book-author">${book.newbook_author}</p>
                   <div class="book-rating">
                     <span class="stars">★★★★☆</span>
                     <span class="rating-text">(4.2/5)</span>
                   </div>
-                  <div class="book-price">13,320원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=600&fit=crop"
-                  alt="세이노의 가르침"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">세이노의 가르침</h3>
-                  <p class="book-author">세이노</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.8/5)</span>
-                  </div>
-                  <div class="book-price">6,480원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop"
-                  alt="불편한 편의점"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">불편한 편의점</h3>
-                  <p class="book-author">김호연</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.3/5)</span>
-                  </div>
-                  <div class="book-price">12,600원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?w=400&h=600&fit=crop"
-                  alt="원피스 106권"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">원피스 106권</h3>
-                  <p class="book-author">오다 에이치로</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.9/5)</span>
-                  </div>
-                  <div class="book-price">4,500원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=600&fit=crop"
-                  alt="아버지의 해방일지"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">아버지의 해방일지</h3>
-                  <p class="book-author">정지아</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.1/5)</span>
-                  </div>
-                  <div class="book-price">14,400원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop"
-                  alt="트렌드 코리아 2024"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">트렌드 코리아 2024</h3>
-                  <p class="book-author">김난도</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.0/5)</span>
-                  </div>
-                  <div class="book-price">16,200원</div>
-                </div>
-              </div>
+                  <div class="book-price">${book.newbook_price}원</div>
+                 </div>
+               </div>
+			</c:forEach>	
+            
             </div>
           <div class="more-button-container">
             <a class="more-btn" href="${path}/board/list">

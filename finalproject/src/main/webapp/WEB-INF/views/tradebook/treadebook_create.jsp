@@ -78,27 +78,27 @@
                         책 상태<span class="required">*</span>
                       </label>
                       <div class="condition-options">
-                        <input type="radio" id="condition-new" name="tradebook_status" value="new" class="condition-option" required>
+                        <input type="radio" id="condition-new" name="tradebook_status" value="새책" class="condition-option" required>
                         <label for="condition-new" class="condition-label">
                           ✨ 새 책
                         </label>
 
-                        <input type="radio" id="condition-excellent" name="tradebook_status" value="excellent" class="condition-option">
+                        <input type="radio" id="condition-excellent" name="tradebook_status" value="매우 좋음" class="condition-option">
                         <label for="condition-excellent" class="condition-label">
                           👍 매우 좋음
                         </label>
 
-                        <input type="radio" id="condition-good" name="tradebook_status" value="good" class="condition-option">
+                        <input type="radio" id="condition-good" name="tradebook_status" value="좋음" class="condition-option">
                         <label for="condition-good" class="condition-label">
                           😊 좋음
                         </label>
 
-                        <input type="radio" id="condition-fair" name="tradebook_status" value="fair" class="condition-option">
+                        <input type="radio" id="condition-fair" name="tradebook_status" value="보통" class="condition-option">
                         <label for="condition-fair" class="condition-label">
                           🤔 보통
                         </label>
 
-                        <input type="radio" id="condition-poor" name="tradebook_status" value="poor" class="condition-option">
+                        <input type="radio" id="condition-poor" name="tradebook_status" value="낡음" class="condition-option">
                         <label for="condition-poor" class="condition-label">
                           😅 낡음
                         </label>
@@ -153,17 +153,17 @@
                         교환 방식<span class="required">*</span>
                       </label>
                       <div class="exchange-methods">
-                        <input type="radio" id="direct-exchange" name="tradebook_method" value="direct" class="method-option" required>
+                        <input type="radio" id="direct-exchange" name="tradebook_method" value="직거래" class="method-option" required>
                         <label for="direct-exchange" class="method-label">
                           🤝 직거래
                         </label>
 
-                        <input type="radio" id="delivery-exchange" name="tradebook_method" value="delivery" class="method-option">
+                        <input type="radio" id="delivery-exchange" name="tradebook_method" value="택배거래" class="method-option">
                         <label for="delivery-exchange" class="method-label">
                           📦 택배거래
                         </label>
 
-                        <input type="radio" id="both-exchange" name="tradebook_method" value="both" class="method-option">
+                        <input type="radio" id="both-exchange" name="tradebook_method" value="모두가능" class="method-option">
                         <label for="both-exchange" class="method-label">
                           🔄 모두 가능
                         </label>

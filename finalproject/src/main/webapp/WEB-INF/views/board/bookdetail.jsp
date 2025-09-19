@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="f" uri="http://java.sun.com/jsp/jstl/fmt"%>
    
     <jsp:include page="../common/header.jsp"/>
 
@@ -8,7 +8,7 @@
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
-              <a href="/App.tsx">홈</a>
+              <a href="${pathz}">홈</a>
               <span class="breadcrumb-separator">></span>
               <a href="#">소설/에세이</a>
               <span class="breadcrumb-separator">></span>
@@ -30,9 +30,9 @@
               </div>
 
               <div class="product-info">
-                <div class="product-badge">베스트셀러</div>
+                <div class="product-badge">${read.newbook_category}</div>
                 <h1 class="product-title">달러구트 꿈 백화점</h1>
-                <p class="product-author">이미예 지음 | 팩토리나인 | 2020년 07월</p>
+                <p class="product-author">${read.newbook_author} 지음 | ${read.newbook_publisher} | 2020년 07월</p>
 
                 <div class="product-rating">
                   <div class="stars">★★★★☆</div>
@@ -45,17 +45,15 @@
 
                 <div class="product-price">
                   <span class="price-current">13,320원</span>
-                  <span class="price-original">14,800원</span>
-                  <span class="price-discount">10%</span>
                 </div>
 
                 <div class="product-options">
                   <div class="option-group">
                     <label class="option-label">수량</label>
                     <div class="quantity-selector">
-                      <button class="quantity-btn">-</button>
-                      <input type="number" class="quantity-input" value="1" min="1" />
-                      <button class="quantity-btn">+</button>
+                      <button type="button" class="quantity-btn" onclick="decreaseQuantity()">-</button>
+                      <input id="quantity" type="number" class="quantity-input" value="1" min="1" />
+                      <button type="button" class="quantity-btn" onclick="increaseQuantity()">+</button>
                     </div>
                   </div>
                 </div>
@@ -252,4 +250,19 @@
         </footer>
       </div>
 </body>
+<script>
+	function increaseQuantity() {
+	    const quantityInput = document.getElementById('quantity');
+	    const currentValue = parseInt(quantityInput.value) || 0;
+	    quantityInput.value = currentValue + 1;
+	  }
+	
+	  function decreaseQuantity() {
+	    const quantityInput = document.getElementById('quantity');
+	    const currentValue = parseInt(quantityInput.value) || 0;
+	    if (currentValue > 0) {
+	      quantityInput.value = currentValue - 1;
+	    }
+	  }
+</script>
 </html>
