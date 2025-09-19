@@ -5,7 +5,7 @@
     <jsp:include page="../common/header.jsp"/>
 
 
-       <section class="hero-section">
+        <section class="hero-section">
           <div class="container">
             <div class="hero-content">
               <span class="exchange-icon">🔄</span>

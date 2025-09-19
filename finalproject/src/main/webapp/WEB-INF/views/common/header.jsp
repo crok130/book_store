@@ -52,7 +52,7 @@
                   </div>
                   <div class="user-dropdown">
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
-                    <a href="${path}/chat/chat" class="dropdown-item">채팅</a>
+                    <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
                     <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
                     <a href="${path}/member/cart" class="dropdown-item">회원정보 수정</a>
                   </div>

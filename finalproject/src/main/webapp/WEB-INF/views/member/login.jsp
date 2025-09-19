@@ -15,6 +15,7 @@
 		alert("${msg}");
 	}
 </script>
+
      <div class="login-container">
         <a href="${path}/" class="back-to-home">← 홈으로 </a>
         

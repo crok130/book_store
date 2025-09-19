@@ -14,7 +14,7 @@
         <a href="/components/BookExchangePage.tsx" class="back-btn">
           ← 교환 목록으로
         </a>
-  
+
         <div class="sidebar">
           <div class="sidebar-header">
             <h2 class="sidebar-title">대화</h2>
@@ -80,7 +80,7 @@
 
      
         <div class="chat-main">
-          <div class="chat-header">
+          <div id="chat-header">
             <div class="chat-header-info">
               <div class="chat-avatar" style="position: relative;">
                 김
@@ -100,7 +100,7 @@
             </div>
           </div>
 
-          <div class="chat-messages">
+          <div id="chat-messages">
             <div class="message">
               <div class="message-avatar">김</div>
               <div class="message-content">
@@ -150,101 +150,7 @@
                   <div class="message-time">어제 오후 9:35</div>
                 </div>
               </div>
-            </div>
-
-          
-            <div class="message own">
-              <div class="message-avatar">나</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">내일(토요일) 오후 2시쯤 어떠세요? 강남역 근처가 편하실까요?</div>
-                  <div class="message-time">어제 오후 9:40</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="message">
-              <div class="message-avatar">김</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">완벽해요! 강남역 2번 출구 스타벅스는 어떠세요? 거기서 2시에 만나요 ☕</div>
-                  <div class="message-time">어제 오후 9:42</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="message own">
-              <div class="message-avatar">나</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">좋습니다! 그럼 내일 2시에 강남역 2번 출구 스타벅스에서 만나요. 미드나잇 라이브러리 들고 가시면 되죠?</div>
-                  <div class="message-time">어제 오후 9:45</div>
-                </div>
-              </div>
-            </div>
-
-         
-            <div class="message">
-              <div class="message-avatar">김</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">안녕하세요! 오늘 2시 약속 잊지 않으셨죠? 지금 출발합니다 🚇</div>
-                  <div class="message-time">오늘 오후 1:30</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="message own">
-              <div class="message-avatar">나</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">네! 저도 곧 출발해요. 달러구트 꼼꼼히 포장해서 가져갑니다 📚</div>
-                  <div class="message-time">오늘 오후 1:35</div>
-                </div>
-              </div>
-            </div>
-
-           
-            <div class="message">
-              <div class="message-avatar">김</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">오늘 만나서 정말 반가웠어요! 달러구트 벌써 설레서 빨리 읽어보고 싶네요 ✨ 좋은 책 교환해주셔서 감사합니다!</div>
-                  <div class="message-time">오늘 오후 3:15</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="message own">
-              <div class="message-avatar">나</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">저도 감사해요! 미드나잇 라이브러리 오늘밤부터 읽어볼게요 📖 다음에 또 좋은 책으로 교환해요!</div>
-                  <div class="message-time">오늘 오후 3:18</div>
-                </div>
-              </div>
-            </div>
-
-          
-            <div class="message">
-              <div class="message-avatar">김</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">혹시 책 추천도 해주실 수 있나요? 비슷한 감성의 책이 있다면 알려주세요 😊</div>
-                  <div class="message-time">오늘 오후 3:20</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="message own">
-              <div class="message-avatar">나</div>
-              <div class="message-content">
-                <div class="message-bubble">
-                  <div class="message-text">좋아요! "언어의 온도"나 "곰탕" 추천드려요. 둘 다 따뜻하고 감성적인 이야기들이에요. 나중에 이 책들도 교환할 수 있어요!</div>
-                  <div class="message-time">오늘 오후 3:25</div>
-                </div>
-              </div>
-            </div>
+            </div>          
           </div>
 
           <div class="chat-input">

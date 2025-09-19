@@ -41,6 +41,7 @@ public class MemberController {
 	@PostMapping("login")
 	public String POSTlogin(String member_id, String member_pw, HttpSession session) throws Exception {
 		ms.login(member_id, member_pw, session);
+
 		return "redirect:/";
 	}
 	

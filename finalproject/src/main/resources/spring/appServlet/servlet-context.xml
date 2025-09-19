@@ -27,7 +27,21 @@
 	<context:component-scan base-package="net.koreate.bookstore.*.service" />
 	<context:component-scan base-package="net.koreate.bookstore" />
 	
-	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
-	
 	<mybatis-spring:scan base-package="net.koreate.bookstore.*.dao"/>
+
+	<beans:bean id="uploadDir" class="java.lang.String">
+		<beans:constructor-arg value="C:\\Temp\\upload"/>	
+	</beans:bean>
+	
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="uploads"/>	
+	</beans:bean>
+		
+	<beans:bean id="multipartResolver"
+		 class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		 <beans:property name="maxUploadSize" value="10485760"/>
+		 <beans:property name="defaultEncoding" value="UTF-8"/>
+	</beans:bean>
+	
+	
 </beans:beans>
