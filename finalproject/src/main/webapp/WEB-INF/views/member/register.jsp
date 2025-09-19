@@ -535,10 +535,7 @@
 			
 			document.querySelector("#register-btn").submit();
 			
-		};
-		
-		
-		
+		};		
 	</script>	
 	
 </body>

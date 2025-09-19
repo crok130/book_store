@@ -10,14 +10,13 @@
      <link rel="stylesheet" href="${path}/resources/css/login.css">
 </head>
 <body>
- <script>
-	
+<script>	
 	if('${msg}' !== '' && '${msg}'!== null){
 		alert("${msg}");
 	}
 </script>
      <div class="login-container">
-        <a href="${path}/" class="back-to-home">← 홈으로</a>
+        <a href="${path}/" class="back-to-home">← 홈으로 </a>
         
         <div class="login-card">
           <div class="login-header">
@@ -26,7 +25,7 @@
             <p class="login-subtitle">문학적 여정을 이어가기 위해 로그인해 주세요</p>
           </div>
 
-          <form class="login-form" method="POST" action="login">
+          <form class="login-form" method="POST" action="${path}/member/login">
             <div class="form-group">
               <label class="form-label">아이디</label>
               <input
@@ -51,8 +50,8 @@
 
             <div class="form-options">
               <div class="checkbox-group">
-                <input type="checkbox" id="remember" />
-                <label htmlFor="remember">로그인 유지</label>
+                <input type="checkbox" id="rememberme" name="rememberme" />
+                <label htmlFor="rememberme">로그인 유지</label>
               </div>
               <a href="#" class="forgot-password">비밀번호 찾기</a>
             </div>
