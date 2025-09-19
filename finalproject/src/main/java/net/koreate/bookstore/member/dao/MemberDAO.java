@@ -20,9 +20,15 @@ public interface MemberDAO {
     @Select("SELECT COUNT(*) FROM members WHERE member_email = #{member_email}")
     int isEmailAvailable(String member_email) throws Exception;
     
+    // 회원가입 처리
     @Insert("INSERT INTO members(member_id,member_pw,member_name,member_addr,member_email,member_phone,member_nickname,member_birth,member_status) VALUES(#{member_id},#{member_pw},#{member_name},#{member_addr},#{member_email},#{member_phone},#{member_nickname},#{member_birth},0)")
     int register(MemberVO vo) throws Exception;
     
+    // 로그인 : 상태값이 0 인 회원만 대상
     @Select("SELECT * FROM members WHERE member_status = 0 AND member_id = #{member_id} AND member_pw = #{member_pw}")
     MemberVO login(@Param("member_id") String member_id, @Param("member_pw")String member_pw) throws Exception;
+
+    // 특정 ID로 회원 한 명을 찾는 기능
+    @Select("SELECT * FROM members WHERE member_id = #{member_id}")
+	MemberVO getMemberById(String member_id) throws Exception;
 }

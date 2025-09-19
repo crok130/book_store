@@ -15,7 +15,13 @@
 <link rel="stylesheet" href="${path}/resources/css/tradebook_detail.css">
 <link rel="stylesheet" href="${path}/resources/css/treadebook_create.css">
 <link rel="stylesheet" href="${path}/resources/css/index.css">
-
+<script>
+	let expire = "${expire}";
+	if(expire != ''){
+		alert(expire);		
+		location.href="${path}/member/logout";
+	}
+</script>
 </head>
 <body>
       <div>
@@ -35,19 +41,20 @@
               </nav>
               <div class="user-actions">
      	<c:choose>
-			<c:when test="${empty sessionScope.userInfo}">
+			<c:when test="${empty sessionScope.memberInfo}">
                 <a href="${path}/member/login" class="btn btn-outline">로그인</a>
                 <a href="${path}/member/register" class="btn btn-primary">회원가입</a>
            	</c:when>
            	<c:otherwise>
                 <div class="user-menu">
                   <div class="user-greeting" onclick="toggleDropdown()">
-                    ${userInfo.member_nickname}님 반갑습니다 ▼
+                    ${memberInfo.member_nickname}님 반갑습니다 ▼
                   </div>
                   <div class="user-dropdown">
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
                     <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
+                    <a href="${path}/member/cart" class="dropdown-item">회원정보 수정</a>
                   </div>
                 </div>
            	</c:otherwise>
