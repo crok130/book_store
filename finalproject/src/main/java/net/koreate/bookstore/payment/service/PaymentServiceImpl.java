@@ -1,9 +1,12 @@
 package net.koreate.bookstore.payment.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.payment.dao.PaymentDAO;
+import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.PaymentVO;
 
@@ -11,17 +14,70 @@ import net.koreate.bookstore.vo.PaymentVO;
 @RequiredArgsConstructor
 public class PaymentServiceImpl implements PaymentService {
 
-    private final PaymentDAO paymentDAO;
+    private final PaymentDAO dao;
 
 	@Override
 	public String paymemt(PaymentVO vo) throws Exception {
-		// TODO Auto-generated method stub
+		// TODO 결제 연동 구현
 		return null;
 	}
 
 	@Override
     public MemberVO memberAddr(int member_mum) throws Exception {
-        return paymentDAO.findMemberByNum(member_mum);
+        return dao.findMemberByNum(member_mum);
+	}
+
+	@Override
+	public String addCartItem(CartVO vo) throws Exception {
+		if (vo == null) return "유효하지 않은 요청";
+		if (vo.getBook_count() <= 0) return "유효하지 않은 수량";
+		try {
+			int affected = dao.AddCart(vo); // MERGE: 증가 또는 삽입
+			return affected > 0 ? "장바구니 담기 완료" : "장바구니 담기 실패";
+		} catch (Exception e) {
+			return "장바구니 담기 실패";
+		}
+	}
+
+	@Override
+	public void addCartItems(List<CartVO> items) throws Exception {
+		if (items == null || items.isEmpty()) return;
+		for (CartVO item : items) {
+			addCartItem(item);
+		}
+	}
+
+	@Override
+	public List<CartVO> getCart(int member_num) throws Exception {
+		return dao.getCart(member_num);
+	}
+
+	@Override
+	public void updateCartItemCount(int member_num, int newbook_num, int book_count) throws Exception {
+		CartVO vo = new CartVO();
+		vo.setMember_num(member_num);
+		vo.setNewbook_num(newbook_num);
+		vo.setBook_count(book_count);
+		dao.UpdateCartCount(vo);
+	}
+
+	@Override
+	public void removeCartItem(int member_num, int newbook_num) throws Exception {
+		CartVO vo = new CartVO();
+		vo.setMember_num(member_num);
+		vo.setNewbook_num(newbook_num);
+		dao.DeleteCartItem(vo);
+	}
+
+	@Override
+	public void clearCart(int member_num) throws Exception {
+		// TODO 구현체/DAO 준비 후 적용
+	}
+
+	@Override
+	public int getCartTotalQuantity(int member_num) throws Exception {
+		// TODO 구현체/DAO 준비 후 적용
+		return 0;
 	}
 
 }

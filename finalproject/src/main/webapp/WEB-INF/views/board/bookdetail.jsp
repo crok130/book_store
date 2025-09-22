@@ -44,7 +44,7 @@
                 </div>
 
                 <div class="product-price">
-                  <span class="price-current">13,320원</span>
+                  <span class="price-current">${read.newbook_price}원</span>
                 </div>
 
                 <div class="product-options">
@@ -59,12 +59,17 @@
                 </div>
 
                 <div class="action-buttons">
-                  <form id="buyForm" action="${pageContext.request.contextPath}/payment/ready" method="post" style="display:none;">
+                  <form id="buyForm" action="${path}/payment/ready" method="post" style="display:none;">
                     <input type="hidden" name="newbook_num" value="${read.newbook_num}" />
                     <input type="hidden" name="quantity" value="1" />
                   </form>
+                  <form id="cartForm" action="${path}/payment/addCart" method="post" style="display:none;">
+                    <input type="hidden" name="newbook_num" value="${read.newbook_num}" />
+                    <input type="hidden" name="book_count" value="1" />
+                    <input type="hidden" name="price" value="${read.newbook_price}" />
+                  </form>
                   <button class="btn-large btn-buy" type="button" onclick="submitBuy()">구매하기</button>
-                  <button class="btn-large btn-cart">장바구니 담기</button>
+                  <button class="btn-large btn-cart" type="button" onclick="submitCart()">장바구니 담기</button>
                 </div>
 
                 <div class="product-features">
@@ -205,7 +210,6 @@
             </div>
           </div>
         </section>
-
       
         <footer class="footer">
           <div class="container">
@@ -260,9 +264,6 @@
 	    const quantityInput = document.getElementById('quantity');
 	    const currentValue = parseInt(quantityInput.value) || 1;
 	    const newValue = currentValue + 1;
-	    
-	    
-	    
 	    // AJAX로 수량 체크 (서버 승인 전까지 입력값 변경하지 않음)
 	    checkQuantityAvailability(newValue);
 	  }
@@ -272,9 +273,6 @@
 	    const currentValue = parseInt(quantityInput.value) || 1;
 	    if (currentValue > 1) {
 	      const newValue = currentValue - 1;
-	      
-	  
-	      
 	      // AJAX로 수량 체크 (서버 승인 전까지 입력값 변경하지 않음)
 	      checkQuantityAvailability(newValue);
 	    }
@@ -282,8 +280,6 @@
 	  
 	  function checkQuantityAvailability(quantity) {
 	    const newbookNum = ${read.newbook_num}; // JSP에서 책 번호 가져오기
-	    
-	    
 	    fetch("checkQuantity?num=" + newbookNum + "&quantity=" + quantity)
 	      .then(response => response.json())
 	      .then(result => {
@@ -349,5 +345,15 @@
     if (buyQty) buyQty.value = qty;
     document.getElementById('buyForm').submit();
   }
+
+  // 장바구니 담기: 일반 폼 제출로 처리
+  function submitCart(){
+    const qty = parseInt(document.getElementById('quantity').value) || 1;
+    const cartQty = document.querySelector('#cartForm input[name="quantity"]');
+    if (cartQty) cartQty.value = qty;
+    document.getElementById('cartForm').submit();
+  }
+
+  // (기존 addToCart()가 있었다면 더 이상 사용하지 않습니다)
 </script>
 </html>

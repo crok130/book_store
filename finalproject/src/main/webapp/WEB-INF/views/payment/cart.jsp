@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 	<jsp:include page="../common/header.jsp"/>
 
         <section class="cart-header">
@@ -12,116 +14,67 @@
 
         <section class="cart-section">
           <div class="container">
+  	<c:choose>
+		<c:when test="${!empty cart}">
             <div class="cart-content">
-    
-              <div class="cart-items">
-                <h2 class="items-header">선택한 도서 (3권)</h2>
-                
-                <div class="cart-item">
-                  <img 
-                    src="https://images.unsplash.com/photo-1622490836804-4069f1f6df53?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxib29rcyUyMHN0YWNrJTIwdmludGFnZXxlbnwxfHx8fDE3NTczMDg3NjF8MA&ixlib=rb-4.1.0&q=80&w=400&h=600&fit=crop"
-                    alt="달러구트 꿈 백화점"
-                    class="item-image"
-                  />
-                  <div class="item-info">
-                    <h3 class="item-title">달러구트 꿈 백화점</h3>
-                    <p class="item-author">이미예</p>
-                    <p class="item-price">13,320원</p>
-                  </div>
-                  <div class="item-controls">
-                    <div class="quantity-control">
-                      <button class="quantity-btn">−</button>
-                      <span class="quantity-display">1</span>
-                      <button class="quantity-btn">+</button>
+              <div class="cart-items" id="cartItems">
+                <c:set var="totalQty" value="0" />
+                <c:set var="totalPrice" value="0" />
+                <h2 class="items-header">선택한 도서 (<c:out value='${fn:length(cart)}'/>권)</h2>
+                <c:forEach var="item" items="${cart}">
+                  <c:set var="qty" value="${item.book_count != null ? item.book_count : 0}" />
+                  <c:set var="unit" value="${item.price != null ? item.price : 0}" />
+                  <c:set var="lineTotal" value="${qty * unit}" />
+                  <c:set var="totalQty" value="${totalQty + qty}" />
+                  <c:set var="totalPrice" value="${totalPrice + lineTotal}" />
+                  <div class="cart-item" data-newbook-num="${item.newbook_num}" data-unit-price="${unit}">
+                    <img 
+                      src="${pageContext.request.contextPath}/img${item.newbook_img}"
+                      alt="${item.newbook_title}"
+                      class="item-image"
+                    />
+                    <div class="item-info">
+                      <h3 class="item-title"><c:out value='${item.newbook_title}'/></h3>
+                      <p class="item-author"><c:out value='${item.newbook_author}'/></p>
+                      <p class="item-price"><fmt:formatNumber value='${lineTotal}' type='number'/>원</p>
                     </div>
-                    <button class="remove-btn">🗑️</button>
-                  </div>
-                </div>
-
-                <div class="cart-item">
-                  <img 
-                    src="https://images.unsplash.com/photo-1755188977089-3bb40306d57f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHx2aW50YWdlJTIwbGl0ZXJhdHVyZSUyMGJvb2t8ZW58MXx8fHwxNzU3MzA4NzY1fDA&ixlib=rb-4.1.0&q=80&w=400&h=600&fit=crop"
-                    alt="세이노의 가르침"
-                    class="item-image"
-                  />
-                  <div class="item-info">
-                    <h3 class="item-title">세이노의 가르침</h3>
-                    <p class="item-author">세이노</p>
-                    <p class="item-price">6,480원</p>
-                  </div>
-                  <div class="item-controls">
-                    <div class="quantity-control">
-                      <button class="quantity-btn">−</button>
-                      <span class="quantity-display">2</span>
-                      <button class="quantity-btn">+</button>
+                    <div class="item-controls">
+                      <div class="quantity-control">
+                        <button class="quantity-btn btn-decrease">−</button>
+                        <span class="quantity-display">${qty}</span>
+                        <button class="quantity-btn btn-increase">+</button>
+                      </div>
+                      <button class="remove-btn btn-delete">🗑️</button>
                     </div>
-                    <button class="remove-btn">🗑️</button>
                   </div>
-                </div>
-
-                <div class="cart-item">
-                  <img 
-                    src="https://images.unsplash.com/photo-1615413833480-6e8427dbcc5e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjbGFzc2ljJTIwbm92ZWwlMjBib29rJTIwY292ZXJ8ZW58MXx8fHwxNzU3MzA4NzcwfDA&ixlib=rb-4.1.0&q=80&w=400&h=600&fit=crop"
-                    alt="불편한 편의점"
-                    class="item-image"
-                  />
-                  <div class="item-info">
-                    <h3 class="item-title">불편한 편의점</h3>
-                    <p class="item-author">김호연</p>
-                    <p class="item-price">12,600원</p>
-                  </div>
-                  <div class="item-controls">
-                    <div class="quantity-control">
-                      <button class="quantity-btn">−</button>
-                      <span class="quantity-display">1</span>
-                      <button class="quantity-btn">+</button>
-                    </div>
-                    <button class="remove-btn">🗑️</button>
-                  </div>
-                </div>
+                </c:forEach>
               </div>
 
 
               <div class="cart-summary">
                 <h2 class="summary-header">주문 요약</h2>
-                
-                <div class="summary-row">
-                  <span class="summary-label">상품 금액</span>
-                  <span class="summary-value">45,360원</span>
-                </div>
-                
-                <div class="summary-row">
-                  <span class="summary-label">배송비</span>
-                  <span class="summary-value">2,500원</span>
-                </div>
-                
-                <div class="summary-row">
-                  <span class="summary-label">할인</span>
-                  <span class="summary-value">-2,000원</span>
-                </div>
-                
                 <div class="summary-row summary-total">
                   <span class="summary-label">총 결제 금액</span>
-                  <span class="summary-value">45,860원</span>
+                  <span class="summary-value" id="sumPrice"><fmt:formatNumber value='${totalPrice}' type='number'/>원</span>
                 </div>
-
-                <button class="checkout-btn">주문하기</button>
-                <a href="/App.tsx" class="continue-shopping">쇼핑 계속하기</a>
+                <button class="checkout-btn" disabled>주문하기</button>
+                <a href="${path}/board/list" class="continue-shopping">쇼핑 계속하기</a>
               </div>
             </div>
-
-
+		</c:when>
+		<c:otherwise>
             <div class="empty-cart">
               <div class="empty-icon">📚</div>
               <h2 class="empty-title">장바구니가 비어있습니다</h2>
               <p class="empty-text">아직 선택하신 책이 없습니다.<br/>마음에 드는 책을 담아보세요.</p>
-              <a href="/App.tsx" class="btn btn-primary">책 둘러보기</a>
+              <a href="${path}/board/list" class="btn btn-primary">책 둘러보기</a>
             </div>
-  
           </div>
+        </c:otherwise>
+	</c:choose>
         </section>
 
-        {/* Footer */}
+        <!-- Footer -->
         <footer class="footer">
           <div class="container">
             <div class="footer-content">
@@ -182,6 +135,81 @@
             userMenu.classList.remove('active');
           }
         });
+
+        // ===== Cart AJAX Handlers =====
+        (function(){
+          const container = document.getElementById('cartItems');
+          if (!container) return;
+
+          function fmt(n){ return new Intl.NumberFormat('ko-KR').format(n); }
+
+          function refreshSummary(){
+            const items = container.querySelectorAll('.cart-item');
+            let sumPrice = 0;
+            items.forEach(it => {
+              const qty = parseInt(it.querySelector('.quantity-display').textContent) || 0;
+              const unit = parseInt(it.getAttribute('data-unit-price')) || 0;
+              sumPrice += qty * unit;
+            });
+            const sumPriceEl = document.getElementById('sumPrice');
+            if (sumPriceEl) sumPriceEl.textContent = fmt(sumPrice) + '원';
+          }
+
+          function post(url, data){
+            return fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams(data)
+            }).then(r => r.text());
+          }
+
+          function updateItemLinePrice(itemEl){
+            const qty = parseInt(itemEl.querySelector('.quantity-display').textContent) || 0;
+            const unit = parseInt(itemEl.getAttribute('data-unit-price')) || 0;
+            const priceEl = itemEl.querySelector('.item-price');
+            if (priceEl) priceEl.textContent = fmt(qty * unit) + '원';
+          }
+
+          container.addEventListener('click', function(e){
+            const btnInc = e.target.closest('.btn-increase');
+            const btnDec = e.target.closest('.btn-decrease');
+            const btnDel = e.target.closest('.btn-delete');
+            const itemEl = e.target.closest('.cart-item');
+            if (!itemEl) return;
+            const bookNum = itemEl.getAttribute('data-newbook-num');
+            const qtyEl = itemEl.querySelector('.quantity-display');
+            let qty = parseInt(qtyEl.textContent) || 0;
+
+            if (btnInc){
+              const newQty = qty + 1;
+              post('${path}/payment/cart/update', { newbook_num: bookNum, book_count: newQty })
+                .then(msg => {
+                  if (msg.indexOf('수량 변경 완료') === 0){
+                    qtyEl.textContent = newQty; updateItemLinePrice(itemEl); refreshSummary();
+                  } else {
+                    alert(msg);
+                  }
+                })
+                .catch(() => {});
+            } else if (btnDec){
+              const newQty = Math.max(1, qty - 1);
+              if (newQty === qty) return;
+              post('${path}/payment/cart/update', { newbook_num: bookNum, book_count: newQty })
+                .then(msg => {
+                  if (msg.indexOf('수량 변경 완료') === 0){
+                    qtyEl.textContent = newQty; updateItemLinePrice(itemEl); refreshSummary();
+                  } else {
+                    alert(msg);
+                  }
+                })
+                .catch(() => {});
+            } else if (btnDel){
+              post('${path}/payment/cart/delete', { newbook_num: bookNum })
+                .then(msg => { if (msg.indexOf('항목 삭제 완료') === 0){ itemEl.remove(); refreshSummary(); } else { alert(msg); } })
+                .catch(() => {});
+            }
+          });
+        })();
       </script>
 
 </body>
