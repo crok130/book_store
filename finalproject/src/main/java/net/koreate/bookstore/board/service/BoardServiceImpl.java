@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.koreate.bookstore.board.dao.BoardDAO;
 import net.koreate.bookstore.common.utils.Criteria;
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
+import net.koreate.bookstore.common.utils.SearchPageMaker;
 import net.koreate.bookstore.vo.NewBookVO;
 
 @Service
@@ -53,5 +56,20 @@ public class BoardServiceImpl implements BoardService{
 		list = dao.listBook();
 		return list;
 	}
+
+	@Override
+	public PageMaker getPageMaker(SearchCriteria scri) throws Exception {
+		int totalCount = dao.listCount(scri); // 전체 게시물 개수
+		
+		PageMaker pm = new SearchPageMaker(scri, totalCount, 10);
+		return pm;
+	}
+
+	@Override
+	public List<NewBookVO> listReply(SearchCriteria scri) throws Exception {
+		log.info("페이징 처리된 도서 목록 조회 - page: {}, perPageNum: {}", scri.getPage(), scri.getPerPageNum());
+		return dao.listReply(scri);
+	}
+
 
 }

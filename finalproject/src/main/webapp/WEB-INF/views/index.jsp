@@ -143,9 +143,8 @@
             <h2 class="section-title">독자들의 사랑</h2>
             <p class="section-subtitle">시간이 흘러도 변하지 않는 가치를 인정받은 작품들</p>
             <div class="books-grid">
-            <c:forEach var="book" items="${list}">
-               <div class="book-card" onclick="location.href='board/detail?num=${book.newbook_num}'">
-      
+            <c:forEach var="book" items="${home}">
+               <div class="book-card" onclick="location.href='${path}/board/detail?num=${book.newbook_num}'">
                     <img 
                       src="${pageContext.request.contextPath}/img${book.newbook_img}"
                       alt="${book.newbook_title}"

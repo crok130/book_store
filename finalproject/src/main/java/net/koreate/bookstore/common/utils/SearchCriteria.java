@@ -11,6 +11,8 @@ public class SearchCriteria extends Criteria{
 
 	private String searchType;
 	private String keyword;
+	private String category;
+	private String sort;
 	
 	public SearchCriteria(int page, int perPageNum, String searchType, String keyword) {
 		super(page, perPageNum);

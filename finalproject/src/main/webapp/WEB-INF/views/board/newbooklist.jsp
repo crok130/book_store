@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 	<jsp:include page="../common/header.jsp"/>
 
 
@@ -58,24 +61,26 @@
           <div class="container">
             <h2 class="section-title">신간 도서 전체 목록</h2>
             <div class="books-grid">
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=500&fit=crop"
-                  alt="달러구트 꿈 백화점 2"
-                  class="book-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">인기</div>
-                  <h3 class="book-title">달러구트 꿈 백화점 2</h3>
-                  <p class="book-author">이미예</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.3/5)</span>
+              <c:forEach var="book" items="${list}">
+                <div class="book-card" onclick="location.href='detail?num=${book.newbook_num}'">
+                  <img 
+                    src="${pageContext.request.contextPath}/img${book.newbook_img}"
+                    alt="${book.newbook_title}"
+                    class="book-image"
+                    onerror="this.src='${pageContext.request.contextPath}/resources/images/no-image.png'"
+                  />
+                  <div class="recommended-info">
+                    <div class="recommended-badge">${book.newbook_category}</div>
+                    <h3 class="book-title">${book.newbook_title}</h3>
+                    <p class="book-author">${book.newbook_author}</p>
+                    <div class="book-rating">
+                      <span class="stars">★★★★☆</span>
+                      <span class="rating-text">(4.3/5)</span>
+                    </div>
+                    <div class="book-price"><fmt:formatNumber value="${book.newbook_price}" pattern="#,###"/>원</div>
                   </div>
-                  <div class="book-price">14,220원</div>
                 </div>
-              </div>
-
+              </c:forEach>
             </div>
           </div>
         </section>
@@ -84,15 +89,28 @@
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">
-              <a href="#" class="page-btn disabled">‹ 이전</a>
-              <a href="#" class="page-btn active">1</a>
-              <a href="#" class="page-btn">2</a>
-              <a href="#" class="page-btn">3</a>
-              <a href="#" class="page-btn">4</a>
-              <a href="#" class="page-btn">5</a>
-              <span class="page-btn">...</span>
-              <a href="#" class="page-btn">12</a>
-              <a href="#" class="page-btn">다음 ›</a>
+              <c:if test="${pm.prev}">
+                <a href="list${pm.makeQuery(pm.startPage-1)}" class="page-btn">‹ 이전</a>
+              </c:if>
+              <c:if test="${!pm.prev}">
+                <span class="page-btn disabled">‹ 이전</span>
+              </c:if>
+              
+              <c:forEach begin="${pm.startPage}" end="${pm.endPage}" var="idx">
+                <c:if test="${pm.criteria.page == idx}">
+                  <span class="page-btn active">${idx}</span>
+                </c:if>
+                <c:if test="${pm.criteria.page != idx}">
+                  <a href="list${pm.makeQuery(idx)}" class="page-btn">${idx}</a>
+                </c:if>
+              </c:forEach>
+              
+              <c:if test="${pm.next}">
+                <a href="list${pm.makeQuery(pm.endPage+1)}" class="page-btn">다음 ›</a>
+              </c:if>
+              <c:if test="${!pm.next}">
+                <span class="page-btn disabled">다음 ›</span>
+              </c:if>
             </div>
           </div>
         </section>

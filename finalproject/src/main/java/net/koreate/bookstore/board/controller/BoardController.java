@@ -1,6 +1,7 @@
 package net.koreate.bookstore.board.controller;
 
 import java.io.File;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -16,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.board.service.BoardService;
 import net.koreate.bookstore.common.utils.FileUtils;
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
 
 @Controller
@@ -51,7 +55,11 @@ public class BoardController {
 	}
 	
 	@GetMapping("board/list")
-	public String booklist() {
+	public String booklist(SearchCriteria cri, Model model) throws Exception {
+		List<NewBookVO> list = bs.listReply(cri);
+		PageMaker pm = bs.getPageMaker(cri);
+		model.addAttribute("list", list);
+		model.addAttribute("pm", pm);
 		return "board/newbooklist";
 	}
 	
@@ -69,10 +77,11 @@ public class BoardController {
 		}
 	}
 	
+	
 	@GetMapping("board/detail")
-	public String BookDetil(int num, Model model) throws Exception {
-		NewBookVO vo = bs.readBoard(num);
-		model.addAttribute("read", vo);
+	public String BookDetil(@RequestParam("num") int newbook_num, Model model) throws Exception {
+		NewBookVO book = bs.readBoard(newbook_num);
+		model.addAttribute("read", book);
 		return "board/bookdetail";
 	}
 

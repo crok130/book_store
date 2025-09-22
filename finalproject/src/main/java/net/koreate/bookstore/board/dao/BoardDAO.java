@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
+import net.koreate.bookstore.board.provider.BoardQueryProvider;
+import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
 
 public interface BoardDAO {
@@ -21,5 +24,18 @@ public interface BoardDAO {
 	 
 	 @Select("SELECT * FROM newbook WHERE newbook_num = #{newbook_num}")
 	 NewBookVO read(int newbook_num) throws Exception;
+
+		
+	/**
+      * 검색결과내에서 페이징 처리된 게시글 목록
+	 */
+	@SelectProvider(type=BoardQueryProvider.class, method="searchSelectSQL")
+	List<NewBookVO> listReply(SearchCriteria cri)throws Exception;
+		
+
+	// @Select("SELECT count(*) FROM re_tbl_board")
+	@SelectProvider(type=BoardQueryProvider.class, method="searchListCount")
+	int listCount(SearchCriteria cri)throws Exception;
+	
 	 
 }

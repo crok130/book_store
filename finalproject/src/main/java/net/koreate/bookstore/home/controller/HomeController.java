@@ -24,7 +24,7 @@ public class HomeController {
 		List<NewBookVO> list = new ArrayList<>();
 		list = bs.listBook();
 		System.out.println(list);
-		model.addAttribute("list", list);
+		model.addAttribute("home", list);
 		return "index";
 	}
 	
