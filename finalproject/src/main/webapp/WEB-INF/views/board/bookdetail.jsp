@@ -136,7 +136,7 @@
                   </tr>
                   <tr>
                     <td>페이지</td>
-                    <td>${book.newbook_page}쪽</td>
+                    <td>${read.newbook_page}쪽</td>
                   </tr>
                   <tr>
                     <td>크기</td>
@@ -148,7 +148,7 @@
                   </tr>
                   <tr>
                     <td>ISBN</td>
-                    <td>${book.newbook_isbn}</td>
+                    <td>${read.newbook_isbn}</td>
                   </tr>
                 </tbody>
               </table>
@@ -349,7 +349,7 @@
   // 장바구니 담기: 일반 폼 제출로 처리
   function submitCart(){
     const qty = parseInt(document.getElementById('quantity').value) || 1;
-    const cartQty = document.querySelector('#cartForm input[name="quantity"]');
+    const cartQty = document.querySelector('#cartForm input[name="book_count"]');
     if (cartQty) cartQty.value = qty;
     document.getElementById('cartForm').submit();
   }

@@ -26,7 +26,7 @@
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>
-                  <li><a href="#">베스트셀러</a></li>
+                  <li><a href="${path}/board/best">베스트</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>

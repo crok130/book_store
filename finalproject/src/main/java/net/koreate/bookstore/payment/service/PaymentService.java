@@ -81,5 +81,12 @@ public interface PaymentService {
 	 */
 	public int getCartTotalQuantity(int member_num) throws Exception;
 	
+	/**
+	 * 결제 처리
+	 * 
+	 * @param payment 결제 정보
+	 * @return 처리 결과 ("success" 또는 "fail")
+	 */
+	public String processPayment(PaymentVO payment) throws Exception;
 
 }

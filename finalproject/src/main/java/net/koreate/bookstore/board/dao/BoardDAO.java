@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import net.koreate.bookstore.board.provider.BoardQueryProvider;
 import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
+import net.koreate.bookstore.vo.BestSellerVO;
 
 public interface BoardDAO {
 
@@ -36,6 +38,16 @@ public interface BoardDAO {
 	// @Select("SELECT count(*) FROM re_tbl_board")
 	@SelectProvider(type=BoardQueryProvider.class, method="searchListCount")
 	int listCount(SearchCriteria cri)throws Exception;
+
+	// 베스트: 스크랩 저장 테이블에서 TOP N 조회
+    @Select("SELECT COUNT(*) FROM bestseller_simple")
+    int countBest() throws Exception;
+
+    @Select("SELECT rank_num, title, image_src, link_url\n"
+          + "FROM bestseller_simple\n"
+          + "ORDER BY rank_num ASC\n"
+          + "OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY")
+    List<BestSellerVO> selectBestPage(@Param("offset") int offset, @Param("limit") int limit) throws Exception;
 	
 	 
 }

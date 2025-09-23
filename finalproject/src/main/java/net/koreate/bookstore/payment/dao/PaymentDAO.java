@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 public interface PaymentDAO {
 
@@ -26,4 +27,7 @@ public interface PaymentDAO {
 
     @Delete("DELETE FROM cart WHERE member_num = #{member_num} AND newbook_num = #{newbook_num}")
     int DeleteCartItem(CartVO vo) throws Exception;
+    
+    @Insert("INSERT INTO payments (member_num, member_name, member_phone, member_addr, payment_content, newbook_num, payment_quantity, payment_total_price) VALUES (#{member_num}, #{member_name}, #{member_phone}, #{member_addr}, #{payment_content}, #{newbook_num}, #{payment_quantity}, #{payment_total_price})")
+    int insertPayment(PaymentVO payment) throws Exception;
 }

@@ -80,4 +80,25 @@ public class PaymentServiceImpl implements PaymentService {
 		return 0;
 	}
 
+	@Override
+	public String processPayment(PaymentVO payment) throws Exception {
+		try {
+			// 주소가 이미 "addr1_addr2" 형태로 합쳐져서 들어온다고 가정
+			// 만약 별도로 합쳐야 한다면:
+			// String fullAddr = payment.getMember_addr1() + "_" + payment.getMember_addr2();
+			// payment.setMember_addr(fullAddr);
+			
+			// 결제 정보를 데이터베이스에 저장
+			int result = dao.insertPayment(payment);
+			if (result > 0) {
+				return "결제성공";
+			} else {
+				return "결제 실패";
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "결제 실패";
+		}
+	}
+
 }

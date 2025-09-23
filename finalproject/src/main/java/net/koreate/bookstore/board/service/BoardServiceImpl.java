@@ -14,6 +14,7 @@ import net.koreate.bookstore.common.utils.PageMaker;
 import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.common.utils.SearchPageMaker;
 import net.koreate.bookstore.vo.NewBookVO;
+import net.koreate.bookstore.vo.BestSellerVO;
 
 @Service
 @RequiredArgsConstructor
@@ -70,6 +71,17 @@ public class BoardServiceImpl implements BoardService{
 		log.info("페이징 처리된 도서 목록 조회 - page: {}, perPageNum: {}", scri.getPage(), scri.getPerPageNum());
 		return dao.listReply(scri);
 	}
+
+    @Override
+    public List<BestSellerVO> bestPage(int page, int size) throws Exception {
+        int offset = (Math.max(page,1) - 1) * Math.max(size,1);
+        return dao.selectBestPage(offset, size);
+    }
+
+    @Override
+    public int bestCount() throws Exception {
+        return dao.countBest();
+    }
 
 
 }

@@ -6,7 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+    <title>결제하기 - BookStore</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -795,7 +797,7 @@
                     </div>
                   </div>
 
-                  <button class="checkout-btn">
+                  <button class="checkout-btn" onclick="requestPayment()">
                     결제하기
                   </button>
                 </div>
@@ -900,5 +902,143 @@
             });
           });
         });
+
+        // 포트원 결제 요청 함수
+        function requestPayment() {
+            // 필수 필드 검증
+            const memberName = document.querySelector('input[name="member_name"]').value;
+            const memberPhone = document.querySelector('input[name="member_phone"]').value;
+            const memberAddr1 = document.querySelector('input[name="member_addr1"]').value;
+            const memberAddr2 = document.querySelector('input[name="member_addr2"]').value;
+            const paymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+
+            if (!memberName.trim()) {
+                alert('받는 분 성함을 입력해주세요.');
+                return;
+            }
+
+            if (!memberPhone.trim()) {
+                alert('연락처를 입력해주세요.');
+                return;
+            }
+
+            if (!memberAddr1.trim()) {
+                alert('기본 주소를 입력해주세요.');
+                return;
+            }
+
+            if (!memberAddr2.trim()) {
+                alert('상세 주소를 입력해주세요.');
+                return;
+            }
+
+            if (!paymentMethod) {
+                alert('결제 방법을 선택해주세요.');
+                return;
+            }
+
+            // 결제 정보 수집
+            const bookTitle = '${book.newbook_title}';
+            const totalPrice = ${totalPrice};
+            const quantity = ${quantity};
+            const newbookNum = ${book.newbook_num};
+
+            // 포트원 초기화
+            var IMP = window.IMP;
+            IMP.init('imp20622085'); // 실제 가맹점 식별코드로 변경 필요
+
+            // 결제 요청 데이터
+            const paymentData = {
+                pg: getPaymentPG(paymentMethod.value),
+                pay_method: 'card',
+                merchant_uid: 'bookstore_' + new Date().getTime(),
+                name: bookTitle,
+                amount: totalPrice,
+                buyer_name: memberName,
+                buyer_tel: memberPhone,
+                buyer_addr: memberAddr1 + ' ' + memberAddr2,
+                custom_data: {
+                    newbook_num: newbookNum,
+                    quantity: quantity,
+                    member_name: memberName,
+                    member_phone: memberPhone,
+                    member_addr: memberAddr1 + '_' + memberAddr2,
+                    payment_content: document.querySelector('input[name="payment_content"]').value || ''
+                }
+            };
+
+            // 결제 요청
+            IMP.request_pay(paymentData, function(rsp) {
+                if (rsp.success) {
+                    console.log("결제 성공:", rsp);
+                    
+                    // 결제 성공 시 주문 정보를 서버로 전송
+                    const orderData = {
+                        newbook_num: newbookNum,
+                        quantity: quantity,
+                        total_price: totalPrice,
+                        member_name: memberName,
+                        member_phone: memberPhone,
+                        member_addr: memberAddr1 + '_' + memberAddr2,
+                        payment_content: document.querySelector('input[name="payment_content"]').value || '',
+                        imp_uid: rsp.imp_uid,
+                        merchant_uid: rsp.merchant_uid,
+                        paid_amount: rsp.paid_amount,
+                        apply_num: rsp.apply_num
+                    };
+
+                    // 주문 정보를 서버로 전송
+                    const formData = new URLSearchParams();
+                    formData.append('newbook_num', newbookNum);
+                    formData.append('payment_quantity', quantity);
+                    formData.append('payment_total_price', totalPrice);
+                    formData.append('member_name', memberName);
+                    formData.append('member_phone', memberPhone);
+                    formData.append('member_addr1', memberAddr1);
+                    formData.append('member_addr2', memberAddr2);
+                    formData.append('payment_content', document.querySelector('input[name="payment_content"]').value || '');
+
+                    fetch('${path}/payment/complete', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: formData.toString()
+                    })
+                    .then(response => response.text())
+                    .then(text => {
+                        if (text === 'success') {
+                            alert('결제가 성공적으로 완료되었습니다!');
+                            window.location.href = '${path}/board/list';
+                        } else if (text === 'unauthorized') {
+                            alert('로그인이 필요합니다.');
+                            window.location.href = '${path}/member/login';
+                        } else if (text === 'error') {
+                            alert('서버 오류가 발생했습니다.');
+                        } else {
+                            alert('주문 처리 중 오류가 발생했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('서버 통신 중 오류가 발생했습니다.');
+                    });
+
+                } else {
+                    console.log("결제 실패:", rsp);
+                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
+                }
+            });
+        }
+
+        // 결제 방법에 따른 PG 설정
+        function getPaymentPG(paymentMethod) {
+            switch(paymentMethod) {
+                case 'kakao':
+                    return 'kakaopay';
+                case 'card':
+                    return 'html5_inicis';
+                default:
+                    return 'html5_inicis';
+            }
+        }
       </script>
 </html>
