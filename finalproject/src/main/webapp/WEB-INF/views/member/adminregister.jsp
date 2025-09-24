@@ -17,7 +17,7 @@
         <div class="register-card">
           <div class="register-header">
             <div class="logo">
-              🛠️ BookStore Admin
+              🛠️ BookBridge Admin
               <span class="admin-badge">ADMIN</span>
             </div>
             <h1 class="register-title">관리자 등록</h1>

@@ -1,6 +1,9 @@
 package net.koreate.bookstore.tradeboard.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
 
 import net.koreate.bookstore.vo.TradebookVO;
 
@@ -16,5 +19,11 @@ public interface TradeBookDAO {
 	        " #{tradebook_img}, #{tradebook_isbn}, #{tradebook_location}" +
 	        ")")
 	int write(TradebookVO vo)throws Exception;
+	
+	@Select("SELECT t.*, m.member_nickname AS member_nickname "
+			+ "FROM tradebook t JOIN members m ON m.member_num = t.member_num "
+			+ "ORDER BY t.tradebook_num DESC OFFSET 0 ROWS FETCH NEXT 6 ROWS ONLY")
+	List<TradebookVO> mainlist() throws Exception;
+
 
 }

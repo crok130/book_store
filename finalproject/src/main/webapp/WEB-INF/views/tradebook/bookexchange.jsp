@@ -811,11 +811,11 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="${path}" class="logo">BookStore</a>
+              <a href="${path}" class="logo">BookBridge</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>
-                  <li><a href="#">베스트셀러</a></li>
+                  <li><a href="${path}/board/best">베스트</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
@@ -950,155 +950,38 @@
             <p class="section-subtitle">독자들이 사랑으로 키운 책들이 새로운 주인을 기다리고 있습니다</p>
             
             <div class="books-grid">
-              <a href="/components/BookExchangeDetailPage.tsx" class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop"
-                  alt="달러구트 꿈 백화점"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">달러구트 꿈 백화점</h3>
-                  <p class="book-author">이미예</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">김</div>
-                    <div class="owner-details">
-                      <div class="owner-name">김독서</div>
-                      <div class="owner-location">서울 강남구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"반지의 제왕 시리즈나 판타지 소설"</div>
-                  </div>
-                </div>
-              </a>
-
+            <c:forEach var="book" items="${list}">
               <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
+                <c:choose>
+                  <c:when test="${book.tradebook_trade == 'y'}">
+                    <div class="exchange-badge">교환 가능</div>
+                  </c:when>
+                  <c:otherwise>
+                    <div class="exchange-badge" style="background: linear-gradient(135deg, #9e9e9e, #757575);">교환 완료</div>
+                  </c:otherwise>
+                </c:choose>
                 <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
-                  alt="세이노의 가르침"
+                  src="${pageContext.request.contextPath}/img${book.tradebook_img}"
+                  alt="${book.tradebook_title}"
                   class="book-image"
                 />
                 <div class="exchange-info">
-                  <h3 class="book-title">세이노의 가르침</h3>
-                  <p class="book-author">세이노</p>
-                  <span class="book-condition fair">양호</span>
+                  <h3 class="book-title">${book.tradebook_title}</h3>
+                  <p class="book-author">${book.tradebook_author}</p>
+                  <span class="book-condition">${book.tradebook_status}</span>
                   <div class="owner-info">
-                    <div class="owner-avatar">조</div>
                     <div class="owner-details">
-                      <div class="owner-name">조성장</div>
-                      <div class="owner-location">경기 수원시</div>
+                      <div class="owner-name">${book.member_nickname}</div>
+                      <div class="owner-location">${book.tradebook_location}</div>
                     </div>
                   </div>
                   <div class="wants-section">
                     <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"부의 추월차선이나 투자 관련 도서"</div>
+                    <div class="wants-text">"${book.tradebook_condition}"</div>
                   </div>
                 </div>
               </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
-                  alt="불편한 편의점"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">불편한 편의점</h3>
-                  <p class="book-author">김호연</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">한</div>
-                    <div class="owner-details">
-                      <div class="owner-name">한이야기</div>
-                      <div class="owner-location">충남 천안시</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"따뜻한 감동을 주는 한국 소설"</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1549964336-ce406285ffc4?w=400&h=300&fit=crop"
-                  alt="사피엔스"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">사피엔스</h3>
-                  <p class="book-author">유발 하라리</p>
-                  <span class="book-condition">최상</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">박</div>
-                    <div class="owner-details">
-                      <div class="owner-name">박역사</div>
-                      <div class="owner-location">대구 중구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"호모 데우스나 21 레슨스"</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop"
-                  alt="클린 코드"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">클린 코드</h3>
-                  <p class="book-author">로버트 C. 마틴</p>
-                  <span class="book-condition">양호</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">강</div>
-                    <div class="owner-details">
-                      <div class="owner-name">강개발</div>
-                      <div class="owner-location">대전 유성구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"리팩토링이나 디자인 패턴 관련 서적"</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="exchange-card">
-                <div class="exchange-badge">교환 가능</div>
-                <img 
-                  src="https://images.unsplash.com/photo-1599185186578-0ba91c2a15c0?w=400&h=300&fit=crop"
-                  alt="1984"
-                  class="book-image"
-                />
-                <div class="exchange-info">
-                  <h3 class="book-title">1984</h3>
-                  <p class="book-author">조지 오웰</p>
-                  <span class="book-condition fair">양호</span>
-                  <div class="owner-info">
-                    <div class="owner-avatar">정</div>
-                    <div class="owner-details">
-                      <div class="owner-name">정문학</div>
-                      <div class="owner-location">인천 남동구</div>
-                    </div>
-                  </div>
-                  <div class="wants-section">
-                    <div class="wants-label">원하는 책:</div>
-                    <div class="wants-text">"동물농장이나 올더스 헉슬리의 멋진 신세계"</div>
-                  </div>
-                </div>
-              </div>
+             </c:forEach>
             </div>
          	<div class="more-button-container">
                 <a class="more-btn" href="${path}/tradebook/list">

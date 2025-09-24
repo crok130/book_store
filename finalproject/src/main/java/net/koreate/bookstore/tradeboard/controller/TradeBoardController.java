@@ -1,12 +1,15 @@
 package net.koreate.bookstore.tradeboard.controller;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -45,12 +48,16 @@ public class TradeBoardController {
 	}
 
 	@GetMapping("tradebook/bookexchange")
-	public void TradeBoard() {}
-	
-	@GetMapping("tradebook/list")
-	public String tradebooklist(){
-		return "tradebook/tradebooklist";
+	public void TradeBoard(Model model) throws Exception {
+		List<TradebookVO> list = new ArrayList<>();
+		list = ts.mainlist();
+		model.addAttribute("list", list);
 	}
+	
+    @GetMapping("tradebook/list")
+    public String tradebooklist(Integer page, Integer size, Model model) throws Exception {
+        return "tradebook/tradebooklist";
+    }
 	
 	@GetMapping("tradebook/write")
 	public String write(){

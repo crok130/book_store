@@ -157,6 +157,8 @@ public class PaymentController {
 
             String result = ps.processPayment(vo);
             if ("success".equals(result)) {
+                // 결제 성공 시 장바구니 비우기
+                ps.clearCart(user.getMember_num());
                 return ResponseEntity.ok("success");
             }
             return ResponseEntity.ok("fail");

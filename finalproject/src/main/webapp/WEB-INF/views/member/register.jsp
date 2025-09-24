@@ -14,7 +14,7 @@
         <a href="${path}" class="back-to-home">← 홈으로</a>
         <div class="register-card">
           <div class="register-header">
-            <div class="logo">BookStore</div>
+            <div class="logo">BookBridge</div>
             <h1 class="register-title">새로운 여정의 시작</h1>
             <p class="register-subtitle">문학적 경험을 나누고 새로운 이야기를 만들어 나가세요</p>
           </div>

@@ -22,7 +22,7 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="#" class="logo">📚 BookStore</a>
+              <a href="#" class="logo">📚 BookBridge</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>

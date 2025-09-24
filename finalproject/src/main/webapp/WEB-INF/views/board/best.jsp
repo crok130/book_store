@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>베스트셀러 - BookStore</title>
+<title>베스트셀러 - BookBridge</title>
 <link rel="stylesheet" href="${path}/resources/css/index.css">
 <style>
   .best-hero{background:#f8f6f0;padding:40px 0;margin-bottom:20px}

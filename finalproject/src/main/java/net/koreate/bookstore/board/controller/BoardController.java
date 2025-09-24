@@ -21,7 +21,6 @@ import net.koreate.bookstore.common.utils.FileUtils;
 import net.koreate.bookstore.common.utils.PageMaker;
 import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
-import net.koreate.bookstore.vo.BestSellerVO;
 
 @Controller
 @RequiredArgsConstructor
@@ -86,18 +85,6 @@ public class BoardController {
 		return "board/bookdetail";
 	}
 
-    @GetMapping("board/best")
-    public String bestPage(@RequestParam(value="page", required=false, defaultValue="1") int page,
-                           Model model) throws Exception {
-        int size = 20;
-        List<BestSellerVO> best = bs.bestPage(page, size);
-        int total = bs.bestCount();
-        int totalPages = (int)Math.ceil(total / (double)size);
-        model.addAttribute("best", best);
-        model.addAttribute("page", page);
-        model.addAttribute("totalPages", totalPages);
-        return "board/best";
-    }
 
 
 

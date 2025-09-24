@@ -30,4 +30,10 @@ public interface PaymentDAO {
     
     @Insert("INSERT INTO payments (member_num, member_name, member_phone, member_addr, payment_content, newbook_num, payment_quantity, payment_total_price) VALUES (#{member_num}, #{member_name}, #{member_phone}, #{member_addr}, #{payment_content}, #{newbook_num}, #{payment_quantity}, #{payment_total_price})")
     int insertPayment(PaymentVO payment) throws Exception;
+    
+    @Update("UPDATE newbook SET newbook_count = newbook_count - #{payment_quantity} WHERE newbook_num = #{newbook_num}")
+    int decreaseBookCount(PaymentVO payment) throws Exception;
+    
+    @Delete("DELETE FROM cart WHERE member_num = #{member_num}")
+    int clearCart(int member_num) throws Exception;
 }

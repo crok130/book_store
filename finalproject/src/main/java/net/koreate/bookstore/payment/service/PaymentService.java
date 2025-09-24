@@ -8,14 +8,6 @@ import net.koreate.bookstore.vo.CartVO;
 
 public interface PaymentService {
 	
-	/**
-	 * 결제 서비스 수행
-	 * 
-	 * @param vo 결제 정보(주문자/상품/수량/총액 등)
-	 * @return 결제 처리 결과를 문자열로 반환(예: "SUCCESS", "FAIL")
-	 */
-	public String paymemt(PaymentVO vo) throws Exception;
-	
 
 	/**
 	 * 회원 기본 배송지/정보 조회

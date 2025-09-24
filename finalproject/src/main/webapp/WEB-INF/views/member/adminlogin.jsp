@@ -17,7 +17,7 @@
         <div class="login-card">
           <div class="login-header">
             <div class="logo">
-              🛠️ BookStore Admin
+              🛠️ BookBridge Admin
               <span class="admin-badge">ADMIN</span>
             </div>
             <h1 class="login-title">관리자 로그인</h1>

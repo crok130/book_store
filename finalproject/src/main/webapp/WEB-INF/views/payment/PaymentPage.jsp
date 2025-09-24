@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-    <title>결제하기 - BookStore</title>
+    <title>결제하기 - BookBridge</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
     <style>
@@ -640,7 +640,7 @@
 		<header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="#" class="logo">📚 BookStore</a>
+              <a href="#" class="logo">📚 BookBridge</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>

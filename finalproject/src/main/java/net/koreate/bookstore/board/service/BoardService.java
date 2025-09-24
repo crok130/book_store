@@ -9,7 +9,6 @@ import net.koreate.bookstore.common.utils.Criteria;
 import net.koreate.bookstore.common.utils.PageMaker;
 import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
-import net.koreate.bookstore.vo.BestSellerVO;
 
 @Service
 public interface BoardService {
@@ -75,8 +74,5 @@ public interface BoardService {
 	 */
 	List<NewBookVO> listReply(SearchCriteria scri) throws Exception;
 
-    // 베스트 페이징 노출 (page:1부터, size:페이지당 개수)
-    List<BestSellerVO> bestPage(int page, int size) throws Exception;
-    int bestCount() throws Exception;
 	
 }

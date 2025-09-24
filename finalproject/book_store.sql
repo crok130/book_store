@@ -32,7 +32,7 @@ CREATE TABLE tradebook(
     tradebook_title VARCHAR2(100) NOT NULL,                                   -- 책 제목 (필수 입력)
     member_num NUMBER NOT NULL,                                               -- 회원 번호
     tradebook_condition VARCHAR2(200) NOT NULL,                               -- 교환 원하는 책 (소설, 에세이, 자기계발서 (상태 무관) 이런느낌
-    tradebook_content VARCHAR2(200) NOT NULL,                                 -- 교환 내용 정말 재미있게 읽었던 책입니다! 상상력이 풍부하고 따뜻한 이야기라 많은 분들이 읽어보셨으면 좋겠어요. 책 상태도 매우 깨끗하니 안심하고 교환하세요.
+    tradebook_content CLOB NOT NULL,                                 -- 교환 내용 정말 재미있게 읽었던 책입니다! 상상력이 풍부하고 따뜻한 이야기라 많은 분들이 읽어보셨으면 좋겠어요. 책 상태도 매우 깨끗하니 안심하고 교환하세요.
     tradebook_status VARCHAR2(200) NOT NULL,                                  -- 책 상태 (필수 입력)
     tradebook_author VARCHAR2(100) NOT NULL,                                  -- 저자 (필수 입력)
     tradebook_trade VARCHAR2(2) DEFAULT 'y',                                  -- 교환 가능 여부 ('y'/'n', 기본값 'y')
