@@ -73,5 +73,6 @@ public interface BoardService {
 	 * 검색 게시글 목록
 	 */
 	List<NewBookVO> listReply(SearchCriteria scri) throws Exception;
+
 	
 }

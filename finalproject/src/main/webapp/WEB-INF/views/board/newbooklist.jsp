@@ -89,10 +89,10 @@
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">
-              <c:if test="${pm.prev}">
+              <c:if test="${pm.movePrev}">
                 <a href="list${pm.makeQuery(pm.startPage-1)}" class="page-btn">‹ 이전</a>
               </c:if>
-              <c:if test="${!pm.prev}">
+              <c:if test="${!pm.movePrev}">
                 <span class="page-btn disabled">‹ 이전</span>
               </c:if>
               
@@ -105,10 +105,10 @@
                 </c:if>
               </c:forEach>
               
-              <c:if test="${pm.next}">
+              <c:if test="${pm.moveNext}">
                 <a href="list${pm.makeQuery(pm.endPage+1)}" class="page-btn">다음 ›</a>
               </c:if>
-              <c:if test="${!pm.next}">
+              <c:if test="${!pm.moveNext}">
                 <span class="page-btn disabled">다음 ›</span>
               </c:if>
             </div>

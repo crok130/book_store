@@ -17,7 +17,8 @@ public class TradebookVO {
     private String tradebook_method;              // 교환 방식 (direct/delivery/both)
     private String tradebook_time;                // 교환 가능 시간
     private String tradebook_location;            // 희망 교환 지역
-
+    private String member_nickname;
+    private String tradebook_trade;
 }
 
 

@@ -1,12 +1,15 @@
 package net.koreate.bookstore.tradeboard.controller;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -15,6 +18,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.common.utils.FileUtils;
+import net.koreate.bookstore.common.utils.SearchCriteria;
+import net.koreate.bookstore.common.utils.PageMaker;
 import net.koreate.bookstore.tradeboard.service.TradeBookService;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.TradebookVO;
@@ -45,10 +50,21 @@ public class TradeBoardController {
 	}
 
 	@GetMapping("tradebook/bookexchange")
-	public void TradeBoard() {}
+	public void TradeBoard(SearchCriteria scri, Model model) throws Exception {
+		if (scri == null) scri = new SearchCriteria();
+		List<TradebookVO> list = ts.list(scri);
+		PageMaker pm = ts.getPageMaker(scri);
+		model.addAttribute("list", list);
+		model.addAttribute("pm", pm);
+	}
 	
 	@GetMapping("tradebook/list")
-	public String tradebooklist(){
+	public String tradebooklist(SearchCriteria scri, Model model) throws Exception {
+		if (scri == null) scri = new SearchCriteria();
+		List<TradebookVO> list = ts.list(scri);
+		PageMaker pm = ts.getPageMaker(scri);
+		model.addAttribute("list", list);
+		model.addAttribute("pm", pm);
 		return "tradebook/tradebooklist";
 	}
 	

@@ -1,8 +1,14 @@
 package net.koreate.bookstore.tradeboard.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 
 import net.koreate.bookstore.vo.TradebookVO;
+import net.koreate.bookstore.common.utils.SearchCriteria;
+import net.koreate.bookstore.tradeboard.provider.TradeBookQueryProvider;
 
 public interface TradeBookDAO {
 	
@@ -16,5 +22,19 @@ public interface TradeBookDAO {
 	        " #{tradebook_img}, #{tradebook_isbn}, #{tradebook_location}" +
 	        ")")
 	int write(TradebookVO vo)throws Exception;
+	
+	@Select("SELECT t.*, m.member_nickname AS member_nickname "
+			+ "FROM tradebook t JOIN members m ON m.member_num = t.member_num "
+			+ "ORDER BY t.tradebook_num DESC OFFSET 0 ROWS FETCH NEXT 6 ROWS ONLY")
+	List<TradebookVO> mainlist() throws Exception;
+
+	// 동적 전체 개수
+	@SelectProvider(type = TradeBookQueryProvider.class, method = "searchListCount")
+	int listCount(SearchCriteria scri) throws Exception;
+
+	// 동적 목록 조회
+	@SelectProvider(type = TradeBookQueryProvider.class, method = "searchSelectSQL")
+	List<TradebookVO> list(SearchCriteria scri) throws Exception;
+
 
 }

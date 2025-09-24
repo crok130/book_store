@@ -17,12 +17,6 @@ public class PaymentServiceImpl implements PaymentService {
     private final PaymentDAO dao;
 
 	@Override
-	public String paymemt(PaymentVO vo) throws Exception {
-		// TODO 결제 연동 구현
-		return null;
-	}
-
-	@Override
     public MemberVO memberAddr(int member_mum) throws Exception {
         return dao.findMemberByNum(member_mum);
 	}
@@ -71,13 +65,35 @@ public class PaymentServiceImpl implements PaymentService {
 
 	@Override
 	public void clearCart(int member_num) throws Exception {
-		// TODO 구현체/DAO 준비 후 적용
+		dao.clearCart(member_num);
 	}
 
 	@Override
 	public int getCartTotalQuantity(int member_num) throws Exception {
 		// TODO 구현체/DAO 준비 후 적용
 		return 0;
+	}
+
+	@Override
+	public String processPayment(PaymentVO payment) throws Exception {
+		try {
+			// 결제 정보를 데이터베이스에 저장
+			int result = dao.insertPayment(payment);
+			if (result > 0) {
+				// 결제 성공 시 상품 수량 차감
+				int decreaseResult = dao.decreaseBookCount(payment);
+				if (decreaseResult > 0) {
+					return "success";
+				} else {
+					return "fail"; // 수량 차감 실패
+				}
+			} else {
+				return "fail"; // 결제 정보 저장 실패
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
 	}
 
 }

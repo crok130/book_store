@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import net.koreate.bookstore.board.provider.BoardQueryProvider;
@@ -36,6 +37,7 @@ public interface BoardDAO {
 	// @Select("SELECT count(*) FROM re_tbl_board")
 	@SelectProvider(type=BoardQueryProvider.class, method="searchListCount")
 	int listCount(SearchCriteria cri)throws Exception;
+
 	
 	 
 }

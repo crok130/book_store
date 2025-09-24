@@ -42,7 +42,7 @@
               <div class="nav-section-title">도서 관리</div>
               <ul class="nav-menu">
                 <li class="nav-item">
-                  <a href="/components/AddBookPage.tsx" class="nav-link">
+                  <a href="${path}/admin/write" class="nav-link">
                     <span class="nav-icon">📖</span>
                     새 도서 등록
                   </a>
@@ -130,7 +130,7 @@
             <div class="header-top">
               <h1 class="page-title">관리자 대시보드</h1>
               <div class="header-actions">
-                <a href="/components/AddBookPage.tsx" class="btn btn-primary">
+                <a href="${path}/admin/write" class="btn btn-primary">
                   📖 새 도서 등록
                 </a>
                 <a href="#" class="btn btn-outline">
@@ -191,7 +191,7 @@
                 ⚡ 빠른 작업
               </h2>
               <div class="actions-grid">
-                <a href="/components/AddBookPage.tsx" class="action-btn">
+                <a href="${path}/admin/write" class="action-btn">
                   <div class="action-icon">📖</div>
                   <div class="action-title">새 도서 등록</div>
                   <div class="action-desc">새로운 도서를 시스템에 추가</div>

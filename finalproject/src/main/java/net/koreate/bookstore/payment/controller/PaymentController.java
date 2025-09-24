@@ -1,8 +1,7 @@
 package net.koreate.bookstore.payment.controller;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -21,6 +20,7 @@ import net.koreate.bookstore.payment.service.PaymentService;
 import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.NewBookVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 @Controller
 @RequiredArgsConstructor
@@ -137,6 +137,35 @@ public class PaymentController {
         public String addr1;
         public String addr2;
         public MemberAddrResponse(String a1, String a2){ this.addr1=a1; this.addr2=a2; }
+    }
+    
+    @PostMapping("payment/complete")
+    @ResponseBody
+    public ResponseEntity<String> completePayment(PaymentVO vo,
+                                                  @RequestParam("member_addr1") String member_addr1,
+                                                  @RequestParam("member_addr2") String member_addr2,
+                                                  HttpSession session) throws Exception {
+        try {
+            MemberVO user = (MemberVO) session.getAttribute("userInfo");
+            if (user == null) {
+                return ResponseEntity.status(401).body("unauthorized");
+            }
+
+            vo.setMember_num(user.getMember_num());
+            vo.setMember_addr(member_addr1 + "_" + member_addr2);
+  
+
+            String result = ps.processPayment(vo);
+            if ("success".equals(result)) {
+                // 결제 성공 시 장바구니 비우기
+                ps.clearCart(user.getMember_num());
+                return ResponseEntity.ok("success");
+            }
+            return ResponseEntity.ok("fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("error");
+        }
     }
     
 }
