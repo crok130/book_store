@@ -1,13 +1,19 @@
 package net.koreate.bookstore.member.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
+import net.koreate.bookstore.common.utils.SearchPageMaker;
 import net.koreate.bookstore.member.dao.MemberDAO;
 import net.koreate.bookstore.vo.MemberVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 @Service
 @RequiredArgsConstructor
@@ -84,6 +90,28 @@ public class MemberServiceImpl implements MemberService{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public PageMaker getPageMaker(SearchCriteria scri, HttpSession session) throws Exception {
+		MemberVO vo = new MemberVO();
+		vo = (MemberVO)session.getAttribute("userInfo");
+		int member_num = vo.getMember_num();
+		int totalCount = dao.listCount(member_num);
+		// 한 블럭 5페이지 기준 (Board 예제와 동일)
+		return new SearchPageMaker(scri, totalCount, 5);
+	}
+
+
+	@Override
+	public List<PaymentVO> listOrders(SearchCriteria scri, HttpSession session) throws Exception {
+		MemberVO user = (MemberVO) session.getAttribute("userInfo");
+		int member_num = user.getMember_num();
+		int offset = scri.getStartRow();
+		int perPage = scri.getPerPageNum();
+		return dao.listMemberOrders(member_num, offset, perPage);
+	}
+	
+	
 
 
 

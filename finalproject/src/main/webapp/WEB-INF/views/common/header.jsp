@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="${path}/resources/css/newbooklist.css">
 <link rel="stylesheet" href="${path}/resources/css/bookdetail.css">
 <link rel="stylesheet" href="${path}/resources/css/cart.css">
-<link rel="stylesheet" href="${path}/resources/css/tradebook_detail.css">
 <link rel="stylesheet" href="${path}/resources/css/treadebook_create.css">
 <link rel="stylesheet" href="${path}/resources/css/index.css">
 
@@ -22,7 +21,7 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="#" class="logo">📚 BookBridge</a>
+              <a href="${path}" class="logo">📚 BookBridge</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>
@@ -48,6 +47,7 @@
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
                     <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
+                    <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
                   </div>
                 </div>
            	</c:otherwise>

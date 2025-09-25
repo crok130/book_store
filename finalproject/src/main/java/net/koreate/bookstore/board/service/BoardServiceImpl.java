@@ -61,7 +61,7 @@ public class BoardServiceImpl implements BoardService{
 	public PageMaker getPageMaker(SearchCriteria scri) throws Exception {
 		int totalCount = dao.listCount(scri); // 전체 게시물 개수
 		
-		PageMaker pm = new SearchPageMaker(scri, totalCount, 10);
+		PageMaker pm = new SearchPageMaker(scri, totalCount, 5);
 		return pm;
 	}
 

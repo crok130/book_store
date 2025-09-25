@@ -1,10 +1,13 @@
 package net.koreate.bookstore.member.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
 import net.koreate.bookstore.vo.MemberVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 public interface MemberDAO {
 	
@@ -25,4 +28,11 @@ public interface MemberDAO {
     
     @Select("SELECT * FROM members WHERE member_status = 0 AND member_id = #{member_id} AND member_pw = #{member_pw}")
     MemberVO login(@Param("member_id") String member_id, @Param("member_pw")String member_pw) throws Exception;
+    
+    @Select("SELECT count(*) FROM payments WHERE member_num = #{member_num}")
+    int listCount(int member_num) throws Exception;
+
+	// 회원 주문내역 목록 (페이징)
+	@Select("SELECT p.*, n.newbook_title, n.newbook_img FROM payments p JOIN newbook n ON n.newbook_num = p.newbook_num WHERE p.member_num = #{member_num} ORDER BY p.payment_date DESC OFFSET #{offset} ROWS FETCH NEXT #{perPageNum} ROWS ONLY")
+	List<PaymentVO> listMemberOrders(@Param("member_num") int member_num, @Param("offset") int offset, @Param("perPageNum") int perPageNum) throws Exception;
 }

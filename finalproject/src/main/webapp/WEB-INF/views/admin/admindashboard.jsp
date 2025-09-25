@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="path" value="${pageContext.request.contextPath}" scope="session" />
 <!DOCTYPE html>
 <html>
@@ -18,8 +19,8 @@
          <div class="dashboard-container">
         <div class="sidebar">
           <div class="sidebar-header">
-            <a href="/components/AdminMainPage.tsx" class="sidebar-logo">
-              🛠️ BookStore Admin
+            <a href="${path}/admin/dashboard" class="sidebar-logo">
+              🛠️ BookBridge Admin
               <span class="admin-badge">ADMIN</span>
             </a>
             <div class="sidebar-user">환영합니다, 관리자님</div>
@@ -30,7 +31,7 @@
               <div class="nav-section-title">메인</div>
               <ul class="nav-menu">
                 <li class="nav-item">
-                  <a href="/components/AdminDashboard.tsx" class="nav-link active">
+                  <a href="${path}/admin/dashboard" class="nav-link active">
                     <span class="nav-icon">📊</span>
                     대시보드
                   </a>
@@ -72,13 +73,13 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="${path}/admin/orders" class="nav-link">
                     <span class="nav-icon">🛒</span>
                     주문 관리
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
+                  <a href="${path}/admin/inventory" class="nav-link">
                     <span class="nav-icon">📦</span>
                     재고 관리
                   </a>
@@ -114,7 +115,7 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a href="/App.tsx" class="nav-link">
+                  <a href="${path}" class="nav-link">
                     <span class="nav-icon">🌐</span>
                     사용자 사이트
                   </a>
@@ -133,14 +134,9 @@
                 <a href="${path}/admin/write" class="btn btn-primary">
                   📖 새 도서 등록
                 </a>
-                <a href="#" class="btn btn-outline">
-                  📊 리포트 생성
-                </a>
               </div>
             </div>
-            <div class="breadcrumb">
-              <a href="/components/AdminMainPage.tsx">홈</a>
-              <span>/</span>
+            <div class="breadcrumb">	
               <span>대시보드</span>
             </div>
           </div>
@@ -151,37 +147,33 @@
               <div class="stat-card">
                 <div class="stat-header">
                   <div class="stat-icon">📚</div>
-                  <div class="stat-change positive">+12.5%</div>
                 </div>
-                <div class="stat-number">1,247</div>
+                <div class="stat-number">${vo.book}</div>
                 <div class="stat-label">총 등록 도서</div>
               </div>
 
               <div class="stat-card">
                 <div class="stat-header">
                   <div class="stat-icon">👥</div>
-                  <div class="stat-change positive">+8.2%</div>
                 </div>
-                <div class="stat-number">8,932</div>
+                <div class="stat-number">${vo.member}</div>
                 <div class="stat-label">총 회원 수</div>
               </div>
 
               <div class="stat-card">
                 <div class="stat-header">
                   <div class="stat-icon">📦</div>
-                  <div class="stat-change positive">+23.1%</div>
                 </div>
-                <div class="stat-number">156</div>
-                <div class="stat-label">오늘 주문</div>
+                <div class="stat-number">${vo.oder}</div>
+                <div class="stat-label">주문</div>
               </div>
 
               <div class="stat-card">
                 <div class="stat-header">
                   <div class="stat-icon">💰</div>
-                  <div class="stat-change negative">-3.4%</div>
                 </div>
-                <div class="stat-number">₩2,847,000</div>
-                <div class="stat-label">오늘 매출</div>
+                <div class="stat-number">₩<fmt:formatNumber value="${vo.money}" pattern="#,###"/></div>
+                <div class="stat-label">매출</div>
               </div>
             </div>
 
@@ -197,7 +189,7 @@
                   <div class="action-desc">새로운 도서를 시스템에 추가</div>
                 </a>
 
-                <a href="#" class="action-btn">
+                <a href="${path}/admin/orders" class="action-btn">
                   <div class="action-icon">🛒</div>
                   <div class="action-title">주문 처리</div>
                   <div class="action-desc">대기 중인 주문 확인</div>
@@ -297,63 +289,40 @@
                   </tr>
                 </thead>
                 <tbody>
+                <c:forEach var="list" items="${list}">
                   <tr>
                     <td>
                       <div class="book-info">
                         <img 
-                          src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=40&h=60&fit=crop"
-                          alt="달러구트 꿈 백화점"
+                          src="${pageContext.request.contextPath}/img${list.newbook_img}"
+                          alt="${list.newbook_title}"
                           class="book-cover"
                         />
                         <div class="book-details">
-                          <h4>달러구트 꿈 백화점</h4>
-                          <p>이미예 | 팩토리나인</p>
+                          <h4>${list.newbook_title}</h4>
+                          <p>${list.newbook_author} | ${list.newbook_publisher}</p>
                         </div>
                       </div>
                     </td>
-                    <td>13,320원</td>
-                    <td>42권</td>
-                    <td><span class="status-badge status-active">판매중</span></td>
-                    <td>2024-01-15</td>
-                  </tr>
-                  <tr>
+                    <td><fmt:formatNumber value="${list.newbook_price}" pattern="#,###"/>원</td>
+                    <td>${list.newbook_count}권</td>
                     <td>
-                      <div class="book-info">
-                        <img 
-                          src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=40&h=60&fit=crop"
-                          alt="세이노의 가르침"
-                          class="book-cover"
-                        />
-                        <div class="book-details">
-                          <h4>세이노의 가르침</h4>
-                          <p>세이노 | 데이원</p>
-                        </div>
-                      </div>
+                      <c:choose>
+                        <c:when test="${list.newbook_count == 0}">
+                          <span class="status-badge" style="background:#e74c3c;color:#fff;">재고부족</span>
+                        </c:when>
+                        <c:otherwise>
+                          <span class="status-badge status-active">판매중</span>
+                        </c:otherwise>
+                      </c:choose>
                     </td>
-                    <td>6,480원</td>
-                    <td>23권</td>
-                    <td><span class="status-badge status-active">판매중</span></td>
-                    <td>2024-01-14</td>
-                  </tr>
-                  <tr>
                     <td>
-                      <div class="book-info">
-                        <img 
-                          src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=40&h=60&fit=crop"
-                          alt="클린 코드"
-                          class="book-cover"
-                        />
-                        <div class="book-details">
-                          <h4>클린 코드</h4>
-                          <p>로버트 C. 마틴 | 인사이트</p>
-                        </div>
-                      </div>
+                      <fmt:parseDate value="${list.newbook_publication_date}" pattern="yyyy-MM-dd HH:mm:ss" var="pubDate" />
+                      <fmt:formatDate value="${pubDate}" pattern="yyyy-MM-dd" />
                     </td>
-                    <td>31,500원</td>
-                    <td>0권</td>
-                    <td><span class="status-badge status-inactive">품절</span></td>
-                    <td>2024-01-13</td>
                   </tr>
+				</c:forEach>
+               
                 </tbody>
               </table>
             </div>

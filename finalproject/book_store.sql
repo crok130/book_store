@@ -23,7 +23,7 @@ CREATE TABLE newbook(
     newbook_price NUMBER,
     newbook_isbn VARCHAR2(100),
     newbook_page NUMBER,
-    newbook_publication_date DATE
+    newbook_publication_date VARCHAR2(50)
 );
 
 
@@ -40,7 +40,8 @@ CREATE TABLE tradebook(
     tradebook_time VARCHAR2(120),                                             -- 교환 가능 시간 직접입력 오후/오전 언제든 상관없은 이런식
     tradebook_img VARCHAR2(200),                                              -- 책 이미지
     tradebook_isbn VARCHAR2(100),     
-    tradebook_location VARCHAR2(100)                                           -- 교환희망지역
+    tradebook_location VARCHAR2(100),                                           -- 교환희망지역
+    tradebook_publication_date VARCHAR2(100)
 );
 
 

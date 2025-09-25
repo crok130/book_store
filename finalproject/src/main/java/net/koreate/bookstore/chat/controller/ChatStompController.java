@@ -8,10 +8,10 @@ import org.springframework.messaging.simp.annotation.SubscribeMapping;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import net.koreate.bookstore.vo.MessageVO;
-import net.koreate.bookstore.chat.service.ChatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.koreate.bookstore.chat.service.ChatService;
+import net.koreate.bookstore.vo.MessageVO;
 
 @Controller
 @Slf4j

@@ -49,10 +49,6 @@ public class BoardController {
 		return "admin/bookcreate";
 	};
 	
-	@GetMapping("admin/dashboard")
-	public String dashboard() {
-		return "admin/admindashboard";
-	}
 	
 	@GetMapping("board/list")
 	public String booklist(SearchCriteria cri, Model model) throws Exception {

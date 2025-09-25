@@ -15,6 +15,9 @@ public class PaymentVO {
 	private String payment_date;       // 결제 날짜 (TIMESTAMP → 문자열로 수신)
 	private int payment_quantity;      // 구매 수량
 	private int payment_total_price;   // 총 결제 금액
+	private String item_status;
+	private String newbook_title;
+	private String newbook_img;
 }
 
 

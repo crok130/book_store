@@ -30,6 +30,11 @@ public class SearchPageMaker extends PageMaker{
 			builder.queryParam("sort", sCri.getSort());
 		}
 		
+		// location 파라미터 추가
+		if(sCri.getLocation() != null && !sCri.getLocation().trim().equals("")) {
+			builder.queryParam("location", sCri.getLocation());
+		}
+		
 		String query = builder.build().toUriString();
 		return query;
 	}

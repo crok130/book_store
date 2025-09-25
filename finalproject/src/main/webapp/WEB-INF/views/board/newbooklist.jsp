@@ -21,38 +21,44 @@
    
         <section class="filters-section">
           <div class="container">
-            <div class="filters-content">
-              <div class="search-filter">
-                <input 
-                  type="text" 
-                  class="search-input" 
-                  placeholder="도서명이나 저자명을 입력하세요..."
-                />
+            <form id="searchForm" action="${pageContext.request.contextPath}/board/list" method="get">
+              <div class="filters-content">
+                <div class="search-filter">
+                  <input 
+                    type="text" 
+                    name="keyword"
+                    class="search-input" 
+                    placeholder="도서명이나 저자명을 입력하세요..."
+                    value="${pm.criteria.keyword}"
+                  />
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">카테고리:</span>
+                  <select name="category" class="filter-select">
+                    <option value="">전체 카테고리</option>
+                    <option value="소설/에세이" ${pm.criteria.category == '소설/에세이' ? 'selected' : ''}>소설/에세이</option>
+                    <option value="경영/경제" ${pm.criteria.category == '경영/경제' ? 'selected' : ''}>경영/경제</option>
+                    <option value="과학/기술" ${pm.criteria.category == '과학/기술' ? 'selected' : ''}>과학/기술</option>
+                    <option value="예술/디자인" ${pm.criteria.category == '예술/디자인' ? 'selected' : ''}>예술/디자인</option>
+                    <option value="자기계발" ${pm.criteria.category == '자기계발' ? 'selected' : ''}>자기계발</option>
+                    <option value="IT/컴퓨터" ${pm.criteria.category == 'IT/컴퓨터' ? 'selected' : ''}>IT/컴퓨터</option>
+                    <option value="아동/청소년" ${pm.criteria.category == '아동/청소년' ? 'selected' : ''}>아동/청소년</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">정렬:</span>
+                  <select name="sort" class="filter-select">
+                    <option value="newbook_publication_date" ${pm.criteria.sort == 'newbook_publication_date' ? 'selected' : ''}>출간일순</option>
+                    <option value="newbook_num" ${pm.criteria.sort == 'newbook_num' ? 'selected' : ''}>최신순</option>
+                    <option value="newbook_price_asc" ${pm.criteria.sort == 'newbook_price_asc' ? 'selected' : ''}>가격낮은순</option>
+                    <option value="newbook_price_desc" ${pm.criteria.sort == 'newbook_price_desc' ? 'selected' : ''}>가격높은순</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <button type="submit" class="search-btn">검색</button>
+                </div>
               </div>
-              <div class="filter-group">
-                <span class="filter-label">카테고리:</span>
-                <select class="filter-select">
-                  <option>전체 카테고리</option>
-                  <option>소설/에세이</option>
-                  <option>경영/경제</option>
-                  <option>과학/기술</option>
-                  <option>예술/디자인</option>
-                  <option>자기계발</option>
-                  <option>IT/컴퓨터</option>
-                  <option>아동/청소년</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">정렬:</span>
-                <select class="filter-select">
-                  <option>출간일순</option>
-                  <option>인기순</option>
-                  <option>평점순</option>
-                  <option>가격낮은순</option>
-                  <option>가격높은순</option>
-                </select>
-              </div>
-            </div>
+            </form>
           </div>
         </section>
 
@@ -89,27 +95,34 @@
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">
-              <c:if test="${pm.movePrev}">
-                <a href="list${pm.makeQuery(pm.startPage-1)}" class="page-btn">‹ 이전</a>
-              </c:if>
-              <c:if test="${!pm.movePrev}">
-                <span class="page-btn disabled">‹ 이전</span>
+              <!-- 처음 페이지 (1페이지가 아닐 때만 표시) -->
+              <c:if test="${pm.criteria.page > 1}">
+                <a href="${pageContext.request.contextPath}/board/list${pm.makeQuery(1)}" class="page-btn">« 처음</a>
               </c:if>
               
+              <!-- 이전 페이지 (이전 블록이 있을 때만 표시) -->
+              <c:if test="${pm.movePrev}">
+                <a href="${pageContext.request.contextPath}/board/list${pm.makeQuery(pm.startPage-1)}" class="page-btn">‹ 이전</a>
+              </c:if>
+              
+              <!-- 페이지 번호들 -->
               <c:forEach begin="${pm.startPage}" end="${pm.endPage}" var="idx">
                 <c:if test="${pm.criteria.page == idx}">
                   <span class="page-btn active">${idx}</span>
                 </c:if>
                 <c:if test="${pm.criteria.page != idx}">
-                  <a href="list${pm.makeQuery(idx)}" class="page-btn">${idx}</a>
+                  <a href="${pageContext.request.contextPath}/board/list${pm.makeQuery(idx)}" class="page-btn">${idx}</a>
                 </c:if>
               </c:forEach>
               
+              <!-- 다음 페이지 (다음 블록이 있을 때만 표시) -->
               <c:if test="${pm.moveNext}">
-                <a href="list${pm.makeQuery(pm.endPage+1)}" class="page-btn">다음 ›</a>
+                <a href="${pageContext.request.contextPath}/board/list${pm.makeQuery(pm.endPage+1)}" class="page-btn">다음 ›</a>
               </c:if>
-              <c:if test="${!pm.moveNext}">
-                <span class="page-btn disabled">다음 ›</span>
+              
+              <!-- 마지막 페이지 (마지막 페이지가 아닐 때만 표시) -->
+              <c:if test="${pm.criteria.page < pm.maxPage}">
+                <a href="${pageContext.request.contextPath}/board/list${pm.makeQuery(pm.maxPage)}" class="page-btn">마지막 »</a>
               </c:if>
             </div>
           </div>
@@ -179,7 +192,71 @@
             dropdown.classList.remove('show');
           }
         });
+
+        // 검색 폼 제출 시 페이지 초기화
+        document.getElementById('searchForm').addEventListener('submit', function() {
+          // 검색 시 첫 페이지로 이동
+          const pageInput = document.createElement('input');
+          pageInput.type = 'hidden';
+          pageInput.name = 'page';
+          pageInput.value = '1';
+          this.appendChild(pageInput);
+        });
+
+        // 카테고리나 정렬 변경 시 자동 검색
+        document.querySelectorAll('.filter-select').forEach(function(select) {
+          select.addEventListener('change', function() {
+            document.getElementById('searchForm').submit();
+          });
+        });
  
       </script>
+
+      <style>
+        .search-btn {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 8px 16px;
+          border-radius: 4px;
+          cursor: pointer;
+          font-size: 14px;
+          margin-left: 10px;
+        }
+        
+        .search-btn:hover {
+          background-color: #0056b3;
+        }
+        
+        .filters-content {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+        
+        .search-filter {
+          flex: 1;
+          min-width: 200px;
+        }
+        
+        .filter-group {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        }
+        
+        .filter-label {
+          font-weight: 500;
+          color: #333;
+        }
+        
+        .filter-select {
+          padding: 6px 12px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+      </style>
 </body>
 </html>

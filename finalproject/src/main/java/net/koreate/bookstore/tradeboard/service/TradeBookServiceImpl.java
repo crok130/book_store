@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.common.utils.PageMaker;
 import net.koreate.bookstore.common.utils.SearchCriteria;
+import net.koreate.bookstore.common.utils.SearchPageMaker;
 import net.koreate.bookstore.tradeboard.dao.TradeBookDAO;
 import net.koreate.bookstore.vo.TradebookVO;
 
@@ -28,7 +29,20 @@ public class TradeBookServiceImpl implements TradeBookService {
 
 	@Override
 	public PageMaker getPageMaker(SearchCriteria scri) throws Exception {
-		return null;
+		int totalCount = dao.listCount(scri);
+		// 한 블럭 5페이지 기준 (Board 예제와 동일)
+		return new SearchPageMaker(scri, totalCount, 5);
+	}
+
+	@Override
+	public List<TradebookVO> list(SearchCriteria scri) throws Exception {
+		return dao.list(scri);
+	}
+
+	@Override
+	public TradebookVO detail(int tradebook_num) throws Exception {
+		System.out.println("service : "+tradebook_num);
+		return dao.detail(tradebook_num);
 	}
 
 

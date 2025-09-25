@@ -837,6 +837,7 @@
                     <a href="#" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatDetail" class="dropdown-item">채팅</a>
                     <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
+                    <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
                   </div>
                 </div>
           	</c:otherwise>
@@ -885,64 +886,52 @@
           </div>
         </section>
 
-        <section class="filter-section">
-          <div class="container">
-            <div class="filter-content">
-              <div class="search-filter">
-                <input 
-                  type="text" 
-                  class="search-input" 
-                  placeholder="책 제목이나 저자명으로 검색하세요..."
-                />
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">지역:</span>
-                <select class="filter-select">
-                  <option>전체 지역</option>
-                  <option>서울</option>
-                  <option>부산</option>
-                  <option>대구</option>
-                  <option>인천</option>
-                  <option>광주</option>
-                  <option>대전</option>
-                  <option>울산</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">상태:</span>
-                <select class="filter-select">
-                  <option>전체 상태</option>
-                  <option>최상</option>
-                  <option>양호</option>
-                  <option>보통</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">정렬:</span>
-                <select class="filter-select">
-                  <option>최신순</option>
-                  <option>인기순</option>
-                  <option>거리순</option>
-                </select>
+        <form id="searchForm" action="${path}/tradebook/list" method="get">
+          <section class="filter-section">
+            <div class="container">
+              <div class="filter-content">
+                <div class="search-filter">
+                  <input 
+                    type="text" 
+                    name="keyword"
+                    class="search-input" 
+                    placeholder="책 제목이나 저자명으로 검색하세요..."
+                    value="${param.keyword}"
+                  />
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">지역:</span>
+                  <select name="sort" class="filter-select">
+                    <option value="">전체 지역</option>
+                    <option value="서울" ${param.sort == '서울' ? 'selected' : ''}>서울</option>
+                    <option value="부산" ${param.sort == '부산' ? 'selected' : ''}>부산</option>
+                    <option value="대구" ${param.sort == '대구' ? 'selected' : ''}>대구</option>
+                    <option value="인천" ${param.sort == '인천' ? 'selected' : ''}>인천</option>
+                    <option value="광주" ${param.sort == '광주' ? 'selected' : ''}>광주</option>
+                    <option value="대전" ${param.sort == '대전' ? 'selected' : ''}>대전</option>
+                    <option value="울산" ${param.sort == '울산' ? 'selected' : ''}>울산</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">상태:</span>
+                  <select name="category" class="filter-select">
+                    <option value="">전체 상태</option>
+                    <option value="새책" ${param.category == '새책' ? 'selected' : ''}>새책</option>
+                    <option value="매우 좋음" ${param.category == '매우 좋음' ? 'selected' : ''}>매우 좋음</option>
+                    <option value="좋음" ${param.category == '좋음' ? 'selected' : ''}>좋음</option>
+                    <option value="보통" ${param.category == '보통' ? 'selected' : ''}>보통</option>
+                    <option value="낡음" ${param.category == '낡음' ? 'selected' : ''}>낡음</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <button type="submit" class="btn btn-primary">검색</button>
+                </div>
+                <input type="hidden" name="page" value="1"/>
+                <input type="hidden" name="perPageNum" value="12"/>
               </div>
             </div>
-          </div>
-        </section>
-
-        <section class="category-section">
-          <div class="container">
-            <div class="category-filters">
-              <a href="#" class="category-pill active">전체</a>
-              <a href="#" class="category-pill">소설/에세이</a>
-              <a href="#" class="category-pill">경영/경제</a>
-              <a href="#" class="category-pill">과학/기술</a>
-              <a href="#" class="category-pill">예술/디자인</a>
-              <a href="#" class="category-pill">자기계발</a>
-              <a href="#" class="category-pill">IT/컴퓨터</a>
-              <a href="#" class="category-pill">아동/청소년</a>
-            </div>
-          </div>
-        </section>
+          </section>
+        </form>
 
         <section class="books-section">
           <div class="container">
@@ -951,7 +940,7 @@
             
             <div class="books-grid">
             <c:forEach var="book" items="${list}">
-              <div class="exchange-card">
+              <div class="exchange-card" onclick="location.href='detail?num=${book.tradebook_num}'">
                 <c:choose>
                   <c:when test="${book.tradebook_trade == 'y'}">
                     <div class="exchange-badge">교환 가능</div>
@@ -1053,5 +1042,17 @@
             dropdown.classList.remove('show');
           }
         });
+
+        // 검색 폼 제출 시 페이지 초기화
+        document.getElementById('searchForm').addEventListener('submit', function() {
+          // 검색 시 첫 페이지로 이동
+          const pageInput = document.createElement('input');
+          pageInput.type = 'hidden';
+          pageInput.name = 'page';
+          pageInput.value = '1';
+          this.appendChild(pageInput);
+        });
+
+        // 필터 변경 시 자동 제출 제거 - 검색 버튼을 눌러야만 제출됨
       </script>
 </html>

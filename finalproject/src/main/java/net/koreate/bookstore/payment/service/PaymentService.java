@@ -2,9 +2,9 @@ package net.koreate.bookstore.payment.service;
 
 import java.util.List;
 
+import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.PaymentVO;
-import net.koreate.bookstore.vo.CartVO;
 
 public interface PaymentService {
 	

@@ -1,10 +1,15 @@
 package net.koreate.bookstore.member.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
 
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.MemberVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 @Service
 public interface MemberService {
@@ -113,5 +118,11 @@ public interface MemberService {
      * @return 변경 성공 시 true, 실패 시 false
      */
     boolean changePasswordByEmail(MemberVO vo)throws Exception;
+    
+    
+	PageMaker getPageMaker(SearchCriteria scri, HttpSession session) throws Exception;
+
+    // 회원 주문내역 목록
+    List<PaymentVO> listOrders(SearchCriteria scri, HttpSession session) throws Exception;
 
 }

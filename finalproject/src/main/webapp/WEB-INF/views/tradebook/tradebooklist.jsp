@@ -718,6 +718,7 @@
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatDetail" class="dropdown-item">채팅</a>
                     <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
+                    <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
                   </div>
                 </div>
           	</c:otherwise>
@@ -754,104 +755,122 @@
           </div>
         </section>
 
-        <section class="filters-section">
-          <div class="container">
-            <div class="filters-content">
-              <div class="search-filter">
-                <input 
-                  type="text" 
-                  class="search-input" 
-                  placeholder="도서명이나 저자명을 입력하세요..."
-                />
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">카테고리:</span>
-                <select class="filter-select">
-                  <option>전체 카테고리</option>
-                  <option>소설/에세이</option>
-                  <option>경영/경제</option>
-                  <option>과학/기술</option>
-                  <option>예술/디자인</option>
-                  <option>자기계발</option>
-                  <option>IT/컴퓨터</option>
-                  <option>아동/청소년</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">상태:</span>
-                <select class="filter-select">
-                  <option>전체</option>
-                  <option>새책</option>
-                  <option>매우 좋음</option>
-                  <option>좋음</option>
-                  <option>보통</option>
-                  <option>낡음</option>
-                </select>
-              </div>
-              <div class="filter-group">
-                <span class="filter-label">지역:</span>
-                <select class="filter-select">
-                  <option>전국</option>
-                  <option>서울</option>
-                  <option>부산</option>
-                  <option>대구</option>
-                  <option>인천</option>
-                  <option>광주</option>
-                  <option>대전</option>
-                  <option>울산</option>
-                </select>
+        <form id="filterForm" action="${path}/tradebook/list" method="get">
+          <section class="filters-section">
+            <div class="container">
+              <div class="filters-content">
+                <div class="search-filter">
+                  <input 
+                    type="text"
+                    name="keyword"
+                    class="search-input" 
+                    placeholder="도서명이나 저자명을 입력하세요..."
+                    value="${param.keyword}"
+                  />
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">상태:</span>
+                  <select name="category" class="filter-select">
+                    <option ${empty param.category || param.category == '전체' ? 'selected' : ''}>전체</option>
+                    <option ${param.category == '새책' ? 'selected' : ''}>새책</option>
+                    <option ${param.category == '매우 좋음' ? 'selected' : ''}>매우 좋음</option>
+                    <option ${param.category == '좋음' ? 'selected' : ''}>좋음</option>
+                    <option ${param.category == '보통' ? 'selected' : ''}>보통</option>
+                    <option ${param.category == '낡음' ? 'selected' : ''}>낡음</option>
+                  </select>
+                </div>
+                <div class="filter-group">
+                  <span class="filter-label">지역:</span>
+                  <select name="sort" class="filter-select">
+                    <option ${empty param.sort || param.sort == '전국' ? 'selected' : ''}>전국</option>
+                    <option ${param.sort == '서울' ? 'selected' : ''}>서울</option>
+                    <option ${param.sort == '부산' ? 'selected' : ''}>부산</option>
+                    <option ${param.sort == '대구' ? 'selected' : ''}>대구</option>
+                    <option ${param.sort == '인천' ? 'selected' : ''}>인천</option>
+                    <option ${param.sort == '광주' ? 'selected' : ''}>광주</option>
+                    <option ${param.sort == '대전' ? 'selected' : ''}>대전</option>
+                    <option ${param.sort == '울산' ? 'selected' : ''}>울산</option>
+                  </select>
+                </div>
+                <input type="hidden" name="page" value="${empty param.page ? 1 : param.page}"/>
+                <input type="hidden" name="perPageNum" value="${empty param.perPageNum ? 12 : param.perPageNum}"/>
               </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </form>
 
         <section class="exchange-books-section">
           <div class="container">
             <h2 class="section-title">교환 가능한 모든 도서</h2>
             <div class="exchange-grid">
-            
-            
-              <div class="exchange-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop"
-                  alt="미움받을 용기"
-                  class="exchange-book-image"
-                />
-                <div class="exchange-info">
-                  <div class="exchange-badge">교환중</div>
-                  <h3 class="exchange-book-title">미움받을 용기</h3>
-                  <p class="exchange-book-author">기시미 이치로</p>
-                  <div class="exchange-details">
-                    <span class="exchange-condition">상급</span>
-                    <span class="exchange-date">2일 전</span>
-                  </div>
-                  <div class="exchange-location">
-                    <span>📍</span>
-                    <span>서울 강남구</span>
-                  </div>
-                  <div class="exchange-user">
-                    <span>김독서님</span>
-                  </div>
-                </div>
-              </div>
-				
-				
-             </div>
+              <c:forEach var="item" items="${list}">
+              		
+	               <div class="exchange-card" onclick="location.href='detail?num=${item.tradebook_num}'">
+		                <img 
+		                  src="${pageContext.request.contextPath}/img${item.tradebook_img}"
+		                  alt="${item.tradebook_title}"
+		                  class="exchange-book-image"
+		                />
+		                <div class="exchange-info">
+		                <c:choose>
+		                	<c:when test="${item.tradebook_trade == 'y'}">
+		                  		<div class="exchange-badge">교환가능</div>
+		                  	 </c:when>
+		                  	 <c:otherwise>
+		                  	 	<div class="exchange-badge" style="background: linear-gradient(135deg, #9e9e9e, #757575);">교환 완료</div>
+		                  	 </c:otherwise>
+		                 </c:choose>
+		                  <h3 class="exchange-book-title">${item.tradebook_title}</h3>
+		                  <p class="exchange-book-author">${item.tradebook_author}</p>
+		                  <div class="exchange-details">
+		                    <span class="exchange-condition">${item.tradebook_status}</span>
+		                  </div>
+		                  <div class="exchange-location">
+		                    <span>📍</span>
+		                    <span>${item.tradebook_location}</span>
+		                  </div>
+		                  <div class="exchange-user">
+		                    <span>${item.member_nickname}님</span>
+		                  </div>
+		                </div>
+	              	</div>
+             	</c:forEach>
+            </div>
           </div>
         </section>
 
         <section class="pagination-section">
           <div class="container">
             <div class="pagination">
-              <a href="#" class="page-btn disabled">‹ 이전</a>
-              <a href="#" class="page-btn active">1</a>
-              <a href="#" class="page-btn">2</a>
-              <a href="#" class="page-btn">3</a>
-              <a href="#" class="page-btn">4</a>
-              <a href="#" class="page-btn">5</a>
-              <span class="page-btn">...</span>
-              <a href="#" class="page-btn">18</a>
-              <a href="#" class="page-btn">다음 ›</a>
+              <!-- 처음 페이지 (1페이지가 아닐 때만 표시) -->
+              <c:if test="${pm.criteria.page > 1}">
+                <a href="${pageContext.request.contextPath}/tradebook/list${pm.makeQuery(1)}" class="page-btn">« 처음</a>
+              </c:if>
+              
+              <!-- 이전 페이지 (이전 블록이 있을 때만 표시) -->
+              <c:if test="${pm.movePrev}">
+                <a href="${pageContext.request.contextPath}/tradebook/list${pm.makeQuery(pm.startPage-1)}" class="page-btn">‹ 이전</a>
+              </c:if>
+              
+              <!-- 페이지 번호들 -->
+              <c:forEach begin="${pm.startPage}" end="${pm.endPage}" var="idx">
+                <c:if test="${pm.criteria.page == idx}">
+                  <span class="page-btn active">${idx}</span>
+                </c:if>
+                <c:if test="${pm.criteria.page != idx}">
+                  <a href="${pageContext.request.contextPath}/tradebook/list${pm.makeQuery(idx)}" class="page-btn">${idx}</a>
+                </c:if>
+              </c:forEach>
+              
+              <!-- 다음 페이지 (다음 블록이 있을 때만 표시) -->
+              <c:if test="${pm.moveNext}">
+                <a href="${pageContext.request.contextPath}/tradebook/list${pm.makeQuery(pm.endPage+1)}" class="page-btn">다음 ›</a>
+              </c:if>
+              
+              <!-- 마지막 페이지 (마지막 페이지가 아닐 때만 표시) -->
+              <c:if test="${pm.criteria.page < pm.maxPage}">
+                <a href="${pageContext.request.contextPath}/tradebook/list${pm.makeQuery(pm.maxPage)}" class="page-btn">마지막 »</a>
+              </c:if>
             </div>
           </div>
         </section>

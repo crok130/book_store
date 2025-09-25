@@ -26,8 +26,21 @@ public interface TradeBookService {
 
 
 	/**
-	 * 게시글 페이징 블럭 정보
+	 * 게시글 페이징 블럭 정보 (공용)
 	 */
 	PageMaker getPageMaker(SearchCriteria scri) throws Exception;
+
+	/**
+	 * 페이징 목록 조회 (공용)
+	 */
+	List<TradebookVO> list(SearchCriteria scri) throws Exception;
+	
+	/**
+	 * 게시글 상세보기
+	 * 
+	 * @param tradebook_num 상세보기할 게시글 번호
+	 * @return 게시글 상세보기 파라미터
+	 */
+	TradebookVO detail(int tradebook_num) throws Exception;
 	
 }

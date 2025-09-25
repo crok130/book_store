@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class TradebookVO {
-
+	
+	private int tradebook_num;
     private String tradebook_title;               // 책 제목
     private String tradebook_author;              // 저자
     private String tradebook_publication_date;    // 출간일 (yyyy-MM-dd)

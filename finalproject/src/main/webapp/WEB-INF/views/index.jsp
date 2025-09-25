@@ -8,9 +8,10 @@
             <div class="search-content">
               <h1 class="search-title">문학의 향기가 머무는 곳</h1>
               <p class="search-subtitle">소중한 이야기들이 새로운 주인을 기다리고 있습니다</p>
-              <form class="search-form">
+              <form class="search-form" action="${pageContext.request.contextPath}/board/list" method="get">
                 <input 
                   type="text" 
+                  name="keyword"
                   class="search-input" 
                   placeholder="도서명, 저자명, 혹은 마음에 드는 구절을 입력해보세요..."
                 />
@@ -106,31 +107,31 @@
             <h2 class="section-title">문학의 세계로</h2>
             <p class="section-subtitle">각 장르마다 독특한 매력과 깊이를 담고 있습니다</p>
             <div class="categories-grid">
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=소설/에세이'">
                 <div class="category-icon">📖</div>
                 <div class="category-name">소설/에세이</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=경영/경제'">
                 <div class="category-icon">💼</div>
                 <div class="category-name">경영/경제</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=과학/기술'">
                 <div class="category-icon">🔬</div>
                 <div class="category-name">과학/기술</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=예술/디자인'">
                 <div class="category-icon">🎨</div>
                 <div class="category-name">예술/디자인</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=아동/청소년'">
                 <div class="category-icon">👶</div>
                 <div class="category-name">아동/청소년</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=자기계발'">
                 <div class="category-icon">🎯</div>
                 <div class="category-name">자기계발</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=IT/컴퓨터'">
                 <div class="category-icon">💻</div>
                 <div class="category-name">IT/컴퓨터</div>
               </div>
