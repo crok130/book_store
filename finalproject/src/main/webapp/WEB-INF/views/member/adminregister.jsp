@@ -30,48 +30,29 @@
             신뢰할 수 있는 사람에게만 관리자 권한을 부여하세요.
           </div>
 
-          <form class="register-form">
+          <form class="register-form" method="post" action="${path}/admin/register">
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">이름 <span class="required">*</span></label>
                 <input
                   type="text"
                   class="form-input"
+                  name="member_name"
                   placeholder="관리자 이름을 입력하세요"
                   required
                 />
               </div>
-              <div class="form-group">
-                <label class="form-label">부서</label>
-                <select class="form-select">
-                  <option value="">부서 선택</option>
-                  <option value="it">IT팀</option>
-                  <option value="sales">영업팀</option>
-                  <option value="marketing">마케팅팀</option>
-                  <option value="management">경영진</option>
-                </select>
-              </div>
             </div>
 
             <div class="form-group">
-              <label class="form-label">관리자 이메일 <span class="required">*</span></label>
+              <label class="form-label">관리자 아이디 <span class="required">*</span></label>
               <input
-                type="email"
+                type="text"
                 class="form-input"
-                placeholder="관리자 이메일을 입력하세요"
+                name="member_id"
+                placeholder="관리자 아이디 "
                 required
               />
-            </div>
-
-            <div class="form-group">
-              <label class="form-label">직급 <span class="required">*</span></label>
-              <select class="form-select" required>
-                <option value="">직급을 선택하세요</option>
-                <option value="super_admin">최고 관리자</option>
-                <option value="admin">시스템 관리자</option>
-                <option value="content_manager">콘텐츠 관리자</option>
-                <option value="customer_manager">고객 관리자</option>
-              </select>
             </div>
 
             <div class="form-row">
@@ -80,6 +61,7 @@
                 <input
                   type="password"
                   class="form-input"
+                  name="member_pw"
                   placeholder="강력한 비밀번호를 입력하세요"
                   required
                 />
@@ -92,6 +74,28 @@
                   placeholder="비밀번호를 다시 입력하세요"
                   required
                 />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">이메일</label>
+                <input type="email" class="form-input" name="member_email" placeholder="email" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">전화번호</label>
+                <input type="text" class="form-input" name="member_phone" placeholder="010-" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">주소</label>
+                <input type="text" class="form-input" name="member_addr1" placeholder="기본 주소" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">상세 주소</label>
+                <input type="text" class="form-input" name="member_addr2" placeholder="상세 주소" />
               </div>
             </div>
 
@@ -162,7 +166,7 @@
           </form>
 
           <div class="login-link">
-            이미 관리자 계정이 있으신가요? <a href="${path}/admin/adminregister">관리자 로그인</a>
+            이미 관리자 계정이 있으신가요? <a href="${path}/admin/login">관리자 로그인</a>
           </div>
         </div>
       </div>

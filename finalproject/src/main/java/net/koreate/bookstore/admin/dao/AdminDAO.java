@@ -2,6 +2,8 @@ package net.koreate.bookstore.admin.dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
@@ -19,7 +21,7 @@ public interface AdminDAO {
 	@Select("SELECT count(*) FROM members")
 	int MemberCount()throws Exception;
 	
-	@Select("SELECT SUM(payment_total_price) FROM payments")
+	@Select("SELECT NVL(SUM(payment_total_price), 0) FROM payments")
 	int TotalMoney() throws Exception;
 	
 	@Select("SELECT count(*) FROM payments")
@@ -56,4 +58,12 @@ public interface AdminDAO {
 	// 재고 감소(출고)
     @Update("UPDATE newbook SET newbook_count = CASE WHEN newbook_count - #{qty} < 0 THEN 0 ELSE newbook_count - #{qty} END WHERE newbook_num = #{newbookNum}")
     int decreaseStock(StockUpdateVO req) throws Exception;
+
+    // 관리자 등록 (member_status = 1)
+    @Insert("INSERT INTO members(member_id,member_pw,member_name,member_addr,member_email,member_phone,member_nickname,member_birth,member_status) VALUES(#{member_id},#{member_pw},#{member_name},#{member_addr},#{member_email},#{member_phone},#{member_nickname},#{member_birth},1)")
+    int registerAdmin(net.koreate.bookstore.vo.MemberVO vo) throws Exception;
+
+    // 관리자 로그인 (member_status = 1)
+    @Select("SELECT * FROM members WHERE member_status = 1 AND member_id = #{member_id} AND member_pw = #{member_pw}")
+    net.koreate.bookstore.vo.MemberVO loginAdmin(@Param("member_id") String member_id, @Param("member_pw") String member_pw) throws Exception;
 }

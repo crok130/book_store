@@ -848,7 +848,7 @@
             <nav class="breadcrumb-nav">
               <a href="${path}">홈</a>
               <span class="breadcrumb-separator">›</span>
-              <a href="${path}/trade/bookexchange">책 교환</a>
+              <a href="${path}/tradebook/bookexchange">책 교환</a>
               <span class="breadcrumb-separator">›</span>
               <span>${vo.tradebook_title}</span>
             </nav>

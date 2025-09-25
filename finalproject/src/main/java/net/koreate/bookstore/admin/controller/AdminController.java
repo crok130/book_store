@@ -3,9 +3,11 @@ package net.koreate.bookstore.admin.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,6 +20,7 @@ import net.koreate.bookstore.vo.CountVO;
 import net.koreate.bookstore.vo.NewBookVO;
 import net.koreate.bookstore.vo.PaymentVO;
 import net.koreate.bookstore.vo.StockUpdateVO;
+import net.koreate.bookstore.vo.MemberVO;
 
 @Controller
 @RequiredArgsConstructor
@@ -25,6 +28,41 @@ import net.koreate.bookstore.vo.StockUpdateVO;
 public class AdminController {
 	
 	private final AdminService as;
+    // 로그인 화면
+    @GetMapping("admin/login")
+    public String adminLoginView() { return "member/adminlogin"; }
+
+    // 로그인 처리: 세션 키 adminInfo 사용
+    @PostMapping("admin/login")
+    public String adminLogin(String member_id, String member_pw, HttpSession session, RedirectAttributes rttr) throws Exception {
+        MemberVO admin = as.adminSignIn(member_id, member_pw);
+        if (admin == null || admin.getMember_status() != 1) {
+            rttr.addFlashAttribute("msg", "로그인 실패 또는 권한 없음");
+            return "redirect:/admin/login";
+        }
+        session.setAttribute("adminInfo", admin);
+        return "redirect:/admin/dashboard";
+    }
+
+    // 로그아웃
+    @GetMapping("admin/logout")
+    public String adminLogout(HttpSession session) {
+        session.removeAttribute("adminInfo");
+        return "redirect:/admin/login";
+    }
+
+    // 관리자 회원가입 화면
+    @GetMapping("admin/register")
+    public String adminRegisterView() { return "member/adminregister"; }
+
+    // 관리자 회원가입 처리 (member_status=1 저장)
+    @PostMapping("admin/register")
+    public String adminRegister(MemberVO vo, String member_addr1, String member_addr2, RedirectAttributes rttr) throws Exception {
+        vo.setMember_addr((member_addr1 != null ? member_addr1 : "") + "_" + (member_addr2 != null ? member_addr2 : ""));
+        String result = as.adminSignUp(vo);
+        rttr.addFlashAttribute("msg", result);
+        return "success".equals(result) ? "redirect:/admin/login" : "redirect:/admin/register";
+    }
 	
 	@GetMapping("admin/dashboard")
 	public String dashboard(Model model) throws Exception {

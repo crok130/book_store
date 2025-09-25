@@ -834,8 +834,8 @@
                     ${userInfo.member_nickname}님 반갑습니다 ▼
                   </div>
                   <div class="user-dropdown">
-                    <a href="#" class="dropdown-item">로그아웃</a>
-                    <a href="${path}/chat/chatDetail" class="dropdown-item">채팅</a>
+                    <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
+                    <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
                     <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
                     <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
                   </div>

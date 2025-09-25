@@ -29,15 +29,15 @@
             <p class="sidebar-subtitle">책 교환 관련 대화들</p>
           </div>
           
-           <div class="chat-list">
-             <div class="chat-item">
-               <div class="chat-item-header">
+          <div class="chat-list">
+          	<div class="chat-item">
+              <div class="chat-item-header">
                  <span class="chat-user-name">김문학</span>
                  <span class="chat-time">오후 2:30</span>
-               </div>
+              </div>
                <div class="chat-book-info">"달러구트 꿈 백화점" 교환</div>
                <div class="chat-last-message">네, 그럼 내일 2시에 만나요!</div>
-             </div>
+            </div>
             <div class="empty-state" id="empty-state" style="display: none;">
               <div class="empty-state-icon">💬</div>
               <div class="empty-state-title">아직 대화가 없습니다</div>
@@ -79,7 +79,10 @@
       </div>
       
       <script>
-        const CURRENT_USER_NUM = ${loginUserNum != null ? loginUserNum : 0};
+        const CURRENT_USER_NUM = <c:out value="${loginUserNum}" default="0"/>;
+        // URL 파라미터로 room 지정 시 자동 선택/구독
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialRoom = urlParams.get('room');
         // 공통 시간 포맷터: '오전/오후 h:mm'
         function formatKoreanTime(ts) {
           if (!ts) return '';
@@ -240,8 +243,8 @@
 			}
 		}
 
-		// 초기에는 연결하지 않음. 채팅 아이템 클릭 시에만 연결/구독한다.
-		fetch("chatAside")
+        // 초기에는 연결하지 않음. 채팅 아이템 클릭 시에만 연결/구독한다.
+        fetch("chatAside")
 		.then(res => {
 			console.log("Response status:", res.status);
 			if (!res.ok) {
@@ -267,7 +270,7 @@
 				emptyState.style.display = 'none';
 				
 				// 새로운 채팅 아이템들 생성
-				data.forEach(chat => {
+                data.forEach(chat => {
 					const chatItem = document.createElement('div');
 					chatItem.className = 'chat-item';
 					
@@ -299,7 +302,7 @@
 						'<div class="chat-last-message">' + (chat.message_content || '메시지 없음') + '</div>';
 					
 					// 클릭 이벤트 추가
-					chatItem.addEventListener('click', function() {
+                    chatItem.addEventListener('click', function() {
 						document.querySelector('.chat-item.active')?.classList.remove('active');
 						this.classList.add('active');
 						
@@ -331,7 +334,12 @@
 						}
 					});
 					
-					chatList.appendChild(chatItem);
+                    chatList.appendChild(chatItem);
+
+                    // 초기 room 파라미터가 있는 경우 자동 선택/구독
+                    if (initialRoom && Number(initialRoom) === Number(chat.chatroom_num)) {
+                      chatItem.click();
+                    }
 				});
 			} else {
 				// 데이터가 없거나 빈 배열이면
@@ -416,10 +424,10 @@
 						messagesContainer.appendChild(item);
 					});
 					messagesContainer.scrollTop = messagesContainer.scrollHeight;
-				})
-				.catch(err => {
+		})
+		.catch(err => {
 					console.error('chatcontent error', err);
-				});
+		});
 		}
       </script>
 </body>
@@ -484,26 +492,32 @@
             // Add system message to chat
             const messagesContainer = document.getElementById('chat-messages') || document.querySelector('.chat-messages');
             if (messagesContainer) {
-              const systemMessage = document.createElement('div');
+            const systemMessage = document.createElement('div');
               systemMessage.innerHTML = '<div style="text-align: center; margin: 2rem 0; padding: 1rem; background: rgba(156, 175, 158, 0.1); border-radius: 12px; color: var(--color-text-secondary); font-style: italic;">🎉 거래가 성공적으로 완료되었습니다!</div>';
-              messagesContainer.appendChild(systemMessage);
-              messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            messagesContainer.appendChild(systemMessage);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
 
-            // 교환 상태 업데이트 (tradebook_trade = 'n')
+            // 결제 완료 확인 기록 및 필요 시 거래 완료 처리
             const targetBtn = document.querySelector('.complete-trade-btn');
-            const tradebook_num = targetBtn ? targetBtn.getAttribute('data-tradebook') : null;
-            console.log(tradebook_num);
-            if (tradebook_num) {
-              fetch('${path}/chat/complete?tradebook_num=' + tradebook_num, {
+            const chatroom_num = targetBtn ? targetBtn.getAttribute('data-chatroom') : null;
+            if (chatroom_num) {
+              fetch('${path}/chat/complete?chatroom_num=' + encodeURIComponent(chatroom_num) + '&member_num=' + encodeURIComponent(CURRENT_USER_NUM), {
                 method: 'PUT'
-              }).then(res => res.json)
-              .then(data => {
-           			console.log(data);  
-              }).cath(err => {
-            	  	console.log(err);
+              }).then(res => res.text())
+              .then(text => {
+                if (text === 'COMPLETED') {
+                  alert('양측 확인 완료: 거래가 종료되었습니다.');
+                } else if (text === 'CONFIRMED') {
+                  alert('결제 완료 확인이 등록되었습니다. 상대방도 확인하면 거래가 종료됩니다.');
+                } else {
+                  alert('처리 중 문제가 발생했습니다.');
+                }
+              }).catch(err => {
+                console.error(err);
+                alert('서버 오류가 발생했습니다.');
               });
-         	}
+            }
           }
         }
 
