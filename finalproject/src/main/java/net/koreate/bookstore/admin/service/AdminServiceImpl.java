@@ -12,6 +12,7 @@ import net.koreate.bookstore.vo.CountVO;
 import net.koreate.bookstore.vo.NewBookVO;
 import net.koreate.bookstore.vo.PaymentVO;
 import net.koreate.bookstore.vo.StockUpdateVO;
+import net.koreate.bookstore.vo.MemberVO;
 
 @Service
 @RequiredArgsConstructor
@@ -74,4 +75,15 @@ public class AdminServiceImpl implements AdminService {
         dao.decreaseStock(req);
 	}
 
+    @Override
+    public MemberVO adminSignIn(String member_id, String member_pw) throws Exception {
+        return dao.loginAdmin(member_id, member_pw);
+    }
+
+    @Override
+    public String adminSignUp(MemberVO vo) throws Exception {
+        // member_status는 쿼리에서 1로 고정 삽입
+        int r = dao.registerAdmin(vo);
+        return r == 1 ? "success" : "fail";
+    }
 }

@@ -8,6 +8,7 @@ import net.koreate.bookstore.vo.CountVO;
 import net.koreate.bookstore.vo.NewBookVO;
 import net.koreate.bookstore.vo.PaymentVO;
 import net.koreate.bookstore.vo.StockUpdateVO;
+import net.koreate.bookstore.vo.MemberVO;
 
 public interface AdminService {
 	
@@ -33,5 +34,9 @@ public interface AdminService {
 	// 재고관리 - 입/출고
     void increaseStock(StockUpdateVO req) throws Exception;
     void decreaseStock(StockUpdateVO req) throws Exception;
+
+	// 관리자 인증
+	MemberVO adminSignIn(String member_id, String member_pw) throws Exception;
+	String adminSignUp(MemberVO vo) throws Exception;
 	
 }

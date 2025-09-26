@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
 import net.koreate.bookstore.vo.ChatVO;
+import net.koreate.bookstore.vo.ChatRoomVO;
 import net.koreate.bookstore.vo.MessageVO;
 
 public interface ChatDAO {
@@ -73,7 +74,40 @@ public interface ChatDAO {
 			"AND sender_member_num != #{member_num} " +
 			"AND NVL(is_read, 0) = 0")
 	int markAllMessagesAsRead(@Param("chatroom_num") int chatroom_num, @Param("member_num") int member_num) throws Exception;
+
+	// tradebook 기준으로 판매자 조회
+	@Select("SELECT member_num FROM tradebook WHERE tradebook_num = #{tradebook_num}")
+	Integer findSellerMemberByTradebook(@Param("tradebook_num") int tradebook_num) throws Exception;
+
+	// 동일한 두 회원 조합(순서 무관) + 동일 tradebook에 대한 기존 채팅방 조회
+	@Select("SELECT chatroom_num, tradebook_num, seller_member_num, buyer_member_num, created_at " +
+	        "FROM chatrooms " +
+	        "WHERE tradebook_num = #{tradebook_num} " +
+	        "AND ((seller_member_num = #{seller_member_num} AND buyer_member_num = #{buyer_member_num}) " +
+	        "  OR (seller_member_num = #{buyer_member_num} AND buyer_member_num = #{seller_member_num})) " +
+	        "FETCH FIRST 1 ROWS ONLY")
+	ChatRoomVO findRoomByMembersAndTradebook(@Param("seller_member_num") int seller_member_num,
+	                                        @Param("buyer_member_num") int buyer_member_num,
+	                                        @Param("tradebook_num") int tradebook_num) throws Exception;
+
+	// 채팅방 생성
+	@Insert("INSERT INTO chatrooms (tradebook_num, seller_member_num, buyer_member_num) " +
+	        "VALUES (#{tradebook_num}, #{seller_member_num}, #{buyer_member_num})")
+	int insertChatRoom(ChatRoomVO room) throws Exception;
 			  
+	// 결제 완료 확인을 시스템 메시지로 기록
+	@Insert("INSERT INTO messages (chatroom_num, sender_member_num, message_content, is_read) " +
+	        "VALUES (#{chatroom_num}, #{member_num}, '__PAY_DONE__', 1)")
+	int insertPaymentConfirm(@Param("chatroom_num") int chatroom_num, @Param("member_num") int member_num) throws Exception;
+
+	// 해당 채팅방에서 결제 완료 확인을 누른 서로 다른 인원 수 조회
+	@Select("SELECT COUNT(DISTINCT sender_member_num) FROM messages " +
+	        "WHERE chatroom_num = #{chatroom_num} AND message_content = '__PAY_DONE__'")
+	int countPaymentConfirmers(@Param("chatroom_num") int chatroom_num) throws Exception;
+
+	// 채팅방 번호로 거래글 번호 조회
+	@Select("SELECT tradebook_num FROM chatrooms WHERE chatroom_num = #{chatroom_num}")
+	Integer findTradebookByChatroom(@Param("chatroom_num") int chatroom_num) throws Exception;
 }
 
 			  

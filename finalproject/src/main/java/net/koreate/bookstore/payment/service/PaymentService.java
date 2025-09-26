@@ -2,6 +2,7 @@ package net.koreate.bookstore.payment.service;
 
 import java.util.List;
 
+import net.koreate.bookstore.vo.BulkPaymentVO;
 import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.PaymentVO;
@@ -80,5 +81,13 @@ public interface PaymentService {
 	 * @return 처리 결과 ("success" 또는 "fail")
 	 */
 	public String processPayment(PaymentVO payment) throws Exception;
+	
+	/**
+	 * 장바구니 일괄 결제 처리
+	 * 
+	 * @param bulkPayment 장바구니 일괄 결제 정보
+	 * @return 처리 결과 ("success" 또는 "fail")
+	 */
+	public String processBulkPayment(BulkPaymentVO bulkPayment) throws Exception;
 
 }

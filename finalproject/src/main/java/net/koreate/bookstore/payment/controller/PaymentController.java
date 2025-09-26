@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.board.service.BoardService;
 import net.koreate.bookstore.payment.service.PaymentService;
+import net.koreate.bookstore.vo.BulkPaymentVO;
 import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.NewBookVO;
@@ -43,6 +44,35 @@ public class PaymentController {
         model.addAttribute("cart", list);
     }
     
+    @GetMapping("payment/cart/checkout")
+    public String cartCheckout(HttpSession session, Model model) throws Exception {
+        MemberVO member = (MemberVO)session.getAttribute("userInfo");
+        if (member == null) {
+            return "redirect:/member/login";
+        }
+        
+        int member_num = member.getMember_num();
+        List<CartVO> cartItems = ps.getCart(member_num);
+        
+        if (cartItems == null || cartItems.isEmpty()) {
+            return "redirect:/payment/cart";
+        }
+        
+        // 총 결제 금액 계산
+        int totalPrice = 0;
+        for (CartVO item : cartItems) {
+            totalPrice += item.getPrice() * item.getBook_count();
+            System.out.println("장바구니 아이템: " + item.getNewbook_title() + ", 가격: " + item.getPrice() + ", 수량: " + item.getBook_count());
+        }
+        System.out.println("총 결제 금액: " + totalPrice);
+        
+        model.addAttribute("cartItems", cartItems);
+        model.addAttribute("totalPrice", totalPrice);
+        model.addAttribute("member", member);
+        
+        return "payment/PaymentPage";
+    }
+    
     @PostMapping("payment/ready")
     public String paymentReady(int newbook_num,
                                int quantity,
@@ -53,6 +83,37 @@ public class PaymentController {
         model.addAttribute("book", book);
         model.addAttribute("quantity", quantity);
         model.addAttribute("totalPrice", totalPrice);
+        return "payment/PaymentPage";
+    }
+    
+    @GetMapping("payment/ready")
+    public String paymentReadyGet(@RequestParam(value = "cart", required = false) String cart,
+                                 HttpSession session, Model model) throws Exception {
+        if ("true".equals(cart)) {
+            // 장바구니 일괄 결제
+            MemberVO member = (MemberVO)session.getAttribute("userInfo");
+            if (member == null) {
+                return "redirect:/member/login";
+            }
+            
+            int member_num = member.getMember_num();
+            List<CartVO> cartItems = ps.getCart(member_num);
+            
+            if (cartItems == null || cartItems.isEmpty()) {
+                return "redirect:/payment/cart";
+            }
+            
+            // 총 결제 금액 계산
+            int totalPrice = 0;
+            for (CartVO item : cartItems) {
+                totalPrice += item.getPrice() * item.getBook_count();
+            }
+            
+            model.addAttribute("cartItems", cartItems);
+            model.addAttribute("totalPrice", totalPrice);
+            model.addAttribute("member", member);
+        }
+        
         return "payment/PaymentPage";
     }
 
@@ -156,6 +217,56 @@ public class PaymentController {
   
 
             String result = ps.processPayment(vo);
+            if ("success".equals(result)) {
+                // 결제 성공 시 장바구니 비우기
+                ps.clearCart(user.getMember_num());
+                return ResponseEntity.ok("success");
+            }
+            return ResponseEntity.ok("fail");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("error");
+        }
+    }
+    
+    // 장바구니 일괄 결제 처리
+    @PostMapping("payment/cart/checkout")
+    @ResponseBody
+    public ResponseEntity<String> processCartCheckout(@RequestParam("member_addr1") String member_addr1,
+                                                      @RequestParam("member_addr2") String member_addr2,
+                                                      @RequestParam("payment_content") String payment_content,
+                                                      HttpSession session) throws Exception {
+        try {
+            MemberVO user = (MemberVO) session.getAttribute("userInfo");
+            if (user == null) {
+                return ResponseEntity.status(401).body("unauthorized");
+            }
+            
+            // 장바구니 조회
+            List<CartVO> cartItems = ps.getCart(user.getMember_num());
+            if (cartItems == null || cartItems.isEmpty()) {
+                return ResponseEntity.ok("empty_cart");
+            }
+            
+            // BulkPaymentVO 생성
+            BulkPaymentVO bulkPayment = new BulkPaymentVO();
+            bulkPayment.setMember_num(user.getMember_num());
+            bulkPayment.setMember_name(user.getMember_name());
+            bulkPayment.setMember_phone(user.getMember_phone());
+            bulkPayment.setMember_addr(member_addr1 + "_" + member_addr2);
+            bulkPayment.setPayment_content(payment_content);
+            bulkPayment.setItem_status("주문완료");
+            bulkPayment.setCartItems(cartItems);
+            
+            // 총 결제 금액 계산
+            int totalPrice = 0;
+            for (CartVO item : cartItems) {
+                totalPrice += item.getPrice() * item.getBook_count();
+            }
+            bulkPayment.setPayment_total_price(totalPrice);
+            
+            // 일괄 결제 처리
+            String result = ps.processBulkPayment(bulkPayment);
             if ("success".equals(result)) {
                 // 결제 성공 시 장바구니 비우기
                 ps.clearCart(user.getMember_num());

@@ -37,7 +37,12 @@ public interface ChatService {
      * @param buyer_member_num 구매자 회원 번호
      * @return 기존 채팅방 정보, 없으면 null
      */
-    ChatRoomVO getExistingChatRoom(int seller_member_num, int buyer_member_num) throws Exception;
+    ChatRoomVO getExistingChatRoom(int seller_member_num, int buyer_member_num, int tradebook_num) throws Exception;
+
+    /**
+     * 거래글 기준으로 채팅 시작: 기존 방이 있으면 그 방 번호 반환, 없으면 생성 후 반환
+     */
+    int startChat(int tradebook_num, int buyer_member_num) throws Exception;
 
     /**
      * 메시지를 전송합니다.
@@ -130,6 +135,12 @@ public interface ChatService {
      */
     boolean unblockUser(int chatroom_num, int unblocked_member_num, int unblocking_member_num) throws Exception;
     
-    
+    /**
+     * 결제 완료 확인을 기록하고, 양측이 모두 확인한 경우 거래글을 완료로 변경합니다.
+     * @param chatroom_num 채팅방 번호
+     * @param member_num 확인한 회원 번호
+     * @return 최종 완료되어 tradebook_trade가 'n'으로 변경되면 true, 아니면 false
+     */
+    boolean confirmPaymentAndMaybeCompleteTrade(int chatroom_num, int member_num) throws Exception;
 
 }

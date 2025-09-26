@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import net.koreate.bookstore.common.utils.SearchCriteria;
@@ -41,5 +42,8 @@ public interface TradeBookDAO {
 			"FROM tradebook t JOIN members m ON m.member_num = t.member_num " +
 			"WHERE t.tradebook_num = #{tradebook_num}")
 	TradebookVO detail(int tradebook_num) throws Exception;
+
+	@Update("UPDATE tradebook SET tradebook_trade = 'n' WHERE tradebook_num = #{tradebook_num}")
+	int markTradeCompleted(int tradebook_num) throws Exception;
 
 }

@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="path" value="${pageContext.request.contextPath}" scope="session" />
 <!DOCTYPE html>
 <html>
@@ -699,6 +701,7 @@
                       class="form-input" 
                       placeholder="받는 분 성함을 입력해주세요"
                       name="member_name"
+                      value="${member.member_name}"
                     />
                   </div>
 
@@ -709,6 +712,7 @@
                       class="form-input" 
                       placeholder="휴대폰 번호를 입력해주세요"
                       name="member_phone"
+                      value="${member.member_phone}"
                     />
                   </div>
 
@@ -724,7 +728,7 @@
                             name="member_addr1"
                           />
                         </div>
-                        <button class="load-address-btn">
+                        <button class="load-address-btn" onclick="loadMemberAddress(event)">
                           회원주소 불러오기
                         </button>
                       </div>
@@ -771,19 +775,44 @@
                   <h3 class="section-title">주문 요약</h3>
                   
                   <div class="books-list">
-                    <div class="book-item">
-                      <img 
-                        src="${pageContext.request.contextPath}/img${book.newbook_img}"
-                        alt="${book.newbook_title}"
-                        class="book-image"
-                      />
-                      <div class="book-details">
-                        <div class="book-title">${book.newbook_title}</div>
-                        <div class="book-author">${book.newbook_author} 지음</div>
-                        <div class="book-quantity">수량: ${quantity}개</div>
-                        <div class="book-price">${totalPrice}원</div>
-                      </div>
+                    <!-- 디버깅 정보 -->
+                    <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
+                      디버깅: cartItems 개수 = ${fn:length(cartItems)}, totalPrice = ${totalPrice}
                     </div>
+                    <c:choose>
+                      <c:when test="${not empty cartItems}">
+                        <c:forEach var="item" items="${cartItems}">
+                          <div class="book-item">
+                            <img 
+                              src="${pageContext.request.contextPath}/img${item.newbook_img}"
+                              alt="${item.newbook_title}"
+                              class="book-image"
+                            />
+                            <div class="book-details">
+                              <div class="book-title">${item.newbook_title}</div>
+                              <div class="book-author">${item.newbook_author} 지음</div>
+                              <div class="book-quantity">수량: ${item.book_count}개</div>
+                              <div class="book-price"><fmt:formatNumber value="${item.price * item.book_count}" type="number"/>원</div>
+                            </div>
+                          </div>
+                        </c:forEach>
+                      </c:when>
+                      <c:otherwise>
+                        <div class="book-item">
+                          <img 
+                            src="${pageContext.request.contextPath}/img${book.newbook_img}"
+                            alt="${book.newbook_title}"
+                            class="book-image"
+                          />
+                          <div class="book-details">
+                            <div class="book-title">${book.newbook_title}</div>
+                            <div class="book-author">${book.newbook_author} 지음</div>
+                            <div class="book-quantity">수량: ${quantity}개</div>
+                            <div class="book-price">${totalPrice}원</div>
+                          </div>
+                        </div>
+                      </c:otherwise>
+                    </c:choose>
                   </div>
 
                   <div class="price-breakdown">
@@ -793,7 +822,7 @@
                     </div>
                     <div class="price-row total">
                       <span>총 결제금액</span>
-                      <span>${totalPrice}원</span>
+                      <span><fmt:formatNumber value="${totalPrice != null ? totalPrice : 0}" type="number"/>원</span>
                     </div>
                   </div>
 
@@ -869,29 +898,32 @@
           }
         });
 
-        // 회원주소 불러오기 버튼 AJAX 연동
-        document.addEventListener('DOMContentLoaded', function(){
-          const btn = document.querySelector('.load-address-btn');
-          if(!btn) return;
-          btn.addEventListener('click', function(e){
-            e.preventDefault();
-            fetch('${path}/member/address', { method: 'GET' })
-              .then(function(res){
-                if(!res.ok){ throw new Error('unauthorized'); }
-                return res.json();
-              })
-              .then(function(data){
-                const addr1Input = document.querySelector('input[name="member_addr1"]');
-                const addr2Input = document.querySelector('input[name="member_addr2"]');
-                if(addr1Input) addr1Input.value = data.addr1 || '';
-                if(addr2Input) addr2Input.value = data.addr2 || '';
-              })
-              .catch(function(){
-                alert('주소를 불러올 수 없습니다. 로그인 상태를 확인하세요.');
-              });
-          });
+        // 전역 함수로 회원주소 불러오기
+        window.loadMemberAddress = function(e) {
+          e.preventDefault();
+          
+          fetch('${path}/member/address', { method: 'GET' })
+            .then(function(res){
 
-          // 결제방법 라디오 선택 시 시각적 선택상태 유지
+              if(!res.ok){ throw new Error('unauthorized'); }
+              return res.json();
+            })
+            .then(function(data){
+        
+              const addr1Input = document.querySelector('input[name="member_addr1"]');
+              const addr2Input = document.querySelector('input[name="member_addr2"]');
+              if(addr1Input) addr1Input.value = data.addr1 || '';
+              if(addr2Input) addr2Input.value = data.addr2 || '';
+              
+            })
+            .catch(function(error){
+              console.error('주소 불러오기 오류:', error);
+              alert('주소를 불러올 수 없습니다. 로그인 상태를 확인하세요.');
+            });
+        };
+
+        // 결제방법 라디오 선택 시 시각적 선택상태 유지
+        function initPaymentMethods() {
           const methodLabels = document.querySelectorAll('.payment-methods .payment-method');
           methodLabels.forEach(function(label){
             label.addEventListener('click', function(){
@@ -901,10 +933,18 @@
               if(input){ input.checked = true; }
             });
           });
-        });
+        }
+        
+        // DOMContentLoaded와 즉시 실행 모두 처리
+        document.addEventListener('DOMContentLoaded', initPaymentMethods);
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initPaymentMethods);
+        } else {
+          initPaymentMethods();
+        }
 
         // 포트원 결제 요청 함수
-        function requestPayment() {
+        window.requestPayment = function() {
             // 필수 필드 검증
             const memberName = document.querySelector('input[name="member_name"]').value;
             const memberPhone = document.querySelector('input[name="member_phone"]').value;
@@ -937,7 +977,91 @@
                 return;
             }
 
-            // 결제 정보 수집
+            // 장바구니 일괄 결제인지 확인
+            const isCartCheckout = ${not empty cartItems ? 'true' : 'false'};
+            console.log('장바구니 결제 여부:', isCartCheckout);
+            console.log('cartItems:', '${cartItems}');
+            
+            // URL 파라미터로도 확인
+            const urlParams = new URLSearchParams(window.location.search);
+            const isCartCheckoutByParam = urlParams.get('cart') === 'true';
+            console.log('URL 파라미터로 확인한 장바구니 결제 여부:', isCartCheckoutByParam);
+            console.log('현재 URL:', window.location.href);
+            
+            if (isCartCheckout || isCartCheckoutByParam) {
+                // 장바구니 일괄 결제 처리
+                processCartPayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod.value);
+            } else {
+                // 단일 상품 결제 처리
+                processSinglePayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod.value);
+            }
+        };
+
+        // 장바구니 일괄 결제 처리
+        function processCartPayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod) {
+            const totalPrice = ${totalPrice != null ? totalPrice : 0};
+            const paymentContent = document.querySelector('input[name="payment_content"]').value || '';
+            
+            console.log('장바구니 결제 - 총 금액:', totalPrice);
+
+            // 포트원 초기화
+            var IMP = window.IMP;
+            IMP.init('imp20622085'); // 실제 가맹점 식별코드로 변경 필요
+
+            // 결제 요청 데이터
+            const paymentData = {
+                pg: getPaymentPG(paymentMethod),
+                pay_method: 'card',
+                merchant_uid: 'cart_' + new Date().getTime(),
+                name: '장바구니 상품 일괄 주문',
+                amount: totalPrice,
+                buyer_name: memberName,
+                buyer_tel: memberPhone,
+                buyer_addr: memberAddr1 + ' ' + memberAddr2
+            };
+
+            // 결제 요청
+            IMP.request_pay(paymentData, function(rsp) {
+                if (rsp.success) {
+                    console.log("결제 성공:", rsp);
+                    
+                    // 장바구니 일괄 결제 처리
+                    const formData = new URLSearchParams();
+                    formData.append('member_addr1', memberAddr1);
+                    formData.append('member_addr2', memberAddr2);
+                    formData.append('payment_content', paymentContent);
+
+                    fetch('${path}/payment/cart/checkout', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' },
+                        body: formData.toString()
+                    })
+                    .then(response => response.text())
+                    .then(text => {
+                        if (text === 'success') {
+                            alert('장바구니 주문이 성공적으로 완료되었습니다!');
+                            window.location.href = '${path}/board/list';
+                        } else if (text === 'empty_cart') {
+                            alert('장바구니가 비어있습니다.');
+                            window.location.href = '${path}/payment/cart';
+                        } else {
+                            alert('주문 처리 중 오류가 발생했습니다.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('서버 통신 중 오류가 발생했습니다.');
+                    });
+
+                } else {
+                    console.log("결제 실패:", rsp);
+                    alert('결제에 실패하였습니다. 에러 내용: ' + rsp.error_msg);
+                }
+            });
+        }
+
+        // 단일 상품 결제 처리
+        function processSinglePayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod) {
             const bookTitle = '${book.newbook_title}';
             const totalPrice = ${totalPrice};
             const quantity = ${quantity};
@@ -949,22 +1073,14 @@
 
             // 결제 요청 데이터
             const paymentData = {
-                pg: getPaymentPG(paymentMethod.value),
+                pg: getPaymentPG(paymentMethod),
                 pay_method: 'card',
                 merchant_uid: 'bookstore_' + new Date().getTime(),
                 name: bookTitle,
                 amount: totalPrice,
                 buyer_name: memberName,
                 buyer_tel: memberPhone,
-                buyer_addr: memberAddr1 + ' ' + memberAddr2,
-                custom_data: {
-                    newbook_num: newbookNum,
-                    quantity: quantity,
-                    member_name: memberName,
-                    member_phone: memberPhone,
-                    member_addr: memberAddr1 + '_' + memberAddr2,
-                    payment_content: document.querySelector('input[name="payment_content"]').value || ''
-                }
+                buyer_addr: memberAddr1 + ' ' + memberAddr2
             };
 
             // 결제 요청
@@ -972,22 +1088,7 @@
                 if (rsp.success) {
                     console.log("결제 성공:", rsp);
                     
-                    // 결제 성공 시 주문 정보를 서버로 전송
-                    const orderData = {
-                        newbook_num: newbookNum,
-                        quantity: quantity,
-                        total_price: totalPrice,
-                        member_name: memberName,
-                        member_phone: memberPhone,
-                        member_addr: memberAddr1 + '_' + memberAddr2,
-                        payment_content: document.querySelector('input[name="payment_content"]').value || '',
-                        imp_uid: rsp.imp_uid,
-                        merchant_uid: rsp.merchant_uid,
-                        paid_amount: rsp.paid_amount,
-                        apply_num: rsp.apply_num
-                    };
-
-                    // 주문 정보를 서버로 전송
+                    // 단일 상품 결제 처리
                     const formData = new URLSearchParams();
                     formData.append('newbook_num', newbookNum);
                     formData.append('payment_quantity', quantity);

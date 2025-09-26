@@ -126,6 +126,9 @@
                       accept="image/jpeg,image/png"
                       required
                     />
+                    <div id="image-preview-wrapper" style="margin-top: 1rem; display: none;">
+                      <img id="image-preview" alt="미리보기" style="max-width: 280px; max-height: 280px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08);" />
+                    </div>
                     <div class="form-help">책의 상태를 잘 보여주는 사진을 올려주세요.</div>
                   </div>
                 </div>
@@ -287,6 +290,34 @@
           }
         });
 
+        // 이미지 업로드 미리보기
+        (function() {
+          const input = document.getElementById('book-image');
+          const previewWrapper = document.getElementById('image-preview-wrapper');
+          const previewImg = document.getElementById('image-preview');
+          if (!input || !previewWrapper || !previewImg) return;
+          input.addEventListener('change', function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) {
+              previewWrapper.style.display = 'none';
+              previewImg.removeAttribute('src');
+              return;
+            }
+            if (!/^image\/(png|jpeg|jpg)$/.test(file.type)) {
+              alert('이미지 파일(JPG, PNG)만 업로드 가능합니다.');
+              input.value = '';
+              previewWrapper.style.display = 'none';
+              previewImg.removeAttribute('src');
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+              previewImg.src = ev.target.result;
+              previewWrapper.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          });
+        })();
       </script>
 </body>
 </html>

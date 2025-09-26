@@ -57,7 +57,7 @@
                   <span class="summary-label">총 결제 금액</span>
                   <span class="summary-value" id="sumPrice"><fmt:formatNumber value='${totalPrice}' type='number'/>원</span>
                 </div>
-                <button class="checkout-btn" disabled>주문하기</button>
+                <button class="checkout-btn" onclick="goToCheckout()">주문하기</button>
                 <a href="${path}/board/list" class="continue-shopping">쇼핑 계속하기</a>
               </div>
             </div>
@@ -73,6 +73,7 @@
         </c:otherwise>
 	</c:choose>
         </section>
+
 
         <!-- Footer -->
         <footer class="footer">
@@ -121,6 +122,7 @@
           </div>
         </footer>
       </div>
+
 
       <script>
         function toggleDropdown() {
@@ -210,6 +212,12 @@
             }
           });
         })();
+
+        // 장바구니에서 결제 페이지로 이동
+        function goToCheckout() {
+          // 직접 결제 페이지로 이동
+          window.location.href = '${path}/payment/ready?cart=true';
+        }
       </script>
 
 </body>

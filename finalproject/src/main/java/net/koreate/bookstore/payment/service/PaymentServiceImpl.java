@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 import net.koreate.bookstore.payment.dao.PaymentDAO;
+import net.koreate.bookstore.vo.BulkPaymentVO;
 import net.koreate.bookstore.vo.CartVO;
 import net.koreate.bookstore.vo.MemberVO;
 import net.koreate.bookstore.vo.PaymentVO;
@@ -90,6 +91,46 @@ public class PaymentServiceImpl implements PaymentService {
 			} else {
 				return "fail"; // 결제 정보 저장 실패
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return "fail";
+		}
+	}
+
+	@Override
+	public String processBulkPayment(BulkPaymentVO bulkPayment) throws Exception {
+		try {
+			if (bulkPayment == null || bulkPayment.getCartItems() == null || bulkPayment.getCartItems().isEmpty()) {
+				return "fail";
+			}
+			
+			// 각 장바구니 항목에 대해 개별 결제 처리
+			for (CartVO cartItem : bulkPayment.getCartItems()) {
+				PaymentVO payment = new PaymentVO();
+				payment.setMember_num(bulkPayment.getMember_num());
+				payment.setMember_name(bulkPayment.getMember_name());
+				payment.setMember_phone(bulkPayment.getMember_phone());
+				payment.setMember_addr(bulkPayment.getMember_addr());
+				payment.setPayment_content(bulkPayment.getPayment_content());
+				payment.setNewbook_num(cartItem.getNewbook_num());
+				payment.setPayment_quantity(cartItem.getBook_count());
+				payment.setPayment_total_price(cartItem.getPrice() * cartItem.getBook_count());
+				payment.setItem_status(bulkPayment.getItem_status());
+				
+				// 개별 결제 정보 저장
+				int result = dao.insertBulkPayment(payment);
+				if (result <= 0) {
+					return "fail";
+				}
+				
+				// 상품 수량 차감
+				int decreaseResult = dao.decreaseBookCountForBulk(payment);
+				if (decreaseResult <= 0) {
+					return "fail";
+				}
+			}
+			
+			return "success";
 		} catch (Exception e) {
 			e.printStackTrace();
 			return "fail";

@@ -22,85 +22,35 @@
         </section>
         
 
+        <c:if test="${not empty recommend}">
         <section class="recommended-section">
           <div class="container">
             <h2 class="recommended-title">추천 도서</h2>
-            <p class="recommended-subtitle">큐레이터가 엄선한 감각적이고 깊이 있는 작품들</p>
+            <p class="recommended-subtitle">당신을 위한 맞춤 추천 또는 많이 팔린 도서</p>
             <div class="recommended-grid">
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop"
-                  alt="달러구트 꿈 백화점"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">베스트셀러</div>
-                  <h3 class="recommended-book-title">달러구트 꿈 백화점</h3>
-                  <p class="recommended-book-author">이미예</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.2/5)</span>
+              <c:forEach var="r" items="${recommend}">
+                <div class="recommended-card" onclick="location.href='${path}/board/detail?num=${r.newbook_num}'">
+                  <img 
+                    src="${pageContext.request.contextPath}/img${r.newbook_img}"
+                    alt="${r.newbook_title}"
+                    class="recommended-image"
+                  />
+                  <div class="recommended-info">
+                    <div class="recommended-badge">추천</div>
+                    <h3 class="recommended-book-title">${r.newbook_title}</h3>
+                    <p class="recommended-book-author">${r.newbook_author}</p>
+                    <div class="recommended-rating">
+                      <span class="stars">★★★★☆</span>
+                      <span class="rating-text">(4.2/5)</span>
+                    </div>
+                    <div class="recommended-book-price">${r.newbook_price}원</div>
                   </div>
-                  <div class="recommended-book-price">13,320원</div>
                 </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
-                  alt="세이노의 가르침"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">신간</div>
-                  <h3 class="recommended-book-title">세이노의 가르침</h3>
-                  <p class="recommended-book-author">세이노</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.8/5)</span>
-                  </div>
-                  <div class="recommended-book-price">6,480원</div>
-                </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
-                  alt="불편한 편의점"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">인기</div>
-                  <h3 class="recommended-book-title">불편한 편의점</h3>
-                  <p class="recommended-book-author">김호연</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.3/5)</span>
-                  </div>
-                  <div class="recommended-book-price">12,600원</div>
-                </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop"
-                  alt="클린 코드"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">IT 추천</div>
-                  <h3 class="recommended-book-title">클린 코드</h3>
-                  <p class="recommended-book-author">로버트 C. 마틴</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.6/5)</span>
-                  </div>
-                  <div class="recommended-book-price">31,500원</div>
-                </div>
-              </div>
+              </c:forEach>
             </div>
           </div>
         </section>
+        </c:if>
 
         <section class="categories-section">
           <div class="container">

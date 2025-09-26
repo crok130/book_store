@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +33,17 @@ public class ChatRESTController {
 		list = cs.getChatRoomList(member_num);
 		return list;
 	}
+
+	// 거래글에서 채팅 시작: 기존 방이 있으면 재사용, 없으면 생성 후 방번호 반환
+	@PostMapping("chat/start")
+	public ResponseEntity<String> startChat(@RequestParam("tradebook_num") int tradebook_num,
+			HttpSession session) throws Exception {
+		MemberVO user = (MemberVO) session.getAttribute("userInfo");
+		if (user == null) return ResponseEntity.status(401).body("LOGIN_REQUIRED");
+		int roomId = cs.startChat(tradebook_num, user.getMember_num());
+		if (roomId <= 0) return ResponseEntity.status(400).body("FAIL");
+		return ResponseEntity.ok(String.valueOf(roomId));
+	}
 	
 	@GetMapping("chat/chatcontent")
 	public List<MessageVO> chatContent(@RequestParam("chatroom_num") int chatroomNum) throws Exception {
@@ -40,9 +52,14 @@ public class ChatRESTController {
 	}
 	
 	@PutMapping("chat/complete")
-	public ResponseEntity<String> complete(@RequestParam("tradebook_num") int tradebook_num) {
-		
-		return null;
+	public ResponseEntity<String> complete(@RequestParam("chatroom_num") int chatroom_num,
+			@RequestParam("member_num") int member_num) {
+		try {
+			boolean completed = cs.confirmPaymentAndMaybeCompleteTrade(chatroom_num, member_num);
+			return ResponseEntity.ok(completed ? "COMPLETED" : "CONFIRMED");
+		} catch (Exception e) {
+			return ResponseEntity.status(500).body("ERROR");
+		}
 	}
 	
 	// REST 읽음 처리 제거: 읽음 처리는 STOMP 컨트롤러에서 처리합니다.
