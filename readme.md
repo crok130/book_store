@@ -110,12 +110,11 @@
 
 ### 💬 소통 기능
 - [x] 1:1 실시간 채팅
-- [x] 이미지 전송
 - [x] 채팅방 관리
 - [x] 메시지 검색
 
 ### 🎯 추천 시스템
-- [x] 인기 도서 표시
+- [x] 회원 별 인기 도서 표시
 - [x] 최신 도서 노출
 
 ### 📄 게시판
@@ -253,4 +252,5 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 Made with ❤️ by BookStore Team
 
 </div>
+
 
