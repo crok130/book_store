@@ -12,6 +12,7 @@ import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
 import net.koreate.bookstore.vo.PaymentVO;
 import net.koreate.bookstore.vo.StockUpdateVO;
+import java.util.Map;
 
 public interface AdminDAO {
 	
@@ -66,4 +67,17 @@ public interface AdminDAO {
     // 관리자 로그인 (member_status = 1)
     @Select("SELECT * FROM members WHERE member_status = 1 AND member_id = #{member_id} AND member_pw = #{member_pw}")
     net.koreate.bookstore.vo.MemberVO loginAdmin(@Param("member_id") String member_id, @Param("member_pw") String member_pw) throws Exception;
+    
+    // 이번 주(월~일) 일자별 매출 합계 (Oracle 기준, ISO 주: TRUNC(date, 'IW'))
+    @Select(
+        "WITH week_bounds AS (SELECT TRUNC(SYSDATE, 'IW') AS week_start, TRUNC(SYSDATE, 'IW') + 6 AS week_end FROM dual), " +
+        "days AS (SELECT week_start + (LEVEL-1) AS dt FROM week_bounds CONNECT BY LEVEL <= 7) " +
+        "SELECT TO_CHAR(d.dt, 'YYYY-MM-DD') AS sales_date, NVL(SUM(p.payment_total_price), 0) AS total_amount " +
+        "FROM days d " +
+        "LEFT JOIN payments p ON TRUNC(p.payment_date) = d.dt " +
+        "GROUP BY d.dt ORDER BY d.dt"
+    )
+    List<Map<String, Object>> selectDailyRevenue7d();
+    
+
 }

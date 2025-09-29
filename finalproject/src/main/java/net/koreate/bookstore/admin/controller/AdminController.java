@@ -8,8 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.http.ResponseEntity;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -116,5 +117,14 @@ public class AdminController {
         rttr.addFlashAttribute("msg", "출고 처리되었습니다.");
         return "redirect:/admin/inventory" + new net.koreate.bookstore.common.utils.SearchPageMaker(scri, 0, 5).makeQuery(scri.getPage());
     }
+    
+    // 매출 데이터 API (일별 매출 차트용)
+    @GetMapping(value = "admin/api/revenue/daily7")
+    @ResponseBody
+    public ResponseEntity<java.util.List<java.util.Map<String, Object>>> dailyRevenue7() throws Exception {
+        java.util.List<java.util.Map<String, Object>> data = as.getDailyRevenue7d();
+        return ResponseEntity.ok(data);
+    }
+
 	
 }

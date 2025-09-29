@@ -1,6 +1,7 @@
 package net.koreate.bookstore.admin.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -86,4 +87,10 @@ public class AdminServiceImpl implements AdminService {
         int r = dao.registerAdmin(vo);
         return r == 1 ? "success" : "fail";
     }
+    
+    @Override
+    public List<Map<String, Object>> getDailyRevenue7d() throws Exception {
+        return dao.selectDailyRevenue7d();
+    }
+
 }

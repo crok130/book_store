@@ -68,7 +68,7 @@ public class PaymentController {
         
         model.addAttribute("cartItems", cartItems);
         model.addAttribute("totalPrice", totalPrice);
-        model.addAttribute("member", member);
+        // 회원 정보는 전달하지 않음 - 사용자가 직접 입력하도록 함
         
         return "payment/PaymentPage";
     }
@@ -111,7 +111,7 @@ public class PaymentController {
             
             model.addAttribute("cartItems", cartItems);
             model.addAttribute("totalPrice", totalPrice);
-            model.addAttribute("member", member);
+            // 회원 정보는 전달하지 않음 - 사용자가 직접 입력하도록 함
         }
         
         return "payment/PaymentPage";
@@ -214,7 +214,7 @@ public class PaymentController {
 
             vo.setMember_num(user.getMember_num());
             vo.setMember_addr(member_addr1 + "_" + member_addr2);
-  
+            vo.setItem_status("배송준비중");
 
             String result = ps.processPayment(vo);
             if ("success".equals(result)) {
@@ -232,7 +232,9 @@ public class PaymentController {
     // 장바구니 일괄 결제 처리
     @PostMapping("payment/cart/checkout")
     @ResponseBody
-    public ResponseEntity<String> processCartCheckout(@RequestParam("member_addr1") String member_addr1,
+    public ResponseEntity<String> processCartCheckout(@RequestParam("member_name") String member_name,
+                                                      @RequestParam("member_phone") String member_phone,
+                                                      @RequestParam("member_addr1") String member_addr1,
                                                       @RequestParam("member_addr2") String member_addr2,
                                                       @RequestParam("payment_content") String payment_content,
                                                       HttpSession session) throws Exception {
@@ -251,11 +253,11 @@ public class PaymentController {
             // BulkPaymentVO 생성
             BulkPaymentVO bulkPayment = new BulkPaymentVO();
             bulkPayment.setMember_num(user.getMember_num());
-            bulkPayment.setMember_name(user.getMember_name());
-            bulkPayment.setMember_phone(user.getMember_phone());
+            bulkPayment.setMember_name(member_name);  // 사용자가 입력한 이름
+            bulkPayment.setMember_phone(member_phone);  // 사용자가 입력한 전화번호
             bulkPayment.setMember_addr(member_addr1 + "_" + member_addr2);
             bulkPayment.setPayment_content(payment_content);
-            bulkPayment.setItem_status("주문완료");
+            bulkPayment.setItem_status("배송준비중");
             bulkPayment.setCartItems(cartItems);
             
             // 총 결제 금액 계산

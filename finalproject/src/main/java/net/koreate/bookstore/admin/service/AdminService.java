@@ -9,6 +9,8 @@ import net.koreate.bookstore.vo.NewBookVO;
 import net.koreate.bookstore.vo.PaymentVO;
 import net.koreate.bookstore.vo.StockUpdateVO;
 import net.koreate.bookstore.vo.MemberVO;
+import java.util.List;
+import java.util.Map;
 
 public interface AdminService {
 	
@@ -38,5 +40,8 @@ public interface AdminService {
 	// 관리자 인증
 	MemberVO adminSignIn(String member_id, String member_pw) throws Exception;
 	String adminSignUp(MemberVO vo) throws Exception;
+	
+	// 일별 매출 데이터 조회 (이번 달 기준)
+	List<Map<String, Object>> getDailyRevenue7d() throws Exception;
 	
 }

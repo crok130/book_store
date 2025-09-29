@@ -646,7 +646,7 @@
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>
-                  <li><a href="#">베스트셀러</a></li>
+                  <li><a href="${path}/board/best">베스트</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
@@ -668,6 +668,7 @@
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
                     <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
+                    <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
                   </div>
                 </div>
            	</c:otherwise>
@@ -701,7 +702,8 @@
                       class="form-input" 
                       placeholder="받는 분 성함을 입력해주세요"
                       name="member_name"
-                      value="${member.member_name}"
+                      value=""
+                      autocomplete="off"
                     />
                   </div>
 
@@ -712,7 +714,8 @@
                       class="form-input" 
                       placeholder="휴대폰 번호를 입력해주세요"
                       name="member_phone"
-                      value="${member.member_phone}"
+                      value=""
+                      autocomplete="off"
                     />
                   </div>
 
@@ -775,10 +778,6 @@
                   <h3 class="section-title">주문 요약</h3>
                   
                   <div class="books-list">
-                    <!-- 디버깅 정보 -->
-                    <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px; font-size: 12px;">
-                      디버깅: cartItems 개수 = ${fn:length(cartItems)}, totalPrice = ${totalPrice}
-                    </div>
                     <c:choose>
                       <c:when test="${not empty cartItems}">
                         <c:forEach var="item" items="${cartItems}">
@@ -808,7 +807,7 @@
                             <div class="book-title">${book.newbook_title}</div>
                             <div class="book-author">${book.newbook_author} 지음</div>
                             <div class="book-quantity">수량: ${quantity}개</div>
-                            <div class="book-price">${totalPrice}원</div>
+                            <div class="book-price"><fmt:formatNumber value="${totalPrice}" type="number"/>원</div>
                           </div>
                         </div>
                       </c:otherwise>
@@ -936,11 +935,58 @@
         }
         
         // DOMContentLoaded와 즉시 실행 모두 처리
-        document.addEventListener('DOMContentLoaded', initPaymentMethods);
+        document.addEventListener('DOMContentLoaded', function() {
+          initPaymentMethods();
+          // 장바구니 결제 시 입력 필드 초기화
+          clearUserInfo();
+          forceClearUserInfo();
+        });
         if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', initPaymentMethods);
+          document.addEventListener('DOMContentLoaded', function() {
+            initPaymentMethods();
+            clearUserInfo();
+            forceClearUserInfo();
+          });
         } else {
           initPaymentMethods();
+          clearUserInfo();
+          forceClearUserInfo();
+        }
+
+        // 사용자 정보 필드 초기화 함수
+        function clearUserInfo() {
+          const memberNameInput = document.querySelector('input[name="member_name"]');
+          const memberPhoneInput = document.querySelector('input[name="member_phone"]');
+          
+          if (memberNameInput) {
+            memberNameInput.value = '';
+            memberNameInput.setAttribute('value', '');
+          }
+          if (memberPhoneInput) {
+            memberPhoneInput.value = '';
+            memberPhoneInput.setAttribute('value', '');
+          }
+        }
+
+        // 강제 초기화 함수 (지연 실행)
+        function forceClearUserInfo() {
+          setTimeout(function() {
+            const memberNameInput = document.querySelector('input[name="member_name"]');
+            const memberPhoneInput = document.querySelector('input[name="member_phone"]');
+            
+            if (memberNameInput) {
+              memberNameInput.value = '';
+              memberNameInput.setAttribute('value', '');
+              memberNameInput.focus();
+              memberNameInput.blur();
+            }
+            if (memberPhoneInput) {
+              memberPhoneInput.value = '';
+              memberPhoneInput.setAttribute('value', '');
+              memberPhoneInput.focus();
+              memberPhoneInput.blur();
+            }
+          }, 100);
         }
 
         // 포트원 결제 요청 함수
@@ -978,17 +1024,21 @@
             }
 
             // 장바구니 일괄 결제인지 확인
-            const isCartCheckout = ${not empty cartItems ? 'true' : 'false'};
+            var isCartCheckout = <c:choose><c:when test="${not empty cartItems}">true</c:when><c:otherwise>false</c:otherwise></c:choose>;
             console.log('장바구니 결제 여부:', isCartCheckout);
             console.log('cartItems:', '${cartItems}');
             
             // URL 파라미터로도 확인
-            const urlParams = new URLSearchParams(window.location.search);
-            const isCartCheckoutByParam = urlParams.get('cart') === 'true';
+            var urlParams = new URLSearchParams(window.location.search);
+            var isCartCheckoutByParam = urlParams.get('cart') === 'true';
             console.log('URL 파라미터로 확인한 장바구니 결제 여부:', isCartCheckoutByParam);
             console.log('현재 URL:', window.location.href);
             
-            if (isCartCheckout || isCartCheckoutByParam) {
+            // URL 경로로도 확인 (장바구니 결제 페이지인지)
+            var isCartCheckoutByPath = window.location.pathname.includes('/payment/cart/checkout');
+            console.log('URL 경로로 확인한 장바구니 결제 여부:', isCartCheckoutByPath);
+            
+            if (isCartCheckout || isCartCheckoutByParam || isCartCheckoutByPath) {
                 // 장바구니 일괄 결제 처리
                 processCartPayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod.value);
             } else {
@@ -999,10 +1049,26 @@
 
         // 장바구니 일괄 결제 처리
         function processCartPayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod) {
-            const totalPrice = ${totalPrice != null ? totalPrice : 0};
-            const paymentContent = document.querySelector('input[name="payment_content"]').value || '';
+            var totalPrice = <c:choose><c:when test="${totalPrice != null}">${totalPrice}</c:when><c:otherwise>0</c:otherwise></c:choose>;
+            var paymentContent = document.querySelector('input[name="payment_content"]').value || '';
             
             console.log('장바구니 결제 - 총 금액:', totalPrice);
+
+            // 상품명 목록 생성
+            var productNames = [];
+            <c:forEach var="item" items="${cartItems}">
+                productNames.push('${item.newbook_title}');
+            </c:forEach>
+            
+            // 상품명이 여러 개인 경우 처리
+            var paymentName = '';
+            if (productNames.length === 1) {
+                paymentName = productNames[0];
+            } else if (productNames.length > 1) {
+                paymentName = productNames[0] + ' 외 ' + (productNames.length - 1) + '건';
+            } else {
+                paymentName = '장바구니 상품';
+            }
 
             // 포트원 초기화
             var IMP = window.IMP;
@@ -1013,7 +1079,7 @@
                 pg: getPaymentPG(paymentMethod),
                 pay_method: 'card',
                 merchant_uid: 'cart_' + new Date().getTime(),
-                name: '장바구니 상품 일괄 주문',
+                name: paymentName,
                 amount: totalPrice,
                 buyer_name: memberName,
                 buyer_tel: memberPhone,
@@ -1027,6 +1093,8 @@
                     
                     // 장바구니 일괄 결제 처리
                     const formData = new URLSearchParams();
+                    formData.append('member_name', memberName);
+                    formData.append('member_phone', memberPhone);
                     formData.append('member_addr1', memberAddr1);
                     formData.append('member_addr2', memberAddr2);
                     formData.append('payment_content', paymentContent);
@@ -1062,10 +1130,10 @@
 
         // 단일 상품 결제 처리
         function processSinglePayment(memberName, memberPhone, memberAddr1, memberAddr2, paymentMethod) {
-            const bookTitle = '${book.newbook_title}';
-            const totalPrice = ${totalPrice};
-            const quantity = ${quantity};
-            const newbookNum = ${book.newbook_num};
+            var bookTitle = '${book.newbook_title}';
+            var totalPrice = <c:choose><c:when test="${totalPrice != null}">${totalPrice}</c:when><c:otherwise>0</c:otherwise></c:choose>;
+            var quantity = <c:choose><c:when test="${quantity != null}">${quantity}</c:when><c:otherwise>1</c:otherwise></c:choose>;
+            var newbookNum = <c:choose><c:when test="${book.newbook_num != null}">${book.newbook_num}</c:when><c:otherwise>0</c:otherwise></c:choose>;
 
             // 포트원 초기화
             var IMP = window.IMP;

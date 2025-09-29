@@ -67,12 +67,6 @@
               <div class="nav-section-title">운영 관리</div>
               <ul class="nav-menu">
                 <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <span class="nav-icon">👥</span>
-                    회원 관리
-                  </a>
-                </li>
-                <li class="nav-item">
                   <a href="${path}/admin/orders" class="nav-link">
                     <span class="nav-icon">🛒</span>
                     주문 관리
@@ -108,12 +102,6 @@
             <div class="nav-section">
               <div class="nav-section-title">설정</div>
               <ul class="nav-menu">
-                <li class="nav-item">
-                  <a href="#" class="nav-link">
-                    <span class="nav-icon">⚙️</span>
-                    시스템 설정
-                  </a>
-                </li>
                 <li class="nav-item">
                   <a href="${path}" class="nav-link">
                     <span class="nav-icon">🌐</span>
@@ -195,9 +183,9 @@
                   <div class="action-desc">대기 중인 주문 확인</div>
                 </a>
 
-                <a href="#" class="action-btn">
+                <a href="${path}/admin/inventory" class="action-btn">
                   <div class="action-icon">👤</div>
-                  <div class="action-title">회원 관리</div>
+                  <div class="action-title">재고 관리</div>
                   <div class="action-desc">신규 회원 및 문의 확인</div>
                 </a>
 
@@ -207,17 +195,6 @@
                   <div class="action-desc">실시간 매출 현황 조회</div>
                 </a>
 
-                <a href="#" class="action-btn">
-                  <div class="action-icon">🏷️</div>
-                  <div class="action-title">이벤트 관리</div>
-                  <div class="action-desc">할인 이벤트 생성 및 관리</div>
-                </a>
-
-                <a href="#" class="action-btn">
-                  <div class="action-icon">⚙️</div>
-                  <div class="action-title">시스템 설정</div>
-                  <div class="action-desc">사이트 설정 및 권한 관리</div>
-                </a>
               </div>
             </div>
 
@@ -230,48 +207,103 @@
                   📊 매출 차트가 여기에 표시됩니다
                 </div>
               </div>
+              <script src="https://d3js.org/d3.v7.min.js"></script>
+              <script>
+              (function(){
+                const basePath = '${path}';
+                fetch(basePath + '/admin/api/revenue/daily7', { headers: { 'Accept': 'application/json' } })
+                  .then(r => r.json())
+                  .then(rows => {
+                    const data = rows.map(d => ({ date: d.SALES_DATE || d.sales_date, amount: +d.TOTAL_AMOUNT || +d.total_amount || 0 }));
+                    // 주 범위 라벨 (월~일)
+                    const parse = d3.timeParse('%Y-%m-%d');
+                    const formatMd = d3.timeFormat('%m-%d');
+                    const weekStart = parse(data[0].date);
+                    const weekEnd = parse(data[data.length-1].date);
+                    const container = document.querySelector('.chart-card .chart-placeholder');
+                    if(!container) return;
+                    container.innerHTML = '';
+                    const width = container.clientWidth || 600;
+                    const height = 280;
+                    const margin = { top: 10, right: 20, bottom: 45, left: 50 };
 
-              <div class="activity-card">
-                <h2 class="section-title">
-                  🔔 최근 활동
-                </h2>
-                <div class="activity-item">
-                  <div class="activity-avatar">📖</div>
-                  <div class="activity-content">
-                    <div class="activity-text">새 도서 "클린 코드 2판"이 등록되었습니다.</div>
-                    <div class="activity-time">5분 전</div>
-                  </div>
-                </div>
-                <div class="activity-item">
-                  <div class="activity-avatar">👤</div>
-                  <div class="activity-content">
-                    <div class="activity-text">새 회원 김도서님이 가입했습니다.</div>
-                    <div class="activity-time">12분 전</div>
-                  </div>
-                </div>
-                <div class="activity-item">
-                  <div class="activity-avatar">🛒</div>
-                  <div class="activity-content">
-                    <div class="activity-text">주문 #ORD-2024-0156이 완료되었습니다.</div>
-                    <div class="activity-time">23분 전</div>
-                  </div>
-                </div>
-                <div class="activity-item">
-                  <div class="activity-avatar">💰</div>
-                  <div class="activity-content">
-                    <div class="activity-text">일일 매출 목표 120% 달성했습니다.</div>
-                    <div class="activity-time">1시간 전</div>
-                  </div>
-                </div>
-                <div class="activity-item">
-                  <div class="activity-avatar">🏷️</div>
-                  <div class="activity-content">
-                    <div class="activity-text">신년 할인 이벤트가 시작되었습니다.</div>
-                    <div class="activity-time">2시간 전</div>
-                  </div>
-                </div>
-              </div>
+                    const svg = d3.select(container)
+                      .append('svg')
+                      .attr('width', width)
+                      .attr('height', height);
+
+                    const x = d3.scaleBand()
+                      .domain(data.map(d => d.date))
+                      .range([margin.left, width - margin.right])
+                      .padding(0.2);
+
+                    const y = d3.scaleLinear()
+                      .domain([0, d3.max(data, d => d.amount) || 0]).nice()
+                      .range([height - margin.bottom, margin.top]);
+
+                    const xAxis = g => g
+                      .attr('transform', `translate(0,${height - margin.bottom})`)
+                      .call(d3.axisBottom(x).tickSizeOuter(0).tickFormat(() => ''));
+
+                    const yAxis = g => g
+                      .attr('transform', `translate(${margin.left},0)`)
+                      .call(d3.axisLeft(y).ticks(5).tickFormat(d => d3.format(',')(d)))
+                      .call(g => g.select('.domain').remove());
+
+                    svg.append('g').call(xAxis);
+                    svg.append('g').call(yAxis);
+
+                    const bar = svg.append('g')
+                      .selectAll('rect')
+                      .data(data)
+                      .enter().append('rect')
+                      .attr('x', d => x(d.date))
+                      .attr('y', d => y(d.amount))
+                      .attr('width', x.bandwidth())
+                      .attr('height', d => (height - margin.bottom) - y(d.amount))
+                      .attr('fill', '#4f46e5');
+
+                    const labels = svg.append('g')
+                      .selectAll('text')
+                      .data(data)
+                      .enter().append('text')
+                      .attr('x', d => x(d.date) + x.bandwidth()/2)
+                      .attr('y', d => y(d.amount) - 6)
+                      .attr('text-anchor', 'middle')
+                      .attr('fill', '#111')
+                      .attr('font-size', '11px')
+                      .text(d => d3.format(',')(d.amount));
+
+                    // 날짜 라벨을 그래프 아래쪽에 별도 행으로 배치
+                    // 기존 라벨 영역 제거
+                    const existingDateRow = container.parentElement.querySelector('.chart-date-row');
+                    if(existingDateRow) existingDateRow.remove();
+                    // 각 막대 하단에 해당 일자 라벨을 별도 행으로 표기
+                    const dateRow = document.createElement('div');
+                    dateRow.className = 'chart-date-row';
+                    dateRow.style.display = 'flex';
+                    dateRow.style.marginTop = '8px';
+                    dateRow.style.fontSize = '11px';
+                    dateRow.style.color = '#333';
+                    dateRow.style.paddingLeft = margin.left + 'px';
+                    dateRow.style.paddingRight = margin.right + 'px';
+                    data.forEach(d => {
+                      const cell = document.createElement('div');
+                      cell.style.flex = '1 1 0';
+                      cell.style.textAlign = 'center';
+                      const dt = parse(d.date);
+                      cell.textContent = formatMd(dt);
+                      dateRow.appendChild(cell);
+                    });
+                    container.parentElement.insertBefore(dateRow, container.nextSibling);
+                  })
+                  .catch(err => {
+                    console.error('Failed to load revenue data', err);
+                  });
+              })();
+              </script>
             </div>
+
 
           
             <div class="books-table">

@@ -213,11 +213,11 @@
           });
         })();
 
-        // 장바구니에서 결제 페이지로 이동
+        // 결제 페이지로 이동하는 함수
         function goToCheckout() {
-          // 직접 결제 페이지로 이동
-          window.location.href = '${path}/payment/ready?cart=true';
+            window.location.href = '${path}/payment/cart/checkout';
         }
+
       </script>
 
 </body>

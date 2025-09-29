@@ -85,11 +85,6 @@
 - 이메일 인증
 
 </td>
-<td align="center" width="33%">
-
-<!-- 팀 구성 변경으로 민서진 파트는 최수빈으로 통합 -->
-
-</td>
 </tr>
 </table>
 
@@ -202,7 +197,7 @@ mvn clean compile
 ## 📊 데이터베이스 설계
 
 ### ERD (Entity Relationship Diagram)
-![Database Schema](https://github.com/user-attachments/assets/acc76922-17ba-463d-8346-25519e9abe1b)
+![Database Schema](https://github.com/user-attachments/assets/6b790ed6-31aa-4975-87db-537de75df64b)
 
 ### 주요 테이블
 - **members** - 회원 정보
@@ -246,9 +241,8 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 
 **팀장 - 최수빈** - [GitHub](https://github.com/crok130) - tnqls13001@gmail.com
 
-**팀원 - 박석우** - [GitHub](https://github.com/your-username) - your.email@example.com
+**팀원 - 박석우** - [GitHub](https://github.com/Newbie30age) - your.email@example.com
 
-**팀원 - 민서진** - [GitHub](https://github.com/your-username) - your.email@example.com
 
 ---
 
