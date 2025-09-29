@@ -5,6 +5,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<!-- 인터셉터 설정을 임시로 비활성화하여 리디렉션 루프 방지 -->
+	<!-- 
 	<bean id="login" class="net.koreate.bookstore.common.interceptor.LoginInterceptor" />
 	
 	<mvc:interceptors>
@@ -26,6 +28,7 @@
 		</mvc:interceptor>
 		
 	</mvc:interceptors>
+	-->
 
 </beans>
 

@@ -17,13 +17,13 @@
 
 ## 🚀 프로젝트 소개
 
-**BookStore**는 사용자들이 책을 구매하고, 판매하며, 물물교환할 수 있는 종합적인 웹 플랫폼입니다. 
+**BookBridge**는 사용자들이 책을 구매하고, 판매하며, 물물교환할 수 있는 종합적인 웹 플랫폼입니다. 
 개인 간의 책 거래를 통해 경제적이고 친환경적인 독서 문화를 만들어갑니다.
 
 ### ✨ 핵심 가치
 - 📖 **책의 가치 재발견**: 사용하지 않는 책을 다른 사람과 공유
 - 🤝 **커뮤니티 중심**: 독서 애호가들의 소통 공간
-- 💡 **스마트 추천**: 코사인 유사도를 활용한 개인화된 책 추천
+- 💡 **간단 추천**: 인기/최신 정렬 기반 도서 노출
 - 💬 **실시간 소통**: 1:1 채팅을 통한 안전한 거래
 
 ---
@@ -59,14 +59,16 @@
 
 ### 👨‍💻 **팀장 - 최수빈**
 **🎯 담당 파트**
-- 코사인 유사도 활용 추천상품 표시
+- 추천 도서 노출(인기/최신)
 - 결제 및 장바구니 시스템
 - 1:1 채팅 기능
+- 게시글 등록/관리, 페이징, 수량 수정, 삭제
 
 **💡 주요 기술**
-- 추천 알고리즘 구현
+- 정렬/페이징 구현
 - 결제 시스템 연동
 - WebSocket 실시간 통신
+- 추천상품 시스템
 
 </td>
 <td align="center" width="33%">
@@ -83,21 +85,6 @@
 - 이메일 인증
 
 </td>
-<td align="center" width="33%">
-
-### 👩‍💻 **팀원 - 민서진**
-**🎯 담당 파트**
-- 게시글 등록 및 관리
-- 페이징 처리
-- 책 수량 수정
-- 게시글 삭제
-
-**💡 주요 기술**
-- CRUD 구현
-- 페이징 알고리즘
-- 파일 업로드
-
-</td>
 </tr>
 </table>
 
@@ -107,8 +94,6 @@
 
 ### 🔐 사용자 관리
 - [x] 회원가입 및 로그인
-- [x] 비밀번호 찾기 (이메일 인증)
-- [x] 소셜 로그인 (Google, Naver, Kakao)
 - [x] 회원 정보 수정
 
 ### 📚 책 관리
@@ -125,15 +110,12 @@
 
 ### 💬 소통 기능
 - [x] 1:1 실시간 채팅
-- [x] 이미지 전송
 - [x] 채팅방 관리
 - [x] 메시지 검색
 
 ### 🎯 추천 시스템
-- [x] 코사인 유사도 기반 추천
-- [x] 개인화된 상품 추천
-- [x] 인기 도서 표시
-- [x] 최신 도서 추천
+- [x] 회원 별 인기 도서 표시
+- [x] 최신 도서 노출
 
 ### 📄 게시판
 - [x] 페이징 처리
@@ -148,20 +130,23 @@
 ```
 📦 BookStore
 ├── 📁 src/main/java/net/koreate/bookstore/
-│   ├── 📁 member/          # 회원 관리
-│   │   ├── 📁 controller/  # 회원 컨트롤러
-│   │   └── 📁 service/     # 회원 서비스
-│   ├── 📁 board/           # 게시판 관리
-│   │   └── 📁 service/     # 게시판 서비스
-│   ├── 📁 tradeboard/      # 거래 게시판
-│   │   └── 📁 controller/  # 거래 컨트롤러
-│   ├── 📁 chat/            # 채팅 시스템
-│   │   └── 📁 service/     # 채팅 서비스
-│   ├── 📁 util/            # 유틸리티
-│   └── 📁 vo/              # Value Objects
+│   ├── 📁 admin/       # 관리자
+│   ├── 📁 board/       # 게시판/도서 뷰
+│   ├── 📁 chat/        # 실시간 채팅
+│   ├── 📁 common/      # 공통(인터셉터/유틸)
+│   ├── 📁 home/        # 홈/인덱스
+│   ├── 📁 member/      # 회원
+│   ├── 📁 payment/     # 결제/장바구니
+│   ├── 📁 python/      # 파이썬 연동
+│   ├── 📁 tradeboard/  # 물물교환
+│   └── 📁 vo/          # VO(엔티티)
+├── 📁 src/main/resources/
+│   ├── 📁 prop/        # 설정(db.properties 등)
+│   └── 📁 spring/      # 스프링 설정
 ├── 📁 src/main/webapp/
-│   └── 📁 WEB-INF/views/   # JSP 뷰 파일
-└── 📁 src/test/java/       # 테스트 코드
+│   ├── 📁 resources/   # 정적 리소스(css 등)
+│   └── 📁 WEB-INF/     # JSP 뷰/서블릿 설정
+└── 📁 src/test/java/   # 테스트 코드
 ```
 
 ---
@@ -169,7 +154,7 @@
 ## 🚀 시작하기
 
 ### 필수 요구사항
-- Java 11 이상
+- Java 11
 - Apache Tomcat 9.0
 - Oracle Database
 - Maven 3.6+
@@ -211,7 +196,7 @@ mvn clean compile
 ## 📊 데이터베이스 설계
 
 ### ERD (Entity Relationship Diagram)
-![Database Schema](https://github.com/user-attachments/assets/acc76922-17ba-463d-8346-25519e9abe1b)
+![Database Schema](https://github.com/user-attachments/assets/6b790ed6-31aa-4975-87db-537de75df64b)
 
 ### 주요 테이블
 - **members** - 회원 정보
@@ -255,9 +240,8 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 
 **팀장 - 최수빈** - [GitHub](https://github.com/crok130) - tnqls13001@gmail.com
 
-**팀원 - 박석우** - [GitHub](https://github.com/your-username) - your.email@example.com
+**팀원 - 박석우** - [GitHub](https://github.com/Newbie30age) - your.email@example.com
 
-**팀원 - 민서진** - [GitHub](https://github.com/your-username) - your.email@example.com
 
 ---
 
@@ -268,4 +252,5 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 Made with ❤️ by BookStore Team
 
 </div>
+
 

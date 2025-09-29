@@ -6,6 +6,8 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import net.koreate.bookstore.common.utils.Criteria;
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.vo.NewBookVO;
 
 @Service
@@ -62,4 +64,15 @@ public interface BoardService {
     List<NewBookVO> listBook() throws Exception;
 
 
+	/**
+	 * 게시글 페이징 블럭 정보
+	 */
+	PageMaker getPageMaker(SearchCriteria scri) throws Exception;
+	
+	/**
+	 * 검색 게시글 목록
+	 */
+	List<NewBookVO> listReply(SearchCriteria scri) throws Exception;
+
+	
 }

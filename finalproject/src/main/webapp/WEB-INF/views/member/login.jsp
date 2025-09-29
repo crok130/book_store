@@ -21,7 +21,7 @@
         
         <div class="login-card">
           <div class="login-header">
-            <div class="logo">BookStore</div>
+            <div class="logo">BookBridge</div>
             <h1 class="login-title">다시 만나뵙네요</h1>
             <p class="login-subtitle">문학적 여정을 이어가기 위해 로그인해 주세요</p>
           </div>

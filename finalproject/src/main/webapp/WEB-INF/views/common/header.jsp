@@ -12,7 +12,6 @@
 <link rel="stylesheet" href="${path}/resources/css/newbooklist.css">
 <link rel="stylesheet" href="${path}/resources/css/bookdetail.css">
 <link rel="stylesheet" href="${path}/resources/css/cart.css">
-<link rel="stylesheet" href="${path}/resources/css/tradebook_detail.css">
 <link rel="stylesheet" href="${path}/resources/css/treadebook_create.css">
 <link rel="stylesheet" href="${path}/resources/css/index.css">
 <script>
@@ -28,11 +27,11 @@
         <header class="header">
           <div class="container">
             <div class="header-content">
-              <a href="#" class="logo">📚 BookStore</a>
+              <a href="${path}" class="logo">📚 BookBridge</a>
               <nav>
                 <ul class="nav-menu">
                   <li><a href="${path}">홈</a></li>
-                  <li><a href="#">베스트셀러</a></li>
+                  <li><a href="${path}/board/best">베스트</a></li>
                   <li><a href="#">신간</a></li>
                   <li><a href="#">카테고리</a></li>
                   <li><a href="#">이벤트</a></li>
@@ -53,8 +52,12 @@
                   <div class="user-dropdown">
                     <a href="${path}/member/logout" class="dropdown-item">로그아웃</a>
                     <a href="${path}/chat/chatroom" class="dropdown-item">채팅</a>
+
+                    <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
+
                     <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
                     <a href="${path}/member/cart" class="dropdown-item">회원정보 수정</a>
+
                   </div>
                 </div>
            	</c:otherwise>

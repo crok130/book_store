@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
     <jsp:include page="common/header.jsp"/>
 
         <section class="search-section">
@@ -8,9 +8,10 @@
             <div class="search-content">
               <h1 class="search-title">문학의 향기가 머무는 곳</h1>
               <p class="search-subtitle">소중한 이야기들이 새로운 주인을 기다리고 있습니다</p>
-              <form class="search-form">
+              <form class="search-form" action="${pageContext.request.contextPath}/board/list" method="get">
                 <input 
                   type="text" 
+                  name="keyword"
                   class="search-input" 
                   placeholder="도서명, 저자명, 혹은 마음에 드는 구절을 입력해보세요..."
                 />
@@ -19,117 +20,68 @@
             </div>
           </div>
         </section>
+        
 
+        <c:if test="${not empty recommend}">
         <section class="recommended-section">
           <div class="container">
             <h2 class="recommended-title">추천 도서</h2>
-            <p class="recommended-subtitle">큐레이터가 엄선한 감각적이고 깊이 있는 작품들</p>
+            <p class="recommended-subtitle">당신을 위한 맞춤 추천 또는 많이 팔린 도서</p>
             <div class="recommended-grid">
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=300&fit=crop"
-                  alt="달러구트 꿈 백화점"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">베스트셀러</div>
-                  <h3 class="recommended-book-title">달러구트 꿈 백화점</h3>
-                  <p class="recommended-book-author">이미예</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.2/5)</span>
+              <c:forEach var="r" items="${recommend}">
+                <div class="recommended-card" onclick="location.href='${path}/board/detail?num=${r.newbook_num}'">
+                  <img 
+                    src="${pageContext.request.contextPath}/img${r.newbook_img}"
+                    alt="${r.newbook_title}"
+                    class="recommended-image"
+                  />
+                  <div class="recommended-info">
+                    <div class="recommended-badge">추천</div>
+                    <h3 class="recommended-book-title">${r.newbook_title}</h3>
+                    <p class="recommended-book-author">${r.newbook_author}</p>
+                    <div class="recommended-rating">
+                      <span class="stars">★★★★☆</span>
+                      <span class="rating-text">(4.2/5)</span>
+                    </div>
+                    <div class="recommended-book-price">${r.newbook_price}원</div>
                   </div>
-                  <div class="recommended-book-price">13,320원</div>
                 </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop"
-                  alt="세이노의 가르침"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">신간</div>
-                  <h3 class="recommended-book-title">세이노의 가르침</h3>
-                  <p class="recommended-book-author">세이노</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.8/5)</span>
-                  </div>
-                  <div class="recommended-book-price">6,480원</div>
-                </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=300&fit=crop"
-                  alt="불편한 편의점"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">인기</div>
-                  <h3 class="recommended-book-title">불편한 편의점</h3>
-                  <p class="recommended-book-author">김호연</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.3/5)</span>
-                  </div>
-                  <div class="recommended-book-price">12,600원</div>
-                </div>
-              </div>
-
-              <div class="recommended-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=400&h=300&fit=crop"
-                  alt="클린 코드"
-                  class="recommended-image"
-                />
-                <div class="recommended-info">
-                  <div class="recommended-badge">IT 추천</div>
-                  <h3 class="recommended-book-title">클린 코드</h3>
-                  <p class="recommended-book-author">로버트 C. 마틴</p>
-                  <div class="recommended-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.6/5)</span>
-                  </div>
-                  <div class="recommended-book-price">31,500원</div>
-                </div>
-              </div>
+              </c:forEach>
             </div>
           </div>
         </section>
+        </c:if>
 
         <section class="categories-section">
           <div class="container">
             <h2 class="section-title">문학의 세계로</h2>
             <p class="section-subtitle">각 장르마다 독특한 매력과 깊이를 담고 있습니다</p>
             <div class="categories-grid">
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=소설/에세이'">
                 <div class="category-icon">📖</div>
                 <div class="category-name">소설/에세이</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=경영/경제'">
                 <div class="category-icon">💼</div>
                 <div class="category-name">경영/경제</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=과학/기술'">
                 <div class="category-icon">🔬</div>
                 <div class="category-name">과학/기술</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=예술/디자인'">
                 <div class="category-icon">🎨</div>
                 <div class="category-name">예술/디자인</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=아동/청소년'">
                 <div class="category-icon">👶</div>
                 <div class="category-name">아동/청소년</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=자기계발'">
                 <div class="category-icon">🎯</div>
                 <div class="category-name">자기계발</div>
               </div>
-              <div class="category-card">
+              <div class="category-card" onclick="location.href='${path}/board/list?category=IT/컴퓨터'">
                 <div class="category-icon">💻</div>
                 <div class="category-name">IT/컴퓨터</div>
               </div>
@@ -142,112 +94,31 @@
             <h2 class="section-title">독자들의 사랑</h2>
             <p class="section-subtitle">시간이 흘러도 변하지 않는 가치를 인정받은 작품들</p>
             <div class="books-grid">
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1543002588-bfa74002ed7e?w=400&h=600&fit=crop&crop=face"
-                  alt="달러구트 꿈 백화점"
-                  class="book-image"
-                />
+            <c:forEach var="book" items="${home}">
+               <div class="book-card" onclick="location.href='${path}/board/detail?num=${book.newbook_num}'">
+                    <img 
+                      src="${pageContext.request.contextPath}/img${book.newbook_img}"
+                      alt="${book.newbook_title}"
+                      class="book-image"
+     
+                    />
                 <div class="book-info">
-                  <h3 class="book-title">달러구트 꿈 백화점</h3>
-                  <p class="book-author">이미예</p>
+                  <h3 class="book-title">${book.newbook_title}</h3>
+                  <p class="book-author">${book.newbook_author}</p>
                   <div class="book-rating">
                     <span class="stars">★★★★☆</span>
                     <span class="rating-text">(4.2/5)</span>
                   </div>
-                  <div class="book-price">13,320원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=600&fit=crop"
-                  alt="세이노의 가르침"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">세이노의 가르침</h3>
-                  <p class="book-author">세이노</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.8/5)</span>
-                  </div>
-                  <div class="book-price">6,480원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1512820790803-83ca734da794?w=400&h=600&fit=crop"
-                  alt="불편한 편의점"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">불편한 편의점</h3>
-                  <p class="book-author">김호연</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.3/5)</span>
-                  </div>
-                  <div class="book-price">12,600원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1621351183012-e2f9972dd9bf?w=400&h=600&fit=crop"
-                  alt="원피스 106권"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">원피스 106권</h3>
-                  <p class="book-author">오다 에이치로</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★★</span>
-                    <span class="rating-text">(4.9/5)</span>
-                  </div>
-                  <div class="book-price">4,500원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1589998059171-988d887df646?w=400&h=600&fit=crop"
-                  alt="아버지의 해방일지"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">아버지의 해방일지</h3>
-                  <p class="book-author">정지아</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.1/5)</span>
-                  </div>
-                  <div class="book-price">14,400원</div>
-                </div>
-              </div>
-
-              <div class="book-card">
-                <img 
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=600&fit=crop"
-                  alt="트렌드 코리아 2024"
-                  class="book-image"
-                />
-                <div class="book-info">
-                  <h3 class="book-title">트렌드 코리아 2024</h3>
-                  <p class="book-author">김난도</p>
-                  <div class="book-rating">
-                    <span class="stars">★★★★☆</span>
-                    <span class="rating-text">(4.0/5)</span>
-                  </div>
-                  <div class="book-price">16,200원</div>
-                </div>
-              </div>
+                  <div class="book-price">${book.newbook_price}원</div>
+                 </div>
+               </div>
+			</c:forEach>	
+            
             </div>
           <div class="more-button-container">
-            <button class="more-btn">
+            <a class="more-btn" href="${path}/board/list">
               더보기 📚
-            </button>
+            </a>
           </div>
           </div>
         </section>

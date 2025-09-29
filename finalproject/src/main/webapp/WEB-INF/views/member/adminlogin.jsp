@@ -17,7 +17,7 @@
         <div class="login-card">
           <div class="login-header">
             <div class="logo">
-              🛠️ BookStore Admin
+              🛠️ BookBridge Admin
               <span class="admin-badge">ADMIN</span>
             </div>
             <h1 class="login-title">관리자 로그인</h1>
@@ -30,13 +30,14 @@
             안전한 장소에서만 로그인하시기 바랍니다.
           </div>
 
-          <form class="login-form">
+          <form class="login-form" method="post" action="${path}/admin/login">
             <div class="form-group">
-              <label class="form-label">관리자 이메일</label>
+              <label class="form-label">관리자 아이디</label>
               <input
-                type="email"
+                type="text"
                 class="form-input"
-                placeholder="관리자 이메일을 입력하세요"
+                name="member_id"
+                placeholder="관리자 아이디를 입력하세요"
                 required
               />
             </div>
@@ -46,6 +47,7 @@
               <input
                 type="password"
                 class="form-input"
+                name="member_pw"
                 placeholder="비밀번호를 입력하세요"
                 required
               />
@@ -87,7 +89,7 @@
           </div>
 
           <div class="signup-link">
-            새 관리자 계정이 필요하신가요? <a href="/components/AdminRegisterPage.tsx">관리자 등록</a>
+            새 관리자 계정이 필요하신가요? <a href="${path}/admin/register">관리자 등록</a>
           </div>
         </div>
       </div>

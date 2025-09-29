@@ -1,14 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 	<jsp:include page="../common/header.jsp"/>
-
-        {/* Breadcrumb */}
+	<script>
+	
+		if('${msg}' !== '' && '${msg}'!== null){
+			alert("${msg}");
+		}
+	</script>
         <section class="breadcrumb">
           <div class="container">
             <nav class="breadcrumb-nav">
-              <a href="/App.tsx">홈</a>
+              <a href="${path}">홈</a>
               <span class="breadcrumb-separator">></span>
-              <a href="/components/BookExchangePage.tsx">책 교환</a>
+              <a href="${path}/tradebook/bookexchange">책 교환</a>
               <span class="breadcrumb-separator">></span>
               <span>교환 글 등록</span>
             </nav>
@@ -24,7 +28,7 @@
                 <p class="create-subtitle">소중한 책에게 새로운 독자와의 만남을 선사해보세요</p>
               </div>
 
-              <form class="create-form">
+              <form class="create-form" method="POST" action="${path}/tradebook/write" enctype="multipart/form-data">
                
                 <div class="form-section">
                   <h2 class="section-title">📖 교환할 책 정보</h2>
@@ -36,7 +40,7 @@
                       <input 
                         type="text" 
                         id="book-title" 
-                        name="book-title" 
+                        name="tradebook_title" 
                         class="form-input" 
                         placeholder="교환할 책의 제목을 입력하세요"
                         required
@@ -50,7 +54,7 @@
                       <input 
                         type="text" 
                         id="author" 
-                        name="author" 
+                        name="tradebook_author" 
                         class="form-input" 
                         placeholder="저자명을 입력하세요"
                         required
@@ -64,7 +68,7 @@
                       <input 
                         type="date" 
                         id="publication-date" 
-                        name="publication-date" 
+                        name="tradebook_publication_date" 
                         class="form-input"
                       />
                     </div>
@@ -74,27 +78,27 @@
                         책 상태<span class="required">*</span>
                       </label>
                       <div class="condition-options">
-                        <input type="radio" id="condition-new" name="book-condition" value="new" class="condition-option" required>
+                        <input type="radio" id="condition-new" name="tradebook_status" value="새책" class="condition-option" required>
                         <label for="condition-new" class="condition-label">
                           ✨ 새 책
                         </label>
 
-                        <input type="radio" id="condition-excellent" name="book-condition" value="excellent" class="condition-option">
+                        <input type="radio" id="condition-excellent" name="tradebook_status" value="매우 좋음" class="condition-option">
                         <label for="condition-excellent" class="condition-label">
                           👍 매우 좋음
                         </label>
 
-                        <input type="radio" id="condition-good" name="book-condition" value="good" class="condition-option">
+                        <input type="radio" id="condition-good" name="tradebook_status" value="좋음" class="condition-option">
                         <label for="condition-good" class="condition-label">
                           😊 좋음
                         </label>
 
-                        <input type="radio" id="condition-fair" name="book-condition" value="fair" class="condition-option">
+                        <input type="radio" id="condition-fair" name="tradebook_status" value="보통" class="condition-option">
                         <label for="condition-fair" class="condition-label">
                           🤔 보통
                         </label>
 
-                        <input type="radio" id="condition-poor" name="book-condition" value="poor" class="condition-option">
+                        <input type="radio" id="condition-poor" name="tradebook_status" value="낡음" class="condition-option">
                         <label for="condition-poor" class="condition-label">
                           😅 낡음
                         </label>
@@ -103,7 +107,6 @@
                   </div>
                 </div>
 
-                {/* 책 이미지 업로드 */}
                 <div class="form-section">
                   <h2 class="section-title">📷 책 사진</h2>
                   <div class="form-group">
@@ -118,11 +121,14 @@
                     <input 
                       type="file" 
                       id="book-image" 
-                      name="book-image" 
+                      name="tradebook_img1" 
                       class="image-input" 
                       accept="image/jpeg,image/png"
                       required
                     />
+                    <div id="image-preview-wrapper" style="margin-top: 1rem; display: none;">
+                      <img id="image-preview" alt="미리보기" style="max-width: 280px; max-height: 280px; border-radius: 12px; box-shadow: 0 6px 20px rgba(0,0,0,0.08);" />
+                    </div>
                     <div class="form-help">책의 상태를 잘 보여주는 사진을 올려주세요.</div>
                   </div>
                 </div>
@@ -137,7 +143,7 @@
                       </label>
                       <textarea 
                         id="wanted-books" 
-                        name="wanted-books" 
+                        name="tradebook_condition" 
                         class="form-textarea" 
                         placeholder="예) 소설, 에세이, 자기계발서 (상태 무관)"
                         required
@@ -150,17 +156,17 @@
                         교환 방식<span class="required">*</span>
                       </label>
                       <div class="exchange-methods">
-                        <input type="radio" id="direct-exchange" name="exchange-method" value="direct" class="method-option" required>
+                        <input type="radio" id="direct-exchange" name="tradebook_method" value="직거래" class="method-option" required>
                         <label for="direct-exchange" class="method-label">
                           🤝 직거래
                         </label>
 
-                        <input type="radio" id="delivery-exchange" name="exchange-method" value="delivery" class="method-option">
+                        <input type="radio" id="delivery-exchange" name="tradebook_method" value="택배거래" class="method-option">
                         <label for="delivery-exchange" class="method-label">
                           📦 택배거래
                         </label>
 
-                        <input type="radio" id="both-exchange" name="exchange-method" value="both" class="method-option">
+                        <input type="radio" id="both-exchange" name="tradebook_method" value="모두가능" class="method-option">
                         <label for="both-exchange" class="method-label">
                           🔄 모두 가능
                         </label>
@@ -173,7 +179,7 @@
                       </label>
                       <textarea 
                         id="available-time" 
-                        name="available-time" 
+                        name="tradebook_time" 
                         class="form-textarea" 
                         placeholder="예) 평일 오후 6시 이후, 주말 언제든 가능"
                         required
@@ -189,9 +195,9 @@
                     <label for="exchange-content" class="form-label">
                       교환 내용<span class="required">*</span>
                     </label>
-                    <textarea 
-                      id="exchange-content" 
-                      name="exchange-content" 
+                      <textarea 
+                        id="exchange-content" 
+                        name="tradebook_content" 
                       class="form-textarea large" 
                       placeholder="예) 정말 재미있게 읽었던 책입니다! 상상력이 풍부하고 따뜻한 이야기라 많은 분들이 읽어보셨으면 좋겠어요. 책 상태도 매우 깨끗하니 안심하고 교환하세요."
                       required
@@ -209,7 +215,7 @@
                       <input 
                         type="text" 
                         id="location" 
-                        name="location" 
+                        name="tradebook_location" 
                         class="form-input" 
                         placeholder="예) 서울 강남구"
                       />
@@ -221,7 +227,7 @@
                       <input 
                         type="text" 
                         id="isbn" 
-                        name="isbn" 
+                        name="tradebook_isbn" 
                         class="form-input" 
                         placeholder="978-89-xxxxx-xx-x"
                       />
@@ -284,6 +290,34 @@
           }
         });
 
+        // 이미지 업로드 미리보기
+        (function() {
+          const input = document.getElementById('book-image');
+          const previewWrapper = document.getElementById('image-preview-wrapper');
+          const previewImg = document.getElementById('image-preview');
+          if (!input || !previewWrapper || !previewImg) return;
+          input.addEventListener('change', function(e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) {
+              previewWrapper.style.display = 'none';
+              previewImg.removeAttribute('src');
+              return;
+            }
+            if (!/^image\/(png|jpeg|jpg)$/.test(file.type)) {
+              alert('이미지 파일(JPG, PNG)만 업로드 가능합니다.');
+              input.value = '';
+              previewWrapper.style.display = 'none';
+              previewImg.removeAttribute('src');
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = function(ev) {
+              previewImg.src = ev.target.result;
+              previewWrapper.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+          });
+        })();
       </script>
 </body>
 </html>

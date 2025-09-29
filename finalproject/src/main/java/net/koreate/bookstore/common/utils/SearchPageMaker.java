@@ -15,14 +15,27 @@ public class SearchPageMaker extends PageMaker{
 	@Override
 	public String makeQuery(int page) {
 		SearchCriteria sCri = (SearchCriteria)criteria;
-		UriComponents uriComponentsents = 
-				UriComponentsBuilder.newInstance()
+		UriComponentsBuilder builder = UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
 				.queryParam("perPageNum", criteria.getPerPageNum())
-				.queryParam("searchType", sCri.getSearchType())
-				.queryParam("keyword",sCri.getKeyword())
-				.build();
-		String query = uriComponentsents.toUriString();
+				.queryParam("keyword", sCri.getKeyword());
+		
+		// category 파라미터 추가
+		if(sCri.getCategory() != null && !sCri.getCategory().trim().equals("")) {
+			builder.queryParam("category", sCri.getCategory());
+		}
+		
+		// sort 파라미터 추가
+		if(sCri.getSort() != null && !sCri.getSort().trim().equals("")) {
+			builder.queryParam("sort", sCri.getSort());
+		}
+		
+		// location 파라미터 추가
+		if(sCri.getLocation() != null && !sCri.getLocation().trim().equals("")) {
+			builder.queryParam("location", sCri.getLocation());
+		}
+		
+		String query = builder.build().toUriString();
 		return query;
 	}
 	

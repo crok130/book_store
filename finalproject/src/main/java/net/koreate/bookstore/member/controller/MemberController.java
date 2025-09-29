@@ -1,11 +1,11 @@
 // 구분자를 구분함
 package net.koreate.bookstore.member.controller;
 
+import java.util.List;
+
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpSession;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -18,8 +18,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.koreate.bookstore.common.utils.PageMaker;
+import net.koreate.bookstore.common.utils.SearchCriteria;
 import net.koreate.bookstore.member.service.MemberService;
 import net.koreate.bookstore.vo.MemberVO;
+import net.koreate.bookstore.vo.PaymentVO;
 
 @Controller
 @RequestMapping("/member/")
@@ -114,4 +117,18 @@ public class MemberController {
 		return "redirect:/member/login";
 	}
 	
+
+	@GetMapping("mypage")
+	public String mypage(SearchCriteria scri, Model model, HttpSession session) throws Exception {
+		if (scri == null) scri = new SearchCriteria();
+		List<PaymentVO> list = ms.listOrders(scri, session);
+		PageMaker pm = ms.getPageMaker(scri, session);
+		
+		log.info("oder : {}", list);
+		model.addAttribute("list", list);
+		model.addAttribute("pm", pm);
+		return "member/orderHistory";
+	}
+	
+
 }

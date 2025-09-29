@@ -16,6 +16,8 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/img/**" location="file:///C:/Temp/img/" />
+
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -30,11 +32,13 @@
 	<mybatis-spring:scan base-package="net.koreate.bookstore.*.dao"/>
 
 	<beans:bean id="uploadDir" class="java.lang.String">
-		<beans:constructor-arg value="C:\\Temp\\upload"/>	
+		<beans:constructor-arg value="C:\\Temp\\img"/>	
 	</beans:bean>
 	
+	
+	
 	<beans:bean id="uploadPath" class="java.lang.String">
-		<beans:constructor-arg value="uploads"/>	
+		<beans:constructor-arg value="img"/>	
 	</beans:bean>
 		
 	<beans:bean id="multipartResolver"

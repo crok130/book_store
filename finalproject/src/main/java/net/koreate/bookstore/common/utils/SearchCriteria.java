@@ -11,6 +11,10 @@ public class SearchCriteria extends Criteria{
 
 	private String searchType;
 	private String keyword;
+	private String category;
+	private String sort;
+	private String location;
+	private String stockStatus; // 재고 상태 필터: low(1~5), oos(0)
 	
 	public SearchCriteria(int page, int perPageNum, String searchType, String keyword) {
 		super(page, perPageNum);

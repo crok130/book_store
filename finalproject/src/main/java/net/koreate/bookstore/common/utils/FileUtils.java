@@ -1,18 +1,13 @@
 package net.koreate.bookstore.common.utils;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-
-import org.imgscalr.Scalr;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -54,8 +49,8 @@ public class FileUtils {
 		System.out.println(formatName);
 		
 		if(MediaUtils.getMediaType(formatName) != null) {
-			// 이미지 파일
-			uploadFileName = makeThumbnail(realPath,datePath,uploadFileName);
+			// 이미지 파일 - 원본 이미지 사용
+			uploadFileName = originalUploadFileName;
 		}else {
 			uploadFileName = originalUploadFileName;
 		}
@@ -68,44 +63,6 @@ public class FileUtils {
 		return fileName.replace(File.separatorChar, '/');
 	}
 	
-	// 썸네일 생성 후 URL 경로로 썸네일 이미지 경로 반환
-	private static String makeThumbnail(
-			String realPath, 
-			String datePath, 
-			String savedName
-		)throws IOException {
-		String name = "";
-		// 썸네일 이미지 생성
-		File file = new File(realPath+datePath,savedName);
-		System.out.println("read exists : " + file.exists());
-		System.out.println(file.getAbsolutePath());
-		// 지정된 위치의 이미지 정보를 BufferedImage 타입으로 반환
-		BufferedImage image = ImageIO.read(file);
-		
-		// scalr 객체를 이용해서 원본 이미지 복제
-		// 복제시 크기 지정
-		// TODO remove
-		
-		BufferedImage sourceImage
-			= Scalr.resize(image, 
-					Scalr.Method.AUTOMATIC,		// 고정 크기에 따른 상대 크기
-					Scalr.Mode.FIT_TO_HEIGHT,	// 높이를 고정 크기로 지정
-					100);						// 높이는 100px , 너비는 비율에 따라 자동으로 조절
-		String thumbnailImage
-			= realPath+datePath+File.separator+"s_"+savedName;
-		String ext = savedName.substring(
-			savedName.lastIndexOf(".")+1
-		);
-		File f = new File(thumbnailImage);
-		
-		ImageIO.write(sourceImage, ext, f);
-		
-		name = thumbnailImage.substring(realPath.length()).replace(File.separatorChar, '/');
-		System.out.println(name);
-		
-		return name;
-	}
-
 
 	//   \yyyy\mm\dd 형식의 폴더 생성 및 경로를 문자열로 반환
 	//   유닉스 /yyyy/mm/dd
@@ -195,7 +152,6 @@ public class FileUtils {
 	
 	
 }
-
 
 
 
