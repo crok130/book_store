@@ -18,7 +18,6 @@ import net.koreate.bookstore.vo.MemberVO;
 @Slf4j
 public class CheckCookieInterceptor implements HandlerInterceptor {
 
-
 	// 사용자 조회 서비스 (쿠키 아이디로 사용자 정보 조회)
 	@Autowired
 	private MemberService ms;
@@ -63,4 +62,3 @@ public class CheckCookieInterceptor implements HandlerInterceptor {
 	}
 	
 }
-

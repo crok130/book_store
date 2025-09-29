@@ -55,8 +55,8 @@
 
                     <a href="${path}/member/mypage" class="dropdown-item">주문내역</a>
 
-                    <a href="${path}/member/cart" class="dropdown-item">장바구니</a>
-                    <a href="${path}/member/cart" class="dropdown-item">회원정보 수정</a>
+                    <a href="${path}/payment/cart" class="dropdown-item">장바구니</a>
+                    <a href="#" class="dropdown-item">회원정보 수정</a>
 
                   </div>
                 </div>
