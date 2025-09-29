@@ -29,7 +29,7 @@ public interface MemberService {
      * @param member_pw 로그인할 회원 비밀번호
      * @return 로그인 성공 시 MemberVO 객체, 실패 시 null
      */
-    MemberVO signIn(String member_id, String member_pw, HttpSession sessio)throws Exception;
+    MemberVO login(String member_id, String member_pw, HttpSession sessio)throws Exception;
 
     /**
      * 회원 정보를 조회합니다.

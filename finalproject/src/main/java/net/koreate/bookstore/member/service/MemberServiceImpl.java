@@ -27,11 +27,11 @@ public class MemberServiceImpl implements MemberService{
 		return dao.register(vo) == 1 ? "가입 성공 로그인 해주세요." : "가입실패 다시 시도해주세요";
 	}
 
+	// 로그인
 	@Override
-	public MemberVO signIn(String member_id, String member_pw, HttpSession session) throws Exception {
+	public MemberVO login(String member_id, String member_pw, HttpSession session) throws Exception {
 		MemberVO vo = dao.login(member_id, member_pw);
-		session.setAttribute("userInfo", vo);
-		log.info("vo : {}", vo);
+		session.setAttribute("memberInfo", vo);
 		return vo;
 	}
 
@@ -43,8 +43,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public MemberVO getMemberById(String member_id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+		return dao.getMemberById(member_id);
 	}
 
 	@Override

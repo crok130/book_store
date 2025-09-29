@@ -22,6 +22,11 @@
 			<bean class="net.koreate.bookstore.common.interceptor.CheckCookieInterceptor"/>
 		</mvc:interceptor>
 		
+		<mvc:interceptor>
+			<mvc:mapping path="/member/logout"/>
+			<bean class="net.koreate.bookstore.common.interceptor.LogoutInterceptor"/>
+		</mvc:interceptor>
+		
 	</mvc:interceptors>
 	-->
 
