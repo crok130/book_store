@@ -1,4 +1,4 @@
-# 📚 BookStore - 책 판매 및 물물교환 플랫폼
+# 📚 BookBridge - 책 판매 및 물물교환 플랫폼
 
 <div align="center">
 
@@ -77,11 +77,8 @@
 **🎯 담당 파트**
 - 회원가입 및 로그인
 - 비밀번호 찾기
-- 소셜 로그인 연동
 
 **💡 주요 기술**
-- Spring Security
-- OAuth 2.0
 - 이메일 인증
 
 </td>
@@ -94,7 +91,6 @@
 
 ### 🔐 사용자 관리
 - [x] 회원가입 및 로그인
-- [x] 회원 정보 수정
 
 ### 📚 책 관리
 - [x] 신간 도서 등록
@@ -131,7 +127,7 @@
 📦 BookStore
 ├── 📁 src/main/java/net/koreate/bookstore/
 │   ├── 📁 admin/       # 관리자
-│   ├── 📁 board/       # 게시판/도서 뷰
+│   ├── 📁 board/       # 신간도서
 │   ├── 📁 chat/        # 실시간 채팅
 │   ├── 📁 common/      # 공통(인터셉터/유틸)
 │   ├── 📁 home/        # 홈/인덱스
@@ -252,5 +248,6 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 Made with ❤️ by BookStore Team
 
 </div>
+
 
 
