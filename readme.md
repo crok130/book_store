@@ -94,7 +94,6 @@
 
 ### 📚 책 관리
 - [x] 신간 도서 등록
-- [x] 책 정보 수정 및 삭제
 - [x] 재고 수량 관리
 - [x] 카테고리별 분류
 
@@ -248,6 +247,7 @@ CREATE INDEX idx_tradebook_member_num ON tradebook(member_num);
 Made with ❤️ by BookStore Team
 
 </div>
+
 
 
 
